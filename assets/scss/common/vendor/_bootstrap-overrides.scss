@@ -1,0 +1,7 @@
+@use "sass:string";
+
+input[type="email"] {
+  &::placeholder {
+    text-align: left !important;
+  }
+}
