@@ -1,0 +1,223 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "parser": "@typescript-eslint/parser"
+  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:nuxt/recommended",
+    "plugin:vue/vue3-recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "vue/padding-line-between-tags": [
+      "error",
+      [
+        {
+          "blankLine": "always",
+          "prev": "*",
+          "next": "*"
+        }
+      ]
+    ],
+    "vue/no-v-model-argument": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-multiple-template-root": "off",
+    "vue/no-v-for-template-key": "off",
+    "vue/require-valid-default-prop": "off",
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        "singleline": {
+          "max": 3
+        },
+        "multiline": {
+          "max": 1
+        }
+      }
+    ],
+    "vue/no-v-html": "off",
+    "vue/singleline-html-element-content-newline": [
+      "error",
+      {
+        "ignoreWhenNoAttributes": true,
+        "ignoreWhenEmpty": true,
+        "ignores": [
+          "a",
+          "b",
+          "button",
+          "component",
+          "em",
+          "i",
+          "option",
+          "p",
+          "pre",
+          "span",
+          "strong",
+          "textarea"
+        ]
+      }
+    ],
+    "arrow-body-style": "off",
+    "curly": "error",
+    "default-case-last": "error",
+    "dot-notation": "error",
+    "eqeqeq": "warn",
+    "no-prototype-builtins": "off",
+    "array-bracket-newline": [
+      "error",
+      "consistent"
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "never"
+    ],
+    "array-element-newline": [
+      "error",
+      "consistent"
+    ],
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "arrow-spacing": "error",
+    "block-spacing": "error",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "comma-spacing": "error",
+    "dot-location": [
+      "error",
+      "property"
+    ],
+    "eol-last": [
+      "error",
+      "always"
+    ],
+    "func-call-spacing": [
+      "error",
+      "never"
+    ],
+    "function-call-argument-newline": [
+      "error",
+      "consistent"
+    ],
+    "function-paren-newline": [
+      "error",
+      "multiline"
+    ],
+    "implicit-arrow-linebreak": [
+      "error",
+      "beside"
+    ],
+    "brace-style": "error",
+    "indent": [
+      "error",
+      2
+    ],
+    "max-statements-per-line": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "multiline-ternary": [
+      "error",
+      "always-multiline"
+    ],
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multi-spaces": "error",
+    "no-return-assign": "off",
+    "no-tabs": "error",
+    "no-trailing-spaces": "error",
+    "no-whitespace-before-property": "error",
+    "object-curly-spacing": [
+      "error",
+      "never"
+    ],
+    "object-property-newline": [
+      "error",
+      {
+        "allowAllPropertiesOnSameLine": true
+      }
+    ],
+    "operator-linebreak": [
+      "error",
+      "before"
+    ],
+    "padded-blocks": [
+      "error",
+      {
+        "blocks": "never"
+      }
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "rest-spread-spacing": [
+      "error",
+      "never"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "semi-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "semi-style": [
+      "error",
+      "last"
+    ],
+    "space-before-blocks": [
+      "error",
+      "always"
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "switch-colon-spacing": "error",
+    "template-curly-spacing": [
+      "error",
+      "never"
+    ],
+    "template-tag-spacing": [
+      "error",
+      "never"
+    ],
+    "wrap-iife": [
+      "error",
+      "inside"
+    ]
+  }
+}
