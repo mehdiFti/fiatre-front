@@ -1,4 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import postcssRTLCSS from 'postcss-rtlcss';
 export default defineNuxtConfig({
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  modules: [
+    '@pinia/nuxt',
+  ],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "assets/scss/common/utilities";',
+        },
+      },
+      postcss: {
+        plugins: [postcssRTLCSS()],
+      },
+    },
+  },
 })

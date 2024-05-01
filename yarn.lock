@@ -1362,7 +1362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.11.2, @nuxt/kit@npm:^3.11.2":
+"@nuxt/kit@npm:3.11.2, @nuxt/kit@npm:^3.11.2, @nuxt/kit@npm:^3.5.0":
   version: 3.11.2
   resolution: "@nuxt/kit@npm:3.11.2"
   dependencies:
@@ -1627,6 +1627,16 @@ __metadata:
     "@parcel/watcher-win32-x64":
       optional: true
   checksum: 10c0/33b7112094b9eb46c234d824953967435b628d3d93a0553255e9910829b84cab3da870153c3a870c31db186dc58f3b2db81382fcaee3451438aeec4d786a6211
+  languageName: node
+  linkType: hard
+
+"@pinia/nuxt@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@pinia/nuxt@npm:0.5.1"
+  dependencies:
+    "@nuxt/kit": "npm:^3.5.0"
+    pinia: "npm:>=2.1.7"
+  checksum: 10c0/754720dc7285635b49c441d5f0e267828572277b0ee626345adf6f2ab0537241c4d24b65365ebc1c4f7e8c40350500ae6d712cb06fa594511ea7c306e6772d6e
   languageName: node
   linkType: hard
 
@@ -2539,7 +2549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.5.1":
+"@vue/devtools-api@npm:^6.5.0, @vue/devtools-api@npm:^6.5.1":
   version: 6.6.1
   resolution: "@vue/devtools-api@npm:6.6.1"
   checksum: 10c0/ab9a1e09baae514b0d3a8bf1d670ecb7724f7e55b82eea30aa2e7255e6200b45c1086c1376560f243cf86e98c0726e94d69cefe0ad23dfd50c7c49dfcb1fbf21
@@ -7988,6 +7998,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
+    "@pinia/nuxt": "npm:^0.5.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.7.1"
     "@typescript-eslint/parser": "npm:^7.7.1"
     "@vue/eslint-config-standard": "npm:^8.0.1"
@@ -7995,9 +8006,11 @@ __metadata:
     eslint: "npm:^9.1.1"
     eslint-plugin-nuxt: "npm:^4.0.0"
     eslint-plugin-vue: "npm:^9.25.0"
+    lodash: "npm:^4.17.21"
     npm: "npm:^10.7.0"
     nuxt: "npm:^3.11.2"
     nuxt-vite: "npm:^0.3.5"
+    postcss-rtlcss: "npm:^5.1.2"
     sass: "npm:^1.75.0"
     typescript: "npm:^5.4.5"
     vue: "npm:^3.4.21"
@@ -8522,6 +8535,25 @@ __metadata:
   version: 2.3.0
   resolution: "pify@npm:2.3.0"
   checksum: 10c0/551ff8ab830b1052633f59cb8adc9ae8407a436e06b4a9718bcb27dc5844b83d535c3a8512b388b6062af65a98c49bdc0dd523d8b2617b188f7c8fee457158dc
+  languageName: node
+  linkType: hard
+
+"pinia@npm:>=2.1.7":
+  version: 2.1.7
+  resolution: "pinia@npm:2.1.7"
+  dependencies:
+    "@vue/devtools-api": "npm:^6.5.0"
+    vue-demi: "npm:>=0.14.5"
+  peerDependencies:
+    "@vue/composition-api": ^1.4.0
+    typescript: ">=4.4.4"
+    vue: ^2.6.14 || ^3.3.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+    typescript:
+      optional: true
+  checksum: 10c0/f4380a4db04b5b8565ed8a6843821d91f8f650d79dd9f0094005248bd963521b8a73419032fda76541e59b895b0e7852e67ca9d0408162cc391ce5a1bcbda445
   languageName: node
   linkType: hard
 
@@ -9152,6 +9184,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-rtlcss@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "postcss-rtlcss@npm:5.1.2"
+  dependencies:
+    rtlcss: "npm:4.1.1"
+  peerDependencies:
+    postcss: ^8.4.21
+  checksum: 10c0/ebdf9f87116e843a0b398545e4a4455c8d39bccd19dabe6d6ac20d0373fe18eaf94ddf811fb86e37502ba0d84d2843495141081e688614562a0c8134b708ede1
+  languageName: node
+  linkType: hard
+
 "postcss-selector-matches@npm:^4.0.0":
   version: 4.0.0
   resolution: "postcss-selector-matches@npm:4.0.0"
@@ -9258,7 +9301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.13, postcss@npm:^8.4.38":
+"postcss@npm:^8.4.13, postcss@npm:^8.4.21, postcss@npm:^8.4.38":
   version: 8.4.38
   resolution: "postcss@npm:8.4.38"
   dependencies:
@@ -9788,6 +9831,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 10c0/18218c8593cea9aa02483e10ac4856d9373b42426d2021848295ea9f52ba2db01ac2c896a2f23ff83e5379f25bc20ea99c5f4c95daa106d73c51a48d6c6624ef
+  languageName: node
+  linkType: hard
+
+"rtlcss@npm:4.1.1":
+  version: 4.1.1
+  resolution: "rtlcss@npm:4.1.1"
+  dependencies:
+    escalade: "npm:^3.1.1"
+    picocolors: "npm:^1.0.0"
+    postcss: "npm:^8.4.21"
+    strip-json-comments: "npm:^3.1.1"
+  bin:
+    rtlcss: bin/rtlcss.js
+  checksum: 10c0/8667f09f683139abf1d5a58e284fa57c903f1f502a86cd1a7fa867777378f7f93a3c156ba27852b826299156451fbf8c6413710ab1cce8e6da87dd31a266c669
   languageName: node
   linkType: hard
 
@@ -11399,7 +11456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.14.7":
+"vue-demi@npm:>=0.14.5, vue-demi@npm:>=0.14.7":
   version: 0.14.7
   resolution: "vue-demi@npm:0.14.7"
   peerDependencies:

@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "bootstrap": "^5.3.3",
+    "lodash": "^4.17.21",
     "npm": "^10.7.0",
     "nuxt": "^3.11.2",
     "vue": "^3.4.21",
@@ -24,6 +26,7 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.25.0",
     "nuxt-vite": "^0.3.5",
+    "postcss-rtlcss": "^5.1.2",
     "sass": "^1.75.0",
     "typescript": "^5.4.5"
   },
