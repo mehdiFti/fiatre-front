@@ -1,9 +1,18 @@
 <template>
-  <div>
-    <NuxtWelcome  />
-  </div>
+  <NuxtLoadingIndicator />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
-<style lang="scss">
-@import "/assets/scss/common/app";
-</style>
+<script setup>
+const nuxtApp = useNuxtApp();
+
+nuxtApp.hook('page:finish', () => {
+  window.scrollTo({
+    left: 0,
+    top: 0,
+    behavior: 'smooth',
+  });
+});
+</script>

@@ -2,7 +2,6 @@
   <header class="header-wrapper">
     <div class="container header">
       <div class="right-section">
-        <img src="~/assets/images/logo-horizontal.svg">
       </div>
 
       <div class="center-section">
@@ -30,7 +29,6 @@
       <div class="left-section">
         <div> ورود / ثبت‌نام </div>
 
-        <JJIcon icon="cart-shopping" />
       </div>
     </div>
   </header>

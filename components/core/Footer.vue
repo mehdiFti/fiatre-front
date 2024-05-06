@@ -28,7 +28,6 @@
       </div>
 
       <div class="footer-section__center">
-        <img src="~/assets/images/logo-vertical.svg" class="logo">
 
         <div class="subtitle">
           نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
@@ -65,13 +64,13 @@
     <hr>
 
     <div class="copyright primary-bold">
-      تمامی حقوق این مجموعه به شرکت جوونه تعلق دارد.
+      خدمات ارائه شده در فیاتر دارای مجوز است و هر گونه سوء استفاده از محتوای فیاتر، پیگرد قانونی دارد.
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-
+import JJIcon from '~/components/core/icons/JJIcon.vue';
 </script>
 
 <style lang="scss">

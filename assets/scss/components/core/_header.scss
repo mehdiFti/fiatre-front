@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  font-size: 18px;
+
+  &-wrapper {
+    box-shadow: $box-shadow-sm;
+  }
+
+  > .right-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $primary;
+  }
+
+  > .center-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    > a {
+      padding: 0 8px;
+      color: $dark;
+
+      &.router-link-active {
+        color: $primary;
+        font-weight: 700;
+      }
+    }
+  }
+
+  > .left-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $dark;
+
+    > * {
+      padding: 0 8px;
+    }
+  }
+}
