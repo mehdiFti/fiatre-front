@@ -1,3 +1,10 @@
 @import "colors";
 
 $enable-shadows: true;
+
+$box-shadow: 0 8px 16px 0 rgba($black, 0.15);
+$box-shadow-sm: 0 2px 4px 0 rgba($black, 0.08);
+$box-shadow-lg: 0 16px 48px 0 rgba($black, 0.17);
+
+$breadcrumb-active-color: $primary;
+$breadcrumb-divider-color: $gray-700;

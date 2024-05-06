@@ -1,0 +1,19 @@
+
+
+.breadcrumb {
+  padding-left: 0;
+
+  > .breadcrumb-item {
+    font-size: 16px;
+    color: $gray-700;
+
+    > a {
+      color: inherit;
+
+      &.router-link-exact-active {
+        font-weight: 700;
+        color: $primary;
+      }
+    }
+  }
+}

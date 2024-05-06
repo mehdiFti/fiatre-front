@@ -2,28 +2,19 @@
   <footer class="container footer">
     <div class="footer-section">
       <div class="footer-section__right">
-        <NuxtLink class="item">
-          فروشگاه
-        </NuxtLink>
-
-        <NuxtLink class="sub-item">
-          گل های شاخه ای
-        </NuxtLink>
-
-        <NuxtLink class="sub-item">
-          گل های اپرتمانی
-        </NuxtLink>
-
-        <NuxtLink class="sub-item">
-          هدایای مناسبتی
-        </NuxtLink>
 
         <NuxtLink class="item">
           تماس با ما
         </NuxtLink>
 
+        <NuxtLink class="item" to="/register">
+       درباره ما
+        </NuxtLink>
         <NuxtLink class="item">
-          وبلاگ
+          قوانین و مقررات
+        </NuxtLink>
+        <NuxtLink class="item">
+       سوالات متداول
         </NuxtLink>
       </div>
 
@@ -44,11 +35,10 @@
 
       <div class="footer-section__left">
         <div class="title">
-          شماره تماس
+        اپلیکیشن فیاتر
         </div>
-
         <div class="phone-number">
-          2244655 - 021
+         دانلود ios
         </div>
 
         <div class="title">
@@ -56,7 +46,7 @@
         </div>
 
         <div class="address">
-          تهران - میرداماد - پلاک ۶ ساختمان قوامین طبقه ۳ واحد ۶
+          دانلود اندروید
         </div>
       </div>
     </div>

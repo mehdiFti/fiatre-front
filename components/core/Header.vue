@@ -9,11 +9,11 @@
           خانه
         </NuxtLink>
 
-        <NuxtLink to="/products">
-          محصولات
+        <NuxtLink to="/register">
+          ثبت نام
         </NuxtLink>
 
-        <NuxtLink to="/blog">
+        <NuxtLink>
           وبلاگ
         </NuxtLink>
 
@@ -21,7 +21,7 @@
           تماس با ما
         </NuxtLink>
 
-        <NuxtLink to="about-us">
+        <NuxtLink>
           درباره ما
         </NuxtLink>
       </div>
@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-
 </script>
 
 <style lang="scss">
