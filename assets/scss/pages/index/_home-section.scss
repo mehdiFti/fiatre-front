@@ -1,0 +1,56 @@
+
+  .movie-section-container {
+
+    background: no-repeat url("https://wallpapers.com/images/hd/joker-poster-37j6jfl9mk1jmozx.jpg");
+    background-size: cover  ;
+    background-attachment: fixed ;
+ background-position: center   ;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 380px;
+
+    .content-section {
+
+
+
+
+      .movie-title{
+        font-size: 42px;
+        font-weight: bold;
+        color: $light;
+      }
+      .movie-description{
+        font-size: 22px;
+        font-weight: bold;
+        color: $light;
+      }
+
+    }
+
+
+    .card-section {
+
+      //position: relative;
+
+      //background: lightslategray;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+
+
+      .movie-card {
+        display: flex;
+      }
+    }
+
+  }
+
+
+
+
+
+
+
