@@ -1,5 +1,5 @@
 <template>
-  <div class="backgrounds-container">
+  <div class="background-container">
     <div class="container-wr">
       <div class="content-section">
         <div class="title">
@@ -74,7 +74,7 @@ const cards = [
 </script>
 
 <style lang="scss">
-@import "assets/scss/pages/index/home-section";
+@import "assets/scss/pages/index/second-home-section";
 </style>
 
 
