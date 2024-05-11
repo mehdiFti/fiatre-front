@@ -1,18 +1,16 @@
 
   .movie-section-container {
 
-    background: no-repeat url("https://wallpapers.com/images/hd/joker-poster-37j6jfl9mk1jmozx.jpg");
     background-size: cover  ;
-    background-attachment: fixed ;
- background-position: center   ;
+    background: no-repeat  center;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     gap: 380px;
 
     .content-section {
-
+      display: inline-flex;
+      flex-direction: column;
 
 
 
@@ -31,10 +29,6 @@
 
 
     .card-section {
-
-      //position: relative;
-
-      //background: lightslategray;
       display: flex;
       justify-content: center;
       gap: 8px;

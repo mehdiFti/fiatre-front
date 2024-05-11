@@ -4,6 +4,7 @@
       <div class="movie-card-image-container">
         <NuxtImg :src="img" class="movie-card-image" />
       </div>
+
       <p class="movie-card-title"> {{ title }} </p>
     </NuxtLink>
   </div>
