@@ -1,50 +1,41 @@
+.movie-section-container {
+  background-size: cover;
+  background: no-repeat center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 380px;
+}
 
-  .movie-section-container {
+.content-section {
+  display: flex;
+width: auto;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
 
-    background-size: cover  ;
-    background: no-repeat  center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 380px;
+}
 
-    .content-section {
-      display: inline-flex;
-      flex-direction: column;
+.movie-title {
+  font-size: 42px;
+  font-weight: bold;
+  color: $light;
+}
 
+.movie-description {
+  font-size: 22px;
+  font-weight: bold;
+  color: $light;
+}
 
+.card-section {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
 
-      .movie-title{
-        font-size: 42px;
-        font-weight: bold;
-        color: $light;
-      }
-      .movie-description{
-        font-size: 22px;
-        font-weight: bold;
-        color: $light;
-      }
-
-    }
-
-
-    .card-section {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-
-
-      .movie-card {
-        display: flex;
-      }
-    }
-
-  }
-
-
-
-
-
-
-
+.movie-card {
+  display: flex;
+}

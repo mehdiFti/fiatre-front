@@ -1,0 +1,70 @@
+.exclusive-cards-container {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap; // Wrap items onto multiple lines
+  justify-content: space-between;
+
+  .exclusive-card {
+    flex: 1 0 calc(40%); // Set the width of each card (adjust the percentage as needed)
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden; // Hide overflowing text
+    transition: opacity 0.3s ease; // Add transition for smooth effect
+
+    &:hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95); // Pale black with some transparency
+      z-index: 1; // Ensure it's above other content
+      transition: opacity 0.3s ease; // Add transition for smooth effect
+      opacity: 0; // Initially transparent
+    }
+
+    &:hover::before {
+      opacity: 0.95; // Higher opacity on hover
+    }
+
+    &:hover .exclusive-card-info {
+      opacity: 1; // Show text on hover
+    }
+
+    .exclusive-card-image {
+      width: 100%; // Ensure the image fills its container
+      height: auto; // Maintain aspect ratio
+    }
+
+    .exclusive-card-info {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      width: 100%;
+      padding: 10px;
+      background-color: transparent;
+      text-align: center;
+      margin: 20px 0;
+      color: #fff;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease; // Add transition for smooth effect
+      z-index: 2; // Ensure it's above the pseudo-element
+
+      .exclusive-card-title {
+        font-size: 1.2rem;
+        overflow: hidden;
+        padding-bottom: 4px;
+        font-weight: bold;
+        /* Create a linear gradient background */
+        background-image: linear-gradient(90deg, $third 0% , $primary 78%);
+        background-clip: text;
+        color: transparent;
+      }
+    }
+  }
+}
