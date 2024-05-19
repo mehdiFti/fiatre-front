@@ -1,8 +1,7 @@
 <template>
-  <header class="header-wrapper">
+  <header class=" container header-wrapper">
     <div class="container header">
-      <div class="right-section">
-      </div>
+      <div class="right-section" />
 
       <div class="center-section">
         <NuxtLink to="/">
@@ -28,7 +27,6 @@
 
       <div class="left-section">
         <div> ورود / ثبت‌نام </div>
-
       </div>
     </div>
   </header>

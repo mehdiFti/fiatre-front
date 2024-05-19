@@ -8,13 +8,18 @@
 }
 
 .content-section {
-  display: flex;
-width: auto;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
+//  display: flex;
+//width: auto;
+//  flex-wrap: nowrap;
+//  flex-direction: column;
+//  border-radius: 5px;
+//  background-color: rgba(0, 0, 0, 0.5);
 
+  border: 1px solid red;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px 50px;
+  margin: 24px auto;
 }
 
 .movie-title {

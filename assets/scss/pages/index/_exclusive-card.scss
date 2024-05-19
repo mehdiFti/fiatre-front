@@ -18,23 +18,25 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.95); // Pale black with some transparency
-      z-index: 1; // Ensure it's above other content
-      transition: opacity 0.3s ease; // Add transition for smooth effect
-      opacity: 0; // Initially transparent
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+      opacity: 0;
     }
 
-    &:hover::before {
-      opacity: 0.95; // Higher opacity on hover
-    }
-
-    &:hover .exclusive-card-info {
-      opacity: 1; // Show text on hover
+    &:hover
+    {
+      &::before {
+       opacity: 0.95;
+      }
+      .exclusive-card-info {
+        opacity: 1;
+      }
     }
 
     .exclusive-card-image {
-      width: 100%; // Ensure the image fills its container
-      height: auto; // Maintain aspect ratio
+      width: 100%;
+      height: auto;
     }
 
     .exclusive-card-info {
@@ -52,18 +54,21 @@
       color: #fff;
       font-size: 16px;
       opacity: 0;
-      transition: opacity 0.3s ease; // Add transition for smooth effect
-      z-index: 2; // Ensure it's above the pseudo-element
+      transition: opacity 0.3s ease;
+      z-index: 2;
 
       .exclusive-card-title {
         font-size: 1.2rem;
         overflow: hidden;
         padding-bottom: 4px;
         font-weight: bold;
-        /* Create a linear gradient background */
         background-image: linear-gradient(90deg, $third 0% , $primary 78%);
         background-clip: text;
         color: transparent;
+      }
+
+      .exclusive-card-desc {
+        line-height: 2rem;
       }
     }
   }

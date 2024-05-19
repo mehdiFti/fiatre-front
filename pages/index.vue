@@ -32,6 +32,8 @@ import Hero from '~/components/pages/index/Hero.vue';
 import SecondHomeSection from '~/components/pages/index/SecondHomeSection.vue';
 import ThirdHomeSection from '~/components/pages/index/ThirdHomeSection.vue';
 import ExclusiveCard from '~/components/pages/index/ExclusiveCard.vue';
+
+
 </script>
 <style  lang="scss">
 //@import "/assets/scss/components/core/log-card"
