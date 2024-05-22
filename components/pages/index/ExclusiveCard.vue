@@ -25,22 +25,6 @@
 const cards
     = [
       {
-        title: 'داستان یک ادیسه',
-        img: 'https://www.fiatre.ir/uploads/posters/The_Story_of_Film_An_Odyssey_Gq7b1ZN.jpg',
-        description: 'داستان یک ادیسه برگرفته از اثر فاخر استنلی کوبریک یکی از شاخص ترین فیلم های تاریخ سینما شناخته میشود.اثری که دید کم نظیری از آینده را به نمایش گذاشت',
-        alt: 'تصویر داستان یک ادیسه',
-        id:1,
-        link: 'https://www.fiatre.ir/episodes/%D8%AF%D8%A7%D8%B3%D8%AA%D8%A7%D9%86-%D8%B3%DB%8C%D9%86%D9%85%D8%A7-%DB%8C%DA%A9-%D8%A7%D8%AF%DB%8C%D8%B3%D9%87/',
-      },
-      {
-        title: '',
-        img: 'https://www.fiatre.ir/uploads/posters/david_lynch_Teaches_Creativity_and_Film.jpg',
-        description: 'در این مسترکلاس، کارگردان آوانگارد دیوید لینچ کارگردان فیلم های مخمل آبی، بزرگراه گمشده، جاده مالهالند فرآیند آفرینش خلاقانه، رسیدن به ایده‌های مناسب و تبدیل کردن آن‌ها به داستان و بیان هنری در مدیوم‌های مختلف را آموزش می‌دهد.',
-        alt: 'تصویر دوره آموزشی داوید لینچ',
-        id:2,
-        link: 'https://www.fiatre.ir/episodes/%D9%85%D8%B3%D8%AA%D8%B1%DA%A9%D9%84%D8%A7%D8%B3-%D8%AF%DB%8C%D9%88%DB%8C%D8%AF-%D9%84%DB%8C%D9%86%DA%86/',
-      },
-      {
         title: 'آموزش نقاشی با ریکی آلمن',
         img: 'https://www.fiatre.ir/uploads/posters/how_to_paint_ricky_allman_t5hxXuv.jpg',
         description: 'آموزش نقاشی با ریکی آلمن آموزش نقاشی با ریکی آلمن',

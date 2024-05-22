@@ -11,7 +11,15 @@
 
   <br>
 
+  <!--  <SecondHomeSection />-->
+
+  <br>
+
+  <br>
+
   <SecondHomeSection />
+
+  <br>
 
   <br>
 
