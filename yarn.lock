@@ -2286,6 +2286,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@videojs-player/vue@npm:1.x":
+  version: 1.0.0
+  resolution: "@videojs-player/vue@npm:1.0.0"
+  peerDependencies:
+    "@types/video.js": 7.x
+    video.js: 7.x
+    vue: 3.x
+  checksum: 10c0/6dc4a8d37e1b5c6be4bbdf53e260256ff9a84a514fc4177e5e3e2074f5f5a4948b039683175f4929e7e7383d4242b0533d3469f8b1e4cc942f71cf6341831d0c
+  languageName: node
+  linkType: hard
+
 "@vitejs/plugin-legacy@npm:^1.6.0":
   version: 1.8.2
   resolution: "@vitejs/plugin-legacy@npm:1.8.2"
@@ -8261,6 +8272,7 @@ __metadata:
     typescript: "npm:^5.4.5"
     vue: "npm:^3.4.21"
     vue-router: "npm:^4.3.0"
+    vue-video-player: "npm:^6.0.0"
   languageName: unknown
   linkType: soft
 
@@ -11939,6 +11951,19 @@ __metadata:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: 10c0/21d27d1c6afe10a47f17793e18afb7f321888d3ca728bfdb2a79ff49789ed9b40e98abcb68b5499f3da1bbb76a0f188b94aeb5ab0e879f46d6399ac5d4ae38c8
+  languageName: node
+  linkType: hard
+
+"vue-video-player@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "vue-video-player@npm:6.0.0"
+  dependencies:
+    "@videojs-player/vue": "npm:1.x"
+  peerDependencies:
+    "@types/video.js": 7.x
+    video.js: 7.x
+    vue: 3.x
+  checksum: 10c0/d58ef1022492f62f050a9a6181db7a80f27673cdebae99f36fa04db06ef091aac1389f031926d8d98154e3492a6154e34aac97eac4036eb83c2975fb669fd96d
   languageName: node
   linkType: hard
 

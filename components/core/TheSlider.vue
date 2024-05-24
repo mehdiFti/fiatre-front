@@ -11,7 +11,7 @@
     >
       <SwiperSlide v-for="card in cards" :key="card.id">
         <TheCard
-          class="slider-cards"
+          class="slider-cards alt-hover"
           :title="card.title"
           :img="card.img"
           :link="card.link"
@@ -123,6 +123,7 @@ const cards = [
 ];
 
 </script>
+
 <style lang="scss">
 .custom-swiper {
   --swiper-navigation-size: 1rem;
@@ -134,23 +135,40 @@ const cards = [
     height: 30px;
     width: 30px;
     background: $light;
-    transform: rotate(
-            360deg);
+    transform: rotate(360deg);
 
     &:hover {
       transform: scale(1.5);
     }
   }
 
-  .swiper-button-next  {
+  .swiper-button-next {
     left: 97%;
   }
+
   .swiper-button-prev {
     right: 97%;
   }
 }
 
+.alt-hover {
+  border-radius: 5px;
 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.slider-wrapper {
+  .slider-cards.alt-hover:hover {
+    transform: translateY(-0.5rem);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px rgba($third, 1);
+  }
+}
 
 
 </style>
+
