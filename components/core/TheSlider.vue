@@ -1,40 +1,44 @@
 <template>
-  <div
-    class="movie-section-container"
-    :style="{ backgroundImage: 'url(' + backgroundImage + ')'}"
-  >
-    <div class="content-section">
-      <div class="motto title">
-        آموزش بازیگری تئاتر
-      </div>
-
-      <div class="motto-description">
-        با برترین اساتید بازیگری تبدیل به بازیگر ایده عالی خود شوید
-      </div>
-
-      <div class="see-more">
-        <button class="btn btn-primary btn-lg"> مشاهده بیشتر </button>
-      </div>
-    </div>
-
-    <div class="card-section">
-      <div v-for="card in cards" :key="card.id" class="card">
+  <div class="container slider-wrapper">
+    <Swiper
+      class="custom-swiper"
+      :slides-per-view="7"
+      :space-between="10"
+      follow-finger
+      :navigation="true"
+      :modules="modules"
+      :option="swiperOptions"
+    >
+      <SwiperSlide v-for="card in cards" :key="card.id">
         <TheCard
-          :link="card.link"
-          :img="card.img"
+          class="slider-cards"
           :title="card.title"
+          :img="card.img"
+          :link="card.link"
           :description="card.description"
+          :alt="card.alt"
         />
-      </div>
-    </div>
+      </SwiperSlide>
+    </Swiper>
   </div>
 </template>
 
-
 <script setup lang="ts">
-import TheCard from '~/components/core/TheCard.vue';
+import {Swiper, SwiperSlide} from 'swiper/vue';
 
-const backgroundImage = 'https://wallpapers.com/images/hd/joker-poster-37j6jfl9mk1jmozx.jpg';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import {Navigation} from 'swiper/modules';
+import TheCard from '~/components/core/TheCard.vue';
+import 'swiper/swiper-bundle.css';
+
+const modules = [Navigation];
+const swiperOptions = {
+  // Set the direction to "ltr" for left-to-right
+  direction: 'ltr',
+  // Other swiper options...
+};
 const cards = [
   {
     title: 'جوکر از نولان تا نسخه',
@@ -43,6 +47,38 @@ const cards = [
     alt: 'تصویری از کیت بلانشت',
     id:1,
     link: 'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%DA%A9%DB%8C%D8%AA-%D8%A8%D9%84%D8%A7%D9%86%D8%B4%D8%AA/',
+  },
+  {
+    title: 'جوکر از نولان تا نسخه',
+    img: 'https://www.fiatre.ir/uploads/episodes/images/%D8%AC%D9%88%DA%A9%D8%B1-%D8%A7%D8%B2-%D9%86%D9%88%D9%84%D8%A7%D9%86-%D8%AA%D8%A7-%D9%86%D8%B3%D8%AE%D9%87-%D9%87%D8%A7%DB%8C-%D8%B4%D8%B1%D9%88%D8%B1-%D8%A7%D8%B2-%D8%A8%D8%B1%D8%AA%D9%88%D9%86-%D9%81%DB%8C%D9%84%DB%8C%D9%BE%D8%B3/1672851168.8742936-lvfJ4F_qrJY72z.jpg',
+    description: 'اطلاعات دوره کیت بلانشت',
+    alt: 'تصویری از کیت بلانشت',
+    id:1,
+    link: 'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%DA%A9%DB%8C%D8%AA-%D8%A8%D9%84%D8%A7%D9%86%D8%B4%D8%AA/',
+  },
+  {
+    title: 'جوکر از نولان تا نسخه',
+    img: 'https://www.fiatre.ir/uploads/episodes/images/%D8%AC%D9%88%DA%A9%D8%B1-%D8%A7%D8%B2-%D9%86%D9%88%D9%84%D8%A7%D9%86-%D8%AA%D8%A7-%D9%86%D8%B3%D8%AE%D9%87-%D9%87%D8%A7%DB%8C-%D8%B4%D8%B1%D9%88%D8%B1-%D8%A7%D8%B2-%D8%A8%D8%B1%D8%AA%D9%88%D9%86-%D9%81%DB%8C%D9%84%DB%8C%D9%BE%D8%B3/1672851168.8742936-lvfJ4F_qrJY72z.jpg',
+    description: 'اطلاعات دوره کیت بلانشت',
+    alt: 'تصویری از کیت بلانشت',
+    id:1,
+    link: 'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%DA%A9%DB%8C%D8%AA-%D8%A8%D9%84%D8%A7%D9%86%D8%B4%D8%AA/',
+  },
+  {
+    title: 'جوکر از نولان تا نسخه',
+    img: 'https://www.fiatre.ir/uploads/episodes/images/%D8%AC%D9%88%DA%A9%D8%B1-%D8%A7%D8%B2-%D9%86%D9%88%D9%84%D8%A7%D9%86-%D8%AA%D8%A7-%D9%86%D8%B3%D8%AE%D9%87-%D9%87%D8%A7%DB%8C-%D8%B4%D8%B1%D9%88%D8%B1-%D8%A7%D8%B2-%D8%A8%D8%B1%D8%AA%D9%88%D9%86-%D9%81%DB%8C%D9%84%DB%8C%D9%BE%D8%B3/1672851168.8742936-lvfJ4F_qrJY72z.jpg',
+    description: 'اطلاعات دوره کیت بلانشت',
+    alt: 'تصویری از کیت بلانشت',
+    id:1,
+    link: 'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%DA%A9%DB%8C%D8%AA-%D8%A8%D9%84%D8%A7%D9%86%D8%B4%D8%AA/',
+  },
+  {
+    title: 'جنگ ستارگان حرکت دوربین',
+    img: 'https://www.fiatre.ir/uploads/episodes/images/%D8%AC%D9%86%DA%AF-%D8%B3%D8%AA%D8%A7%D8%B1%DA%AF%D8%A7%D9%86-%D8%AD%D8%B1%DA%A9%D8%AA-%D8%AF%D9%88%D8%B1%D8%A8%DB%8C%D9%86/1672850347.9049053-kncj48HrsJdP-1668425970.47698_O8GoHnE.jpg',
+    description: 'اطلاعات دوره خانم اسکارلت',
+    alt: 'تصویری از اسکارلت',
+    id:2,
+    link:'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%D8%A7%D8%B3%DA%A9%D8%A7%D8%B1%D9%84%D8%AA-%D8%AC%D9%88%D9%87%D8%A7%D9%86%D8%B3%D9%88%D9%86/',
   },
   {
     title: 'جنگ ستارگان حرکت دوربین',
@@ -85,8 +121,36 @@ const cards = [
     link:'https://www.fiatre.ir/episodes/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%D8%A7%D8%B3%DA%A9%D8%A7%D8%B1%D9%84%D8%AA-%D8%AC%D9%88%D9%87%D8%A7%D9%86%D8%B3%D9%88%D9%86/',
   },
 ];
-</script>
 
+</script>
 <style lang="scss">
-@import 'assets/scss/pages/index/home-section';
+.custom-swiper {
+  --swiper-navigation-size: 1rem;
+  .swiper-button-next,
+  .swiper-button-prev {
+    transform: scaleX(-1) scale(0.9); /* Flip arrows horizontally and scale down */
+    color: $dark; /* Change arrow color to red */
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background: $light;
+    transform: rotate(
+            360deg);
+
+    &:hover {
+      transform: scale(1.5);
+    }
+  }
+
+  .swiper-button-next  {
+    left: 97%;
+  }
+  .swiper-button-prev {
+    right: 97%;
+  }
+}
+
+
+
+
 </style>

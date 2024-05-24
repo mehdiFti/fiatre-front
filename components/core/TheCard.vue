@@ -29,5 +29,5 @@ defineProps({
 </script>
 
 <style lang="scss">
-@import 'assets/scss/pages/index/home-section-card'
+@import 'assets/scss/components/core/the-card'
 </style>

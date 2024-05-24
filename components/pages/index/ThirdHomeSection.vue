@@ -23,7 +23,7 @@
 
     <div class="card-section">
       <div v-for="card in cards" :key="card.id" class="card">
-        <HomeSectionCard
+        <TheCard
           :link="card.link"
           :img="card.img"
           :title="card.title"
@@ -34,9 +34,10 @@
   </div>
 </template>
 
-
+1
 <script setup lang="ts">
-import HomeSectionCard from '~/components/pages/index/HomeSectionCard.vue';
+import TheCard from '~/components/core/TheCard.vue';
+
 const backgroundImage = 'https://images.hdqwalls.com/download/2024-fly-me-to-the-moon-4k-og-1920x1080.jpg';
 const cards
     = [
