@@ -127,6 +127,7 @@ const cards = [
 <style lang="scss">
 .custom-swiper {
   --swiper-navigation-size: 1rem;
+
   .swiper-button-next,
   .swiper-button-prev {
     transform: scaleX(-1) scale(0.9); /* Flip arrows horizontally and scale down */
@@ -155,6 +156,7 @@ const cards = [
   border-radius: 5px;
 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -162,13 +164,13 @@ const cards = [
 }
 
 .slider-wrapper {
-  .slider-cards.alt-hover:hover {
-    transform: translateY(-0.5rem);
-    transition: transform 0.3s ease;
-    box-shadow: 0 0 10px rgba($third, 1);
+  .slider-cards {
+    &.alt-hover:hover {
+      transform: translateY(-0.5rem);
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba($third, 1);
+    }
   }
 }
-
-
 </style>
 
