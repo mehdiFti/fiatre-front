@@ -1,5 +1,5 @@
 <template>
-  <div class="movie-hero-container">
+  <div class="container movie-hero-container">
     <Swiper
       :slides-per-view="1"
       loop

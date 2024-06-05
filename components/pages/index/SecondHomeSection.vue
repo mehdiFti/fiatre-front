@@ -1,6 +1,6 @@
 <template>
   <div
-    class="movie-section-container"
+    class="container movie-section-container"
     :style="{ backgroundImage: 'url(' + backgroundImage + ')'}"
   >
     <div
@@ -36,7 +36,7 @@
 
 
 <script setup lang="ts">
-import TheCard from '~/components/core/TheCard.vue';
+import TheCard from '~/components/core/FeatureCard.vue';
 
 const backgroundImage = '"https://image.tmdb.org/t/p/original/5A2bMlLfJrAfX9bqAibOL2gCruF.jpg"';
 const cards

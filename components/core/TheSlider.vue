@@ -1,5 +1,5 @@
 <template>
-  <div class="container slider-wrapper">
+  <div class=" container slider-wrapper mb-5 mt-5">
     <Swiper
       class="custom-swiper"
       :slides-per-view="7"
@@ -10,7 +10,7 @@
       :option="swiperOptions"
     >
       <SwiperSlide v-for="card in cards" :key="card.id">
-        <TheCard
+        <FeatureCard
           class="slider-cards alt-hover"
           :title="card.title"
           :img="card.img"
@@ -30,8 +30,9 @@ import {Swiper, SwiperSlide} from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import {Navigation} from 'swiper/modules';
-import TheCard from '~/components/core/TheCard.vue';
+import TheCard from '~/components/core/FeatureCard.vue';
 import 'swiper/swiper-bundle.css';
+import FeatureCard from '~/components/core/FeatureCard.vue';
 
 const modules = [Navigation];
 const swiperOptions = {
@@ -130,8 +131,8 @@ const cards = [
 
   .swiper-button-next,
   .swiper-button-prev {
-    transform: scaleX(-1) scale(0.9); /* Flip arrows horizontally and scale down */
-    color: $dark; /* Change arrow color to red */
+    transform: scaleX(-1) scale(1.1);
+    color: $dark;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -139,7 +140,7 @@ const cards = [
     transform: rotate(360deg);
 
     &:hover {
-      transform: scale(1.5);
+      transform: scale(1.2);
     }
   }
 
@@ -166,7 +167,7 @@ const cards = [
 .slider-wrapper {
   .slider-cards {
     &.alt-hover:hover {
-      transform: translateY(-0.5rem);
+      transform: none;
       transition: transform 0.3s ease;
       box-shadow: 0 0 10px rgba($third, 1);
     }

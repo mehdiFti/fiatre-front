@@ -3,7 +3,23 @@ import {vite as vidstack} from 'vidstack/plugins';
 
 export default defineNuxtConfig({
   devtools: {enabled: true},
-  modules: ['@pinia/nuxt', '@nuxt/image', 'nuxt-icons'],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxt/image',
+    'nuxt-icons',
+    [
+      '@vee-validate/nuxt',
+      {
+        autoImports: true,
+        componentNames: {
+          Form: 'VeeForm',
+          Field: 'VeeField',
+          FieldArray: 'VeeFieldArray',
+          ErrorMessage: 'VeeErrorMessage',
+        },
+      },
+    ],
+  ],
   vite: {
     plugins: [
       vidstack(),

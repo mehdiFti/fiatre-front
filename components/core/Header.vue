@@ -16,6 +16,14 @@
           وبلاگ
         </NuxtLink>
 
+        <NuxtLink to="/categories">
+          کتگوری
+        </NuxtLink>
+
+        <NuxtLink to="/series">
+          اپیزود
+        </NuxtLink>
+
         <NuxtLink to="/contact-us">
           تماس با ما
         </NuxtLink>

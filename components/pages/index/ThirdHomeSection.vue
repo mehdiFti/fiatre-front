@@ -1,6 +1,6 @@
 <template>
   <div
-    class="movie-section-container"
+    class="container movie-section-container"
     :style="{ backgroundImage: 'url(' + backgroundImage + ')'}"
   >
     <div
@@ -36,7 +36,7 @@
 
 1
 <script setup lang="ts">
-import TheCard from '~/components/core/TheCard.vue';
+import TheCard from '~/components/core/FeatureCard.vue';
 
 const backgroundImage = 'https://images.hdqwalls.com/download/2024-fly-me-to-the-moon-4k-og-1920x1080.jpg';
 const cards

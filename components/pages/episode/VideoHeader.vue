@@ -4,7 +4,7 @@
       ref="player"
       class="video-plyr"
       title="Sprite Fight"
-      src="https://files.vidstack.io/sprite-fight/720p.mp4"
+      src="https://dl.fiatre.ir/Kevin-Spacey-Teaches-Acting/01Introduction-1.m4v"
       keep-alive
     >
       <media-provider />
