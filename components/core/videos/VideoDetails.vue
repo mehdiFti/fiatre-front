@@ -1,50 +1,40 @@
 <template>
-  <div class="container">
+  <div class="container mt-4" dir="rtl">
     <div class="video-details-wrapper">
       <div class="video-details">
-        <nuxt-icon name="daily-calendar" class="icon" />
-
         <div class="video-detail-desc">
+          <nuxt-icon name="daily-calendar" class="icon" />
           سال انتشار: {{ details.releaseValue }}
         </div>
       </div>
-
       <div class="video-details">
-        <nuxt-icon name="camera-movie" class="icon" />
-
         <div class="video-detail-desc">
+          <nuxt-icon name="camera-movie" class="icon" />
           ژانر: {{ details.genreValue }}
         </div>
       </div>
-
       <div class="video-details">
-        <nuxt-icon name="category" class="icon" />
-
         <div class="video-detail-desc">
+          <nuxt-icon name="category" class="icon" />
           دسته بندی: {{ details.categoryValue }}
         </div>
       </div>
-
       <div class="video-details">
-        <nuxt-icon name="age-alt" class="icon" />
-
         <div class="video-detail-desc">
-          رده بندی سنی: {{ details.ageValue }}
+          <nuxt-icon name="age-alt" class="icon" />
+          <!-- رده بندی سنی: {{ details.ageValue }} -->
+          رده بندی سنی: 15+
         </div>
       </div>
-
       <div class="video-details">
-        <nuxt-icon name="time" class="icon" />
-
         <div class="video-detail-desc">
-          مدت زمان: {{ details.durationValue }}
+          <nuxt-icon name="time" class="icon" />
+          مدت زمان: {{ details.durationValue }} دقیقه 
         </div>
       </div>
-
       <div class="video-details">
-        <nuxt-icon name="earth" class="icon" />
-
         <div class="video-detail-desc">
+          <nuxt-icon name="earth" class="icon" />
           محصول: {{ details.productValue }}
         </div>
       </div>
@@ -53,14 +43,12 @@
 </template>
 
 <script setup lang="ts">
-const details = {
-  releaseValue: '2001',
-  genreValue: 'sci-fi',
-  categoryValue: 'فیلم تئاتر',
-  ageValue: '15+',
-  productValue: 'آمریکا',
-  durationValue: '1:30',
-};
+defineProps({
+  details: {
+    type: Object,
+    required: true
+  }
+});
 </script>
 
 <style lang="scss">
@@ -68,32 +56,75 @@ const details = {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background: $light;
-  padding: 8px 0;
+  align-items: center;
+  background: darken($light, 10);
+  padding-top: 0;
 }
 
 .video-details {
   display: flex;
-  align-items: center;
-  padding: 8px;
   gap: 10px;
   height: 2.6rem;
   overflow: hidden;
+  padding-top: 0;
 
   @include media-breakpoint-down(lg) {
     width: calc(100%/3);
+    padding-left: 40px;
   }
 
+  @include media-breakpoint-down(md) {
+    width: calc(100%/2);
+  }
+
+  @media (max-width: 1200px) and (min-width: 769px) {
+    width: calc(33.33% - 20px);
+    padding: 0 0 0 20px;
+  }
+
+  @media (max-width: 508px) {
+    align-items: center;
+    padding: 0 0 0 40px;
+    gap: 0;
+    margin: 0;
+    padding-top: 0;
+
+    .icon {
+      font-size: 1.4rem;
+    }
+
+    .video-detail-desc {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    align-items: center;
+    padding: 0 0 0 20px;
+    gap: 0;
+    margin: 0;
+    padding-top: 0;
+
+    .icon {
+      font-size: 1rem;
+    }
+
+    .video-detail-desc {
+      font-size: 12px;
+    }
+  }
 }
 
 .icon {
-  font-size: 1.5rem; /* Adjust size of the icon */
-  color: $dark; /* Set color to $dark */
+  font-size: 1.5rem;
+  color: $dark;
 }
 
 .video-detail-desc {
-  font-size: 16px; /* Set font size */
-  color: $dark; /* Set color to $dark */
-  overflow: hidden; /* Hide overflow */
+  direction: ltr !important;
+  font-size: 16px;
+  color: $dark;
+  overflow: hidden;
+  text-align: left;
 }
 </style>

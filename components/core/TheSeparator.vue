@@ -1,8 +1,10 @@
 <template>
-  <div class="title-static">
-    {{ title }}
-    <hr>
+  <div class="container">
+  <div class=" title-static">
+    {{ props.title }}
+    <hr class="simple-hr">
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -16,20 +18,19 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
 
 .title-static {
+  padding-top: 20px;
   font-size: 18px;
   font-weight: bold;
   color: $dark;
+  text-align: left;
 
-  > hr {
-    width: 40%;
+  > .simple-hr {
+    width: 100%;
     color: $dark;
-    padding-bottom: 10px;
+    text-align: right;
   }
 }
-
-
 </style>

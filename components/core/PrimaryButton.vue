@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ type: string; text: string }>();
+defineProps<{ type?: "button" | "submit" | "reset"; text: string }>();
 </script>
 
 <style lang="scss">

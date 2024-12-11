@@ -9,10 +9,14 @@
 <script setup>
 const nuxtApp = useNuxtApp();
 
+const userStore = useUserStore();
+
+if (userStore.isAuthenticated) {
+  await userStore.profileGetRequest.execute();
+}
+
 nuxtApp.hook('page:finish', () => {
   window.scrollTo({
-    left: 0,
-    top: 0,
     behavior: 'smooth',
   });
 });

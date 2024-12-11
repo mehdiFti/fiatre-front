@@ -1,13 +1,13 @@
 <template>
   <div class="comment">
-    <img :src="comment.avatar" alt="Avatar" class="comment-avatar">
+    <img :src="comment.user.avatar" :alt="getFullName" class="comment-avatar">
 
     <div class="comment-content">
       <div class="comment-header">
-        <a class="comment-author">{{ comment.author }}</a>
+        <a class="comment-author">{{ getFullName }}</a>
 
         <div class="comment-metadata">
-          {{ comment.date }}
+          {{ formatDate(comment.created_at) }}
         </div>
       </div>
 
@@ -20,12 +20,12 @@
       </div>
 
       <form v-if="showReplyForm" class="reply-form" @submit.prevent="addReply">
-        <textarea v-model="replyText" placeholder="پاسخی بدهید" />
+        <textarea ref="replyTextarea" v-model="replyText" placeholder="پاسخی بدهید" />
 
         <PrimaryButton type="submit" text="پاسخ" />
       </form>
 
-      <div v-if="comment.replies && comment.replies.length" class="comment-group">
+      <div v-if="comment.replies && comment.replies.length" class="replies-container">
         <CommentItem v-for="reply in comment.replies" :key="reply.id" :comment="reply" />
       </div>
     </div>
@@ -33,40 +33,74 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {ref, onMounted, watch, nextTick, computed} from 'vue';
 import PrimaryButton from '~/components/core/PrimaryButton.vue';
+
+interface User {
+  first_name: string;
+  last_name: string;
+  avatar: string;
+}
 
 interface Comment {
   id: number;
-  author: string;
-  avatar: string;
-  date: string;
   text: string;
+  created_at: string;
+  user: User;
   replies?: Comment[];
+  episode: number;
 }
 
 const props = defineProps<{ comment: Comment }>();
 
 const showReplyForm = ref(false);
 const replyText = ref('');
+const replyTextarea = ref<HTMLTextAreaElement | null>(null);
+
+const getFullName = computed(() => {
+  return `${props.comment.user.first_name} ${props.comment.user.last_name}`;
+});
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('fa-IR');
+};
 
 const toggleReplyForm = () => {
   showReplyForm.value = !showReplyForm.value;
+  if (showReplyForm.value) {
+    nextTick(() => {
+      replyTextarea.value?.focus();
+    });
+  }
 };
 
-const addReply = () => {
+const emit = defineEmits<{
+  'reply-added': [comment: Comment];
+}>();
+
+const addReply = async () => {
   if (replyText.value.trim()) {
-    props.comment.replies = props.comment.replies || [];
-    props.comment.replies.push({
-      id: Date.now(),
-      author: 'یوزر جدید',
-      avatar: 'https://react.semantic-ui.com/images/avatar/small/joe.jpg',
-      date: 'هم اکنون',
-      text: replyText.value,
-      replies: [],
-    });
-    replyText.value = '';
-    showReplyForm.value = false;
+    try {
+      const response = await useAuthFetch('/api/episodes/comments/', {
+        method: 'POST',
+        body: JSON.stringify({
+          text: replyText.value,
+          episode: props.comment.episode,
+          parent: props.comment.id
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data.value) {
+        emit('reply-added', response.data.value);
+        replyText.value = '';
+        showReplyForm.value = false;
+      }
+    } catch (error) {
+      console.error('Error posting reply:', error);
+    }
   }
 };
 </script>
@@ -74,7 +108,7 @@ const addReply = () => {
 <style scoped lang="scss">
 .comment {
   display: flex;
-  margin-bottom: 20px;
+  margin: 20px 0;
 
   .comment-avatar {
     width: 40px;
@@ -85,10 +119,11 @@ const addReply = () => {
 
   .comment-content {
     flex: 1;
-    background-color: #fff;
+    background-color: $white;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left !important; 
 
     .comment-header {
       display: flex;
@@ -100,7 +135,7 @@ const addReply = () => {
 
       .comment-metadata {
         font-size: 0.8em;
-        color: gray;
+        color: $gray-400;
       }
     }
 
@@ -111,7 +146,7 @@ const addReply = () => {
     .comment-actions {
       .comment-action {
         cursor: pointer;
-        color: #007bff;
+        color: $primary;
 
         &:hover {
           text-decoration: underline;
@@ -132,5 +167,11 @@ const addReply = () => {
         margin-bottom: 10px;
         font-size: 14px
         }
-    }}}
+    }
+
+    .replies-container {
+      margin-left: 20px;
+    }
+  }
+}
 </style>

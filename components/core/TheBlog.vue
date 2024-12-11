@@ -1,58 +1,90 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mb-5 mt-5">
+    <HomeSeprator class="mb-3" title="اخبار فیاتر" />
+
     <div class="blog__wrapper">
       <BlogItem
-        v-for="item in blogItems"
+        v-for="(item, index) in filteredBlogItems"
+        v-show="!isMediumScreen || !isMediumLargeScreen || index < 3"
         :key="item.key"
         :image-src="item.imageSrc"
         :title="item.title"
         :description="item.description"
+        :timestamp="item.timestamp"
       />
     </div>
   </div>
 </template>
 
 <script setup>
+import {ref, computed} from 'vue';
+import {timestamp, useMediaQuery} from '@vueuse/core';
 import BlogItem from '~/components/core/BlogItem.vue';
+import HomeSeprator from './HomeSeprator.vue';
 
-const blogItems = [
-  {
-    imageSrc: 'https://www.fiatre.ir/uploads/episodes/images/%D9%84%D9%86%D8%B2-%D8%AF%D9%88%D8%B1%D8%A8%DB%8C%D9%86/1672854715.674316-oQQ4UJ9xrat3-1668628588.4868019-Auv4O0kMhkk_DRe5rr3.jpg',
-    title: 'What\'s new in 2022 Tech',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi perferendis molestiae non nemo doloribus. Doloremque, nihil! At ea atque quidem!',
-    key: 1,
-  },
-  {
-    imageSrc: 'https://www.fiatre.ir/uploads/episodes/images/%D9%84%D9%86%D8%B2-%D8%AF%D9%88%D8%B1%D8%A8%DB%8C%D9%86/1672854715.674316-oQQ4UJ9xrat3-1668628588.4868019-Auv4O0kMhkk_DRe5rr3.jpg',
-    title: 'آمورش هنرهای تجسمی بری برای دانشمندان بزرگ کشورهای اسیایای دانشمندان بزرگ کشورهای اسیایی',
-    description: 'این متن راست چین از چپ به راست نوشته میشود و در صورتی که بیش از اندازه خاصی باشد اورفلو هیدن میشود',
-    key: 2,
-  },
-  {
-    imageSrc: 'https://www.fiatre.ir/uploads/episodes/images/%D9%84%D9%86%D8%B2-%D8%AF%D9%88%D8%B1%D8%A8%DB%8C%D9%86/1672854715.674316-oQQ4UJ9xrat3-1668628588.4868019-Auv4O0kMhkk_DRe5rr3.jpg',
-    title: 'Race to your heart content',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi perferendis molestiae non nemo doloribus. Doloremque, nihil! At ea atque quidem!',
-    key: 3,
-  },
-  {
-    imageSrc: 'https://www.fiatre.ir/uploads/episodes/images/%D9%84%D9%86%D8%B2-%D8%AF%D9%88%D8%B1%D8%A8%DB%8C%D9%86/1672854715.674316-oQQ4UJ9xrat3-1668628588.4868019-Auv4O0kMhkk_DRe5rr3.jpg',
-    title: 'Race to your heart content',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi perferendis molestiae non nemo doloribus. Doloremque, nihil! At ea atque quidem!',
-    key: 4,
-  },
-];
+const getBlogersRequest = await useApiFetch('/api/blogs/', {
+  baseURL: 'https://www.fiatre.ir/',
+}).catch((error) => {
+  console.error('Error fetching blogs:', error); // Log errors for debugging
+});
+
+const blogItems = computed(() => {
+  if (getBlogersRequest?.status.value === 'success') {
+    return getBlogersRequest.data.value.results.map((apiData) => ({
+      id: apiData.id,
+      link: apiData.link,
+      title: apiData.title,
+      imageSrc: apiData.image,
+      description: apiData.text,
+      timestamp: apiData.updated_at,
+    }));
+  }
+  return [];
+});
+
+const isMediumScreen = useMediaQuery('(max-width: 979px) and (min-width: 768px)');
+const isMediumLargeScreen = useMediaQuery('(max-width: 1024px) and (min-width: 980px)');
+
+const filteredBlogItems = computed(() => {
+  return blogItems.value.slice(-4);
+});
 </script>
 
-<style lang="scss">
-/* Your CSS goes here */
-.container {
-  /* Add your container styles here if needed */
-}
-
+<style scoped lang="scss">
 .blog__wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+}
+
+@media (min-width: 1025px) {
+  .blog__wrapper > * {
+    flex: 0 0 calc(25% - 20px);
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 980px) {
+  .blog__wrapper > * {
+    flex: 0 0 calc(33.33% - 20px);
+  }
+}
+
+@media (max-width: 979px) and (min-width: 768px) {
+  .blog__wrapper > * {
+    flex: 0 0 calc(33.33% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .blog__wrapper > * {
+    flex: 0 0 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 503px) {
+  .blog__wrapper > * {
+    flex: 0 0 100%;
+  }
 }
 </style>

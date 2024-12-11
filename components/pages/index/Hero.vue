@@ -1,35 +1,54 @@
 <template>
   <div class="container movie-hero-container">
     <Swiper
+      class="custom-swiper"
       :slides-per-view="1"
       loop
       :autoplay="{
         disableOnInteraction:true,
         pauseOnMouseEnter:true,
-        delay:3000
+        delay:3000,
       }"
       :modules="modules"
       follow-finger
+      :navigation="true"
+      ref="swiperRef"
     >
       <SwiperSlide
-        v-for="image in images"
+        v-for="image in imagesHero"
         :key="image.id"
       >
         <div class="wrapper-image-hero">
-          <NuxtImg
-            class="hero-background-img"
-            :src="image.background"
-          />
-
-          <div class="internal-hero">
-            <NuxtImg
-              class="hero-poster-img"
-              :src="image.poster"
+          <!-- <div class="dynamic-font-wrapper">
+            <NuxtImg 
+              class="font-dynamic-img"
+              :src="`https://www.fiatre.ir${image.font}`"
             />
+          </div> -->
 
-            <div class="hero-text">
-              ss
+          <img
+            class="hero-background-img"
+            :src="`https://www.fiatre.ir${image.background}`"
+          />
+          <div class="internal-hero">
+            <img
+              class="hero-poster-img"
+              :src="`https://www.fiatre.ir${image.poster}`"
+              :alt="`${image.alt} poster`"
+            />
+            <div class="hero-text" v-if="isMounted">
+              <h3 class="hero-title">{{ image.title }}</h3>
+              <p class="hero-description" v-html="image.text"></p>
+
+              <div class="button-container">
+                <NuxtLink :to="image.links" class="hero-btn-paly">
+                  <nuxt-icon class="hero-plays" name="play"></nuxt-icon> 
+                  پخش آنلاین
+                </NuxtLink>
+                <ButtonPreview @showModal="toggleAutoplay" />
+              </div>
             </div>
+    
           </div>
         </div>
       </SwiperSlide>
@@ -38,23 +57,48 @@
 </template>
 
 <script setup lang="ts">
-import {Swiper, SwiperSlide} from 'swiper/vue';
-import{Autoplay} from 'swiper/modules';
+import { ref, onMounted } from 'vue';
+import ButtonPreview from '~/components/core/ButtonPreview.vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Autoplay, Navigation } from 'swiper/modules';
+import { defineProps } from 'vue';
 
-const modules = [Autoplay];
-const images = [
-  {
-    id:2,
-    background:'https://webstyle.unicomm.fsu.edu/3.4/img/placeholders/ratio-pref-3-1.png',
-    poster:'https://www.fiatre.ir/uploads/episodes/images/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%D8%A2%D9%84-%D9%BE%D8%A7%DA%86%DB%8C%D9%86%D9%88/1672820616.2860472-voONxNVIAtfU-1668591177.2610_80EYQ0Z.jpg',
-  },
-  {
-    id:1,
-    background:'https://images.unsplash.com/photo-1563286130-945bc9d7803c?q=80&w=2424&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    poster: 'https://www.fiatre.ir/uploads/episodes/images/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%D8%A7%D8%B3%DA%A9%D8%A7%D8%B1%D9%84%D8%AA-%D8%AC%D9%88%D9%87%D8%A7%D9%86%D8%B3%D9%88%D9%86/1672820452.7050824-MZywUj2UI0Lm-16685944_3HKC0pK.jpg',
+interface ImagesHero {
+  id: number;
+  background: string;
+  backgroundAlt: string;
+  poster: string;
+  title: string;
+  text: string;
+  alt: string;
+  links: string;
+  font: string
+}
 
-  },
-];
+const modules = [Autoplay, Navigation];
+
+const props = defineProps<{
+  imagesHero: ImagesHero[],
+}>();
+
+const swiperRef = ref(null);
+const isMounted = ref(true);
+
+onMounted(() => {
+  isMounted.value = true;
+});
+
+const toggleAutoplay = (value: boolean) => {
+  console.log(swiperRef.value.autoplay);
+  
+  if (swiperRef.value) {
+    // if (value) {
+    //   swiperRef.value.resume();
+    // } else {
+    //   swiperRef.value.pause();
+    // }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -63,45 +107,239 @@ const images = [
 /*rtl:end:ignore*/
 
 .movie-hero-container {
-
   .wrapper-image-hero {
     position: relative;
+    border-radius: 1vw;
 
-    .hero-background-img{
+    .hero-background-img {
       width: 100%;
       height: auto;
+      aspect-ratio: 16/9; 
+      object-fit: cover;
+
+      @media (max-width: 1024px) {
+        aspect-ratio: 16/12; 
+      }
+
+      @media (max-width: 760px) {
+        aspect-ratio: 3/4;
+      }
     }
 
-    > .internal-hero {
+    .internal-hero {
       display: flex;
-      justify-content: space-between ;
-      gap: 5%;
-      border: 1px solid red;
+      align-items: center;
+      gap: 3%;
       position: absolute;
-      width: 90%;
-      bottom: 10%;
-      right: 5%;
-      padding: 1%;
-      background-color: rgba(0,0,0,0.4);
-      border-radius: 1vw;
+      bottom: 0%;
 
-      >.hero-text {
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+      padding: 2%;
+
+      @media (max-width: 1024px) {
+        padding: 4%; 
+        gap: 5%; 
+      }
+
+      @media (max-width: 760px) {
+        gap: 7%;
+      }
+
+      .hero-text {
         width: 100%;
-        text-align: left;
+        color: $white;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-clamp: 2;
+
+        .hero-title {
+          color: $white;
+          font-size: 1.5rem;
+          padding-bottom: 10px;
+
+          @media (max-width: 1024px) {
+            font-size: 1.2rem;
+          }
+
+          @media (max-width: 760px) {
+            font-size: 1rem;
+          }
+
+          @media (max-width: 400px) {
+            font-size: 0.8rem;
+          }
+        }
+
+        .hero-description {
+          display: flex;
+          margin-bottom: 10px;
+          align-items: flex-start;
+          padding-top: 1%;
+          overflow: hidden;
+          display: -webkit-box; 
+          -webkit-box-orient: vertical; 
+          -webkit-line-clamp: 4; 
+          line-clamp: 4; 
+        }
+
+        @media (min-width: 770px) {
+          .hero-description {
+            width: 55%;
+          }
+        }
+
+        @media (max-width: 400px) {
+          display: -webkit-box; 
+          -webkit-box-orient: vertical; 
+          -webkit-line-clamp: 3; 
+          overflow: hidden;
+          text-overflow: ellipsis; 
+        }
       }
 
       .hero-poster-img {
         border-radius: 5px;
         aspect-ratio: 2/3;
-        width: 10%;
-        height: auto;
+        width: 150px;
+
+        @media (max-width: 1024px) {
+          width: 15%; 
+        }
+
+        @media (max-width: 770px) {
+          width: 25%;
+          max-width: 50%;
+        }
       }
+
+      .hero-btn {
+        color: $white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin-right: 10px;
+
+        &:hover {
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-plays {
+          font-size: 1rem;
+          margin-right: 5px;
+        }
+
+        @media (max-width: 1024px) {
+          padding: 5px 14px;
+          font-size: 0.9rem;
+        }
+
+        @media (max-width: 760px) {
+          padding: 6px 12px; 
+          font-size: 0.8rem; 
+        }
+
+        .hero-plays {
+          @media (max-width: 1024px) {
+            font-size: 0.8rem; 
+          }
+
+          @media (max-width: 760px) {
+            font-size: 0.7rem; 
+          }
+        }
+
+        @media (max-width: 391px) {
+          padding: 4px 6px;
+          font-size: 0.7rem; 
+        }
+
+        .hero-plays {
+          @media (max-width: 391px) {
+            font-size: 0.6rem; 
+          }
+        }
+      }
+
+      .hero-btn-paly {
+        @extend .hero-btn;
+        background-color: $third;
+
+        &:hover {
+          background-color: darken($third, 5%);
+        }
+
+        @media (min-width: 1025px) {
+          padding: 4px 12px;
+          font-size: 0.8rem; 
+        }
+      }
+
+      .button-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+    }
+
+    .dynamic-font-wrapper {
+      position: absolute; // Make the wrapper absolute
+      top: 200px; // Align to the top
+      left: 0px; // Align to the right
+    }
+
+    .font-dynamic-img {
+      position: relative; // Make the image relative
     }
   }
 
+  .custom-swiper {
+    --swiper-navigation-size: 1rem;
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      transform: scaleX(-1) scale(1.1);
+      color: $dark; 
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      background: rgba(255, 255, 255, 0.4);  
+      transform: rotate(360deg);
+
+      &:hover {
+        transform: scale(1.2);
+        background: rgba(255, 255, 255, 0.6); 
+      }
+    }
+
+    .swiper-button-next {
+      left: 95%;
+    }
+
+    .swiper-button-prev {
+      right: 95%;
+    }
+  }
 }
 
+@media (max-width: 1024px) {
+  .hero-description {
+    font-size: 2vh;
+  }
+}
 
+@media (max-width: 760px) {
+  .hero-description {
+    font-size: 1.8vh;
+  }
+}
 
+@media (max-width: 400px) {
+  .hero-description {
+    font-size: 1.6vh; 
+  }
+}
 </style>
-

@@ -1,200 +1,299 @@
 <template>
-  <div class="login-container">
-    <img class="login-image" src="/public/image/thisis.jpg" alt="">
-
-    <div class="login-form-wrapper">
-      <h2 class="login-title">
-        ورود
-      </h2>
-
-      <VeeForm
-        class="login-form"
-        :validate-on-blur="true"
-        :validate-on-change="true"
-        :validate-on-input="false"
-        :validate-on-model-update="true"
-        @submit.prevent="onSubmit"
-      >
-        <div class="login-form-control">
-          <VeeField
-            name="email"
-            class="login-input"
-            type="email"
-            rules="required|email"
-          />
-
-          <label class="login-label">
-            ایمیل یا شماره همراه
-          </label>
-
-          <ErrorMessage name="email" as="span" class="error-message" />
-        </div>
-
-        <div class="login-form-control">
-          <VeeField
-            name="password"
-            class="login-input"
-            type="password"
-            rules="required|min:8|password"
-          />
-
-          <label class="login-label">
-            رمز
-          </label>
-
-          <ErrorMessage name="password" as="span" class="error-message" />
-        </div>
-
-        <button type="submit" class="login-submit">ورود به فیاتر</button>
-
-        <div class="login-form-help">
-          <div class="login-remember-me">
-            <VeeField id="login-remember-me" name="remember" type="checkbox" />
-
-            <label for="login-remember-me">
-              رمز را به یاد داشته باش
-            </label>
+  <main class="container mb-5">
+    <section class="register-container" dir="rtl">
+      <NuxtImg class="register-image" src="/image/thisis.jpg" alt=""/>
+      <div class="register-form-wrapper">
+        <h1 class="register-title">ثبت نام</h1>
+        <VeeForm
+          class="register-form"
+          :validate-on-blur="true"
+          :validate-on-change="true"
+          :validate-on-input="false"
+          :validate-on-model-update="true"
+          @submit="onSubmit"
+        >
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.lastname"
+              name="lastname"
+              class="register-input"
+              rules="required|alpha_custom"
+            />
+            <label class="register-label">نام</label>
+            <ErrorMessage name="lastname" as="span" class="error-message" />
           </div>
-        </div>
-      </VeeForm>
-    </div>
-  </div>
+
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.familyname"
+              name="familyname"
+              class="register-input"
+              rules="required|alpha_custom"
+            />
+            <label class="register-label">نام خانوادگی</label>
+            <ErrorMessage name="familyname" as="span" class="error-message" />
+          </div>
+
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.phone"
+              name="phone"
+              class="register-input"
+              type="tel"
+              rules="required|phone"
+            />
+            <label class="register-label">شماره همراه</label>
+            <ErrorMessage name="phone" as="span" class="error-message" />
+          </div>
+
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.email"
+              name="email"
+              class="register-input"
+              type="email"
+              rules="required|email"
+            />
+            <label class="register-label">ایمیل</label>
+            <ErrorMessage name="email" as="span" class="error-message" />
+          </div>
+
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.password"
+              name="password"
+              class="register-input"
+              type="password"
+              rules="required|min:8|password_custom"
+            />
+            <label for="password" class="register-label">رمز</label>
+            <ErrorMessage name="password" as="span" class="error-message" />
+          </div>
+
+          <div class="register-form-control">
+            <VeeField
+              v-model="values.repeat_password"
+              name="repeat_password"
+              class="register-input"
+              type="password"
+              rules="required|confirmed:password"
+            />
+            <label for="password" class="register-label">تکرار رمز</label>
+            <ErrorMessage name="repeat_password" as="span" class="error-message" />
+          </div>
+
+          <div class="register-form-control">
+            <VeeField
+              name="terms"
+              type="checkbox"
+              :value="true"
+              :unchecked-value="false"
+              v-slot="{ field }"
+            >
+              <span class="terms-text">
+                <NuxtLink to="/terms" target="_blank" style="color: #fe0100;">شرایط و قوانین فیاتر</NuxtLink> را می‌پذیرم و بیشتر از 15 سال سن دارم.
+              </span>
+              <label for="terms" class="register-label" />
+            </VeeField>
+          </div>
+          <button type="submit" class="register-submit">ثبت نام</button>
+        </VeeForm>
+      </div>
+    </section>
+  </main>
 </template>
 
-<script setup>
-import {defineRule, configure, ErrorMessage} from 'vee-validate';
-import {required, email, min} from '@vee-validate/rules';
-import {ref} from 'vue';
-
-// Custom rule for password to ensure no non-English characters
-defineRule('password', (value) => {
-  const regex = /^[\w@%]+$/; // English letters, numbers, and @, %
-  if (!regex.test(value)) {
-    return 'از کلمات انگلیسی استفاده کنید';
-  }
-  return true;
+<script setup lang="ts">
+useSeoMeta({
+  title: 'ثبت نام',
+  description: 'صفحه ثبت نام در سایت FIATRE برای دسترسی به خدمات و محتوای ویژه.',
+  keywords: 'ثبت نام, FIATRE, عضویت, خدمات ویژه, محتوای ویژه',
+  ogTitle: 'ثبت نام',
+  ogDescription: 'صفحه ثبت نام در سایت FIATRE برای دسترسی به خدمات و محتوای ویژه.',
+  ogType: 'website',
+  ogUrl: 'https://fiatre.ir/register',
+  ogImage: 'https://fiatre.ir/og-image.jpg',
+  robots: 'index, follow'
 });
+import { useValidationRules } from '@/utils/validationRules';
+import { ErrorMessage, useForm } from 'vee-validate';
+import { useRouter } from 'vue-router';
+useValidationRules();
 
-// Register rules
-defineRule('required', required);
-defineRule('email', email);
-defineRule('min', min);
+const router = useRouter();
+const isLoading = ref(false);
 
-// Configure global error messages
-configure({
-  generateMessage: (ctx) => {
-    const messages = {
-      required: 'این بخش نباید خالی باشد',
-      email: 'این ایمیل فرمت درستی ندارد',
-      min: 'حداقل 8 کرکتر باید باشد',
-    };
-    return messages[ctx.rule.name] ? messages[ctx.rule.name] : `The field ${ctx.field} is invalid`;
-  },
-});
-
-const onSubmit = () => {
-  console.log('onSubmit');
+const initialValues = {
+  lastname: '',
+  familyname: '',
+  phone: '',
+  email: '',
+  password: '',
+  repeat_password: '',
 };
+
+const { handleSubmit, values } = useForm({
+  initialValues,
+  validateOnMount: false
+});
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    isLoading.value = true;
+
+    const { data, error } = await useAuthFetch('/api/auth/register/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: values.lastname,
+        last_name: values.familyname,
+        email: values.email,
+        phone: values.phone,
+        password: values.password,
+        password2: values.repeat_password,
+        remember_me: true
+      }),
+      credentials: 'include'
+    });
+
+    if (error.value) {
+      if (error.value.data?.non_field_errors) {
+        alert(error.value.data.non_field_errors[0]);
+      } else if (error.value.data) {
+        const messages = Object.values(error.value.data)
+          .flat()
+          .join('\n');
+        alert(messages);
+      } else {
+        alert('خطا در ثبت نام');
+      }
+      return;
+    }
+
+    if (data.value) {
+      alert('ثبت نام با موفقیت انجام شد');
+      await navigateTo('/');
+    }
+  } catch (err) {
+    alert('خطا در ارتباط با سرور');
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
 
-<style lang="scss">
-.login-container {
-  background-position: center;
+<style scoped lang="scss">
+.register-container {
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 
-  .login-image {
+  .register-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
     filter: brightness(45%);
   }
-}
 
-.login-form-wrapper {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border-radius: 4px;
-  padding: 70px;
-  width: 450px;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.75);
+  .register-form-wrapper {
+    width: 100%;
+    max-width: 450px;
+    margin: 40px 0;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
 
-  .login-title {
-    color: #fff;
-    font-size: 2rem;
-  }
+    .register-title {
+      color: $white;
+      font-size: 2rem;
+    }
 
-  .login-form {
-    margin: 25px 0 65px;
+    .register-form {
+      margin: 25px 0 65px;
 
-    .login-form-control {
-      height: 50px;
-      position: relative;
-      margin-bottom: 30px;
+      .register-form-control {
+        height: 50px;
+        position: relative;
+        margin-bottom: 30px;
 
-      .login-input {
-        height: 100%;
+        .register-input {
+          height: 100%;
+          width: 100%;
+          border: none;
+          outline: none;
+          border-radius: 4px;
+          color: $dark;
+          font-size: 1rem;
+          padding: 0 20px;
+          direction: rtl;
+
+          &:focus + .register-label,
+          &[has-value] + .register-label {
+            font-size: 0.75rem;
+            transform: translateY(-130%);
+          }
+        }
+
+        .register-label {
+          position: absolute;
+          left: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1rem;
+          pointer-events: none;
+          color: $gray-500;
+          transition: all 0.1s ease;
+          display: flex;
+        }
+
+        .error-message {
+          color: $danger;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .register-submit {
         width: 100%;
+        padding: 16px 0;
+        font-size: 1rem;
+        background: $third;
+        color: $white;
+        font-weight: 500;
+        border-radius: 4px;
         border: none;
         outline: none;
-        border-radius: 4px;
-        color: black;
-        font-size: 1rem;
-        padding: 0 20px;
-        direction: rtl;
-      }
+        cursor: pointer;
+        transition: 0.1s ease;
 
-      .login-label {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1rem;
-        pointer-events: none;
-        color: #8c8c8c;
-        transition: all 0.1s ease;
+        &:hover {
+          background: darken($third, 10);
+        }
       }
     }
 
-    .login-submit {
-      width: 100%;
-      padding: 16px 0;
-      font-size: 1rem;
-      background: #e50914;
-      color: #fff;
-      font-weight: 500;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      margin: 25px 0 10px;
-      cursor: pointer;
-      transition: 0.1s ease;
-
-      &:hover {
-        background: #c40812;
-      }
-    }
-
-    .login-form-help {
-      display: flex;
-      justify-content: space-between;
-
-      .login-remember-me {
-        display: flex;
-
-        .login-input {
-          margin-right: 5px;
-          accent-color: #b3b3b3;
-        }
-
-        .login-label {
-          font-size: 0.9rem;
-        }
-      }
+    .terms-text {
+      color: #797979;
+      display: block;
+      margin-bottom: 10px;
     }
   }
 }
 
-.error-message {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+@media (max-width: 455px) {
+  .terms-text {
+    font-size: 0.875rem;
+    text-align: center;
+  }
 }
 </style>

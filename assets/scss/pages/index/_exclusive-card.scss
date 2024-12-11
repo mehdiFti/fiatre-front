@@ -1,75 +1,95 @@
-.exclusive-cards-container {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap; // Wrap items onto multiple lines
-  justify-content: space-between;
+// <template>
+//   <div class="mb-5 mt-5 container exclusive-cards-container">
+//     <NuxtLink
+//       v-for="card in posters.slice(0, 2)"
+//       :key="card.id"
+//       :to="card.link"
+//       class="exclusive-card"
+//     >
+//       <NuxtImg class="exclusive-card-image" :src="card.image" />
+//     </NuxtLink>
+//   </div>
+// </template>
 
-  .exclusive-card {
-    flex: 1 0 calc(40%); // Set the width of each card (adjust the percentage as needed)
-    position: relative;
-    border-radius: 5px;
-    overflow: hidden; // Hide overflowing text
-    transition: opacity 0.3s ease; // Add transition for smooth effect
+// <script setup lang="ts">
+// import { ref, computed } from 'vue';
 
-    &:hover::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      z-index: 1;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
+// // Fetch all posters
+// const getPostersRequest = await useApiFetch<any>('/api/posters/', {
+//   baseURL: 'https://www.fiatre.ir/',
+// }).catch(error => {
+//   console.error('Error fetching posters:', error);
+// });
 
-    &:hover
-    {
-      &::before {
-       opacity: 0.95;
-      }
-      .exclusive-card-info {
-        opacity: 1;
-      }
-    }
+// // Compute the list of posters
+// const posters = computed(() => {
+//   if (getPostersRequest?.status.value === 'success') {
+//     return getPostersRequest.data.value.map((apiData: any) => ({
+//       id: apiData.id,
+//       image: apiData.image,
+//       link: apiData.link,
+//     }));
+//   }
+//   return [];
+// });
+// </script>
 
-    .exclusive-card-image {
-      width: 100%;
-      height: auto;
-    }
+// <style lang="scss">
+// .exclusive-cards-container {
+//   display: flex;
+//   gap: 18px;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
 
-    .exclusive-card-info {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      overflow: hidden;
-      width: 100%;
-      padding: 10px;
-      background-color: transparent;
-      text-align: center;
-      margin: 20px 0;
-      color: $light;
-      font-size: 16px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 2;
+ 
+//   @media (max-width: 768px) {
+//     flex-direction: column; 
+//   }
 
-      .exclusive-card-title {
-        font-size: 1.2rem;
-        overflow: hidden;
-        padding-bottom: 4px;
-        font-weight: bold;
-        background-image: linear-gradient(90deg, $third 0% , $primary 78%);
-        background-clip: text;
-        color: transparent;
-      }
+//   .exclusive-card {
+//     flex: 1 0 calc(40%); 
+//     position: relative;
+//     border-radius: 5px;
+//     overflow: hidden; 
+//     transition: opacity 0.3s ease; 
 
-      .exclusive-card-desc {
-        line-height: 2rem;
-      }
-    }
-  }
-}
+//     .exclusive-card-image {
+//       width: 100%;
+//       height: auto;
+//     }
+
+//     .exclusive-card-info {
+//       display: flex;
+//       flex-direction: column;
+//       position: absolute;
+//       bottom: 0;
+//       left: 0;
+//       overflow: hidden;
+//       width: 100%;
+//       padding: 10px;
+//       background-color: transparent;
+//       text-align: center;
+//       margin: 20px 0;
+//       color: $light;
+//       font-size: 16px;
+//       opacity: 0;
+//       transition: opacity 0.3s ease;
+//       z-index: 2;
+
+//       .exclusive-card-title {
+//         font-size: 1.2rem;
+//         overflow: hidden;
+//         padding-bottom: 4px;
+//         font-weight: bold;
+//         background-image: linear-gradient(90deg, $third 0% , $primary 78%);
+//         background-clip: text;
+//         color: transparent;
+//       }
+
+//       .exclusive-card-desc {
+//         line-height: 2rem;
+//       }
+//     }
+//   }
+// }
+// </style>
