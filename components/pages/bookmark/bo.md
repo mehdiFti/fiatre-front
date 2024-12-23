@@ -65,6 +65,17 @@ const toggleBookmark = async () => {
 
 // Also update the onMounted hook to store the bookmark ID when checking initial status
 const bookmarkId = ref<number | null>(null);
+
+onMounted(async () => {
+  try {
+    const { data, error } = await useAuthFetch(`/api/episodes/bookmarks/check/${props.videoDetails.key}/`);
+    if (data.value) {
+      isBookmarked.value = true;  // Shows 'like' icon if already bookmarked
+    }
+  } catch (error) {
+    console.error('Failed to check bookmark status:', error);
+  }
+});
 </script>
 
 <style lang="scss" scoped>

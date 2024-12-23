@@ -1,7 +1,7 @@
 <template>
   <main class="container mb-5">
     <section class="register-container" dir="rtl">
-      <NuxtImg class="register-image" src="/image/thisis.jpg" alt=""/>
+      <img class="register-image" src="/image/thisis.jpg" alt=""/>
       <div class="register-form-wrapper">
         <h1 class="register-title">ثبت نام</h1>
         <VeeForm
@@ -118,6 +118,7 @@ useSeoMeta({
 import { useValidationRules } from '@/utils/validationRules';
 import { ErrorMessage, useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 useValidationRules();
 
 const router = useRouter();
@@ -160,24 +161,24 @@ const onSubmit = handleSubmit(async (values) => {
 
     if (error.value) {
       if (error.value.data?.non_field_errors) {
-        alert(error.value.data.non_field_errors[0]);
+        toast.error(error.value.data.non_field_errors[0]);
       } else if (error.value.data) {
         const messages = Object.values(error.value.data)
           .flat()
           .join('\n');
-        alert(messages);
+         toast.error(messages);
       } else {
-        alert('خطا در ثبت نام');
+        toast.error('خطا در ثبت نام');
       }
       return;
     }
 
     if (data.value) {
-      alert('ثبت نام با موفقیت انجام شد');
+      toast.success('ثبت نام با موفقیت انجام شد');
       await navigateTo('/');
     }
   } catch (err) {
-    alert('خطا در ارتباط با سرور');
+    toast.error('خطا در ارتباط با سرور');
   } finally {
     isLoading.value = false;
   }

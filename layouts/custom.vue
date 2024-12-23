@@ -1,6 +1,6 @@
 <template>
   <div class="color">
-    <main>
+    <main class="main-layout">
       <slot />
     </main>
     </div>
@@ -28,4 +28,8 @@ useHead(head);
 <style lang="scss">
 @import "/assets/scss/common/app";
 @import "/assets/scss/layout/default";
+
+.main-layout {
+  min-height: 100dvh;
+}
 </style>

@@ -1,8 +1,35 @@
 <template>
-    <RtlHeader class="mb-5" dir="rtl"/>
+    <RtlHeader class="mb-5" direction="rtl"/>
 
-    <VideoHeader :movie="movie" :videoUrl="movie.video_mp4" v-if="movie.title" /> 
-    
+    <div v-if="!isProfileLoaded" class="loading-state">
+      Loading...
+    </div>
+
+    <template v-else>
+      <!-- For series -->
+      <div v-if="series.length > 0">
+        <RtlImageHeader :imageHeader="imageHeader" />
+        <VideoSeries 
+          v-if="userStore.user.is_subscription_active"
+          class="mb-5" 
+          :episodes="series" 
+        />
+      </div>
+
+      <!-- For single episode -->
+      <div v-else>
+        <VideoHeader 
+          v-if="userStore.user?.is_subscription_active && movie.title" 
+          :movie="movie" 
+          :videoUrl="movie.video_mp4" 
+        /> 
+        <RtlImageHeader 
+          v-else
+          :imageHeader="imageHeader" 
+        />
+      </div>
+    </template>
+
     <VideoDetails dir="rtl" :details="details" mb-5 />
     
  <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
@@ -18,9 +45,9 @@
     
     <CastCrew  :crews="artists" class="mb-5"/>
     
-    <TheSeparator title="عناوین مشابه" dir="rtl" />
+    <TheSeparator v-if="cardSlider.length > 0" title="عناوین مشابه" dir="rtl" />
     
-    <TheSlider class="mb-5" title="کار در سینما" :cardsSlider="cardSlider" />
+    <TheSlider class="mb-5" :cardsSlider="cardSlider" />
     
     <CommentSection 
       :comments="comments" 
@@ -39,6 +66,7 @@
     </CommentSection>
     
     <Footer dir="rtl"/>
+
     
 </template>
            
@@ -49,8 +77,10 @@ definePageMeta({
 });
 
 import { useRoute } from 'vue-router';
+import RtlImageHeader from '~/components/pages/series/RtlImageHeader.vue';
 import VideoHeader from '~/components/pages/episode/VideoHeader.vue';
 import VideoDetails from '~/components/core/videos/VideoDetails.vue';
+import VideoSeries from '~/components/pages/series/VideoSeries.vue';
 import VideoDescription from '~/components/core/videos/VideoDescription.vue';
 import CastCrew from '~/components/core/videos/CastCrew.vue';
 import CommentSection from '~/components/core/CommentSection.vue';
@@ -59,9 +89,16 @@ import Gallery from '~/components/core/Gallery.vue';
 import RtlHeader from '~/components/core/RtlHeader.vue';
 import Footer from '~/components/core/Footer.vue';
 import TheSeparator from '~/components/core/TheSeparator.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useUserStore } from '~/stores/userStore';
+import CommentItem from '~/components/core/CommentItem.vue';
+import { useRelatedEpisodes } from '~/composables/useRelatedEpisodes'
 
+const userStore = useUserStore();
 const route = useRoute();
+
+// await userStore.getMe();
+
 
 
 const getEpisodeRequest = await useAuthFetch<any>(`/api/episodes/${route.params.id}/`, {
@@ -94,6 +131,13 @@ const galleries = computed(() => {
   return [];
 })
 
+const imageHeader = computed(() => {
+  return {
+    src: episode.value.cover,
+    title: episode.value.title
+  }
+})
+
 const movie = computed(() => {
   return {
     cover: episode.value.cover,
@@ -119,12 +163,13 @@ releaseValue: episode.value.construction_year
 })
 
 const artists = computed(() => {
-  if (getEpisodeRequest.status.value === 'success') {
-    const artistIds = getEpisodeRequest.data.value.artists || [];
-    return artistIds.map((artistId: number) => ({
-      id: artistId,
-      link: `/biography/${artistId}`, // Assuming you have a route for artist biography
-      // You might need additional data for each artist, adjust as necessary
+  if (getEpisodeRequest.status.value === 'success' && getEpisodeRequest.data.value.artists) {
+    return getEpisodeRequest.data.value.artists.map((artist: any) => ({
+      id: artist.id,
+      link: `/biography/${artist.slug}`,
+      src: artist.image.startsWith('http') ? artist.image : `https://www.fiatre.ir${artist.image}`,
+      title: artist.name,
+      specialty: artist.specialty
     }));
   }
   return [];
@@ -152,7 +197,6 @@ return {
 
 
 const getCommentsRequest = await useAuthFetch<any>(`/api/episodes/${episode.value.slug}/comments/`, {
-  baseURL: 'https://www.fiatre.ir/',
 });
 
 const comments = computed(() => {
@@ -267,6 +311,24 @@ const handleReplyAdded = async () => {
     }));
   }
 };
+
+const series = computed(() => {
+  if (episode.value.other_episodes?.length) {
+    return [episode.value, ...episode.value.other_episodes].map(ep => ({
+      key: ep.id.toString(),
+      title: ep.title,
+      src: ep.video_mp4,
+      poster: ep.image,
+      number: ep.episode,
+      description: ep.description
+    }));
+  }
+  return [];
+});
+
+
+const { relatedEpisodes } = useRelatedEpisodes(artists, route.params.id)
+const cardSlider = relatedEpisodes
 
 </script>
 

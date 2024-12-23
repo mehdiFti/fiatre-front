@@ -1,7 +1,6 @@
 <template>
 
 <ScreenPlaySection />
-<CommentSection />
 <Footer dir="rtl"/>
 
 

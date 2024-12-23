@@ -33,7 +33,8 @@
     "vee-validate": "^4.5.8",
     "vidstack": "^1.11.21",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-toastify": "^0.2.8"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "6.16.0",

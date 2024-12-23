@@ -13,11 +13,10 @@
             :src="episode.src"
             keep-alive
             playsinline
-            :current-time="getSavedTime(episode.key)"
             class="video-player"
             @play="handlePlay($event.target)"
-            @time-update="handleTimeUpdate(episode.key, $event)"
-            @ended="handleVideoEnded(episode.key)"
+            @pause="handlePause"
+            @bookmark-toggled="handleBookmarkToggled"
           >
             <media-provider />
             <media-poster 
@@ -44,12 +43,10 @@
               <span class="episode-number">{{ episode.number }}</span> - {{ episode.title }}
             </h4>
             <hr>
-            <div class="episode-desc">
-              {{ truncateDescription(episode.description) }}
-            </div>
+            <div class="episode-desc" v-html="sanitizeAndTruncateDescription(episode.description)"></div>
           </div>
           <div class="other-buttons">
-            <DownloadButton/>
+            <DownloadButton :videoUrl="episode.src"/>
             <BookmarkButton :videoId="episode.key" :videoDetails="episode" @bookmark-toggled="handleBookmarkToggled" />
           </div>
         </div>
@@ -80,7 +77,7 @@
               <media-provider />
               <media-poster 
                 class="vds-poster"
-                :src="episode.poster"
+                :src="episode.poster || ''"
                 :alt="`Poster for ${episode.title}`"
               />
               <media-video-layout class="video-layout" />
@@ -90,11 +87,9 @@
                 <span class="episode-number">{{ episode.number }} -</span> {{ episode.title }}
               </h4>
               <hr>
-              <div class="episode-desc">
-                {{ truncateDescription(episode.description) }}
-              </div>
+              <div class="episode-desc" v-html="sanitizeAndTruncateDescription(episode.description)"></div>
               <div class="other-buttons">
-                <DownloadButton/>
+                <DownloadButton :videoUrl="episode.src"/>
                 <BookmarkButton :videoId="episode.key" :videoDetails="episode" @bookmark-toggled="handleBookmarkToggled" />
               </div>
             </div>
@@ -136,6 +131,7 @@ const { width: screenWidth } = useWindowSize();
 const playerRefs = ref<MediaPlayerElement[]>([]);
 const showMore = ref(false);
 const currentPlaying = ref<MediaPlayerElement | null>(null);
+const isPlaying = ref(false);
 
 const isMobile = computed(() => {
   if (typeof navigator !== 'undefined') {
@@ -163,33 +159,18 @@ const handlePlay = (player: EventTarget) => {
   currentPlaying.value = mediaPlayer;
 };
 
-const handleTimeUpdate = (key: string, event: Event) => {
-  const currentTime = (event.target as HTMLMediaElement).currentTime;
-  const duration = (event.target as HTMLMediaElement).duration;
-  localStorage.setItem(`video-${key}-time`, currentTime.toString());
-
-  if (currentTime < duration - 10) {
-    const episode = props.episodes.find(ep => ep.key === key);
-    if (episode) {
-      localStorage.setItem(`incomplete-video-${key}`, JSON.stringify(episode));
-    }
-  } else {
-    localStorage.removeItem(`incomplete-video-${key}`);
-  }
+const handlePause = () => {
+  isPlaying.value = false;
 };
 
-const getSavedTime = (key: string) => {
-  const savedTime = localStorage.getItem(`video-${key}-time`);
-  return savedTime ? parseFloat(savedTime) : 0;
-};
-
-const truncateDescription = (description: string) => {
+const sanitizeAndTruncateDescription = (description: string) => {
+  const cleanText = description.replace(/<\/?[^>]+(>|$)/g, "");
   const maxWords = 100;
-  const words = description.split(' ');
+  const words = cleanText.split(' ');
   if (words.length > maxWords) {
     return words.slice(0, maxWords).join(' ') + '...';
   }
-  return description;
+  return cleanText;
 };
 
 const toggleShowMore = () => {
@@ -198,13 +179,32 @@ const toggleShowMore = () => {
 
 onMounted(() => {
   playerRefs.value = [];
-});
 
-onBeforeUnmount(() => {
-  playerRefs.value.forEach((player) => {
-    if (player) {
-      player.destroy();
+  const removeElement = (selector: string) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.remove();
     }
+  };
+
+  const removeGoogleCastButton = () => {
+    const googleCastButton = document.querySelector('media-google-cast-button');
+    if (googleCastButton) {
+      googleCastButton.remove();
+    }
+  };
+
+  removeElement('media-pip-button');
+  removeGoogleCastButton();
+
+  const observer = new MutationObserver(() => {
+    removeElement('media-pip-button');
+    removeGoogleCastButton();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  onBeforeUnmount(() => {
+    observer.disconnect();
   });
 });
 
@@ -233,9 +233,7 @@ const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string; isB
     }
   }
 };
-const handleBookmarkRemoved = (videoId: string) => {
-console.log(`Bookmark removed for video ID: ${videoId}`);
-};
+
 
 const { width } = useWindowSize();
 

@@ -2,7 +2,7 @@
   <div class="category-item-containers">
     <div class="category-item">
       <NuxtLink :to="`/categories/${link}`">
-        <NuxtImg class="category-img" :src="src" />
+        <img class="category-img" :src="src" />
       </NuxtLink>
       <div class="category-text">
         {{ name }}

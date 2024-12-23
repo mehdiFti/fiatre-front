@@ -7,19 +7,20 @@
         ref="addPlayerRef"
         :title="movie.title"
         :src="movie.video"
+        load="play"
+        preload="none"
         keep-alive
         playsInline
-        :current-time="getSavedTime(movie.key)"
+        viewType="video"
         class="video-player"
         @play="handlePlay($event.target)"
         @pause="handlePause"
-        @time-update="handleTimeUpdate(movie.key, $event)"
-        @ended="handleVideoEnded(movie.key)"
       >
         <media-provider />
         <media-poster 
           class="vds-poster"
           :src="movie.cover"
+          posterLoad="visible"
           :alt="`Poster for ${movie.title}`"
         />
         <media-video-layout class="video-layout">
@@ -43,31 +44,21 @@
       </media-player>
       <div class="other-buttons-sm" v-if="!isPlaying">
         <ButtonPreview />
-        <DownloadButton :videoUrl="videoUrl" />
-        <BookmarkButton 
-          :videoId="String(1)" 
-          :videoDetails="{
-            key: '1', 
-            title: movie.title, 
-            video: movie.video, 
-            cover: movie.cover, 
-            description: movie.description 
-          }" 
-        />
+        <DownloadButton :videoUrl="movie.video_mp4" />
       </div>
       <div class="other-buttons-lg" v-if="!isPlaying">
         <ButtonPreview />
-        <DownloadButton :videoUrl="videoUrl" />
+        <DownloadButton :videoUrl="movie.video_mp4" />
         <BookmarkButton 
-          :videoId="String(1)" 
+          :videoId="movie.key" 
           :videoDetails="{
-            key: '1', 
+            key: movie.key, 
             title: movie.title, 
             video: movie.video, 
             cover: movie.cover, 
             description: movie.description 
           }" 
-          @bookmark-removed="handleBookmarkRemoved" 
+          @bookmark-toggled="handleBookmarkToggled" 
         />
       </div>
     </div>
@@ -122,37 +113,6 @@ const handlePause = () => {
   isPlaying.value = false;
 };
 
-const handleTimeUpdate = (key: string, event: Event) => {
-  const currentTime = (event.target as HTMLMediaElement).currentTime;
-  const duration = (event.target as HTMLMediaElement).duration;
-  localStorage.setItem(`video-${key}-time`, currentTime.toString());
-
-  if (currentTime < duration - 10) {
-    localStorage.setItem(`incomplete-video-${key}`, JSON.stringify(props.movie));
-  } else {
-    localStorage.removeItem(`incomplete-video-${key}`);
-  }
-};
-
-const getSavedTime = (key: string) => {
-  const savedTime = localStorage.getItem(`video-${key}-time`);
-  return savedTime ? parseFloat(savedTime) : 0;
-};
-
-const truncateDescription = (description: string) => {
-  const maxWords = 100;
-  const words = description.split(' ');
-  if (words.length > maxWords) {
-    return words.slice(0, maxWords).join(' ') + '...';
-  }
-  return description;
-};
-
-const handleVideoEnded = (key: string) => {
-  localStorage.removeItem(`incomplete-video-${key}`);
-  isPlaying.value = false;
-};
-
 const handleVolumeChange = (newVolume: number) => {
   if (currentPlaying.value) {
     currentPlaying.value.volume = newVolume;
@@ -195,21 +155,14 @@ onBeforeUnmount(() => {
     if (player) {
       player.destroy();
     }
-    localStorage.removeItem(`video-${props.movie.key}-time`);
   });
 });
 
-const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string; isBookmarked: boolean }) => {
-  if (!isBookmarked) {
-    const bookmarkButton = document.querySelector(`.bookmark-button[data-video-id="${videoId}"]`);
-    if (bookmarkButton) {
-      bookmarkButton.classList.remove('bookmark-button--bookmarked');
-    }
+const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string | number; isBookmarked: boolean }) => {
+  const bookmarkButton = document.querySelector(`.bookmark-button[data-video-id="${videoId}"]`);
+  if (bookmarkButton && !isBookmarked) {
+    bookmarkButton.classList.remove('bookmark-button--bookmarked');
   }
-};
-
-const handleBookmarkRemoved = (videoId: string) => {
-  console.log(`Bookmark removed for video ID: ${videoId}`);
 };
 
 const isMobile = computed(() => {

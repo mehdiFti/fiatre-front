@@ -1,7 +1,13 @@
 <template>
   <div v-if="getCategoriesRequest.status.value === 'error'">{{ getCategoriesRequest.error.value }}</div>
 
-  <CategoryParent v-else :status="getCategoriesRequest.status.value" :categories="categories" class="mb-5" />
+  <CategoryParent 
+    v-else 
+    :status="getCategoriesRequest.status.value" 
+    :categories="categories" 
+    linkType="categories"
+    class="mb-5" 
+  />
 </template>
 
   <script setup lang="ts">

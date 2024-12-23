@@ -1,11 +1,12 @@
 <template>
   <div class="blog_card">
-
-    <NuxtImg
-      :src="imageSrc"
-      :alt="title"
-      class="card__image"
-    />
+    <div class="image-wrapper">
+      <img
+        :src="imageSrc"
+        :alt="title"
+        class="card__image"
+      />
+    </div>
 
     <div class="right-part">
       <h3 class="blog-title">
@@ -62,11 +63,20 @@ const formattedTime = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  .card__image {
+  .image-wrapper {
     width: 100%;
-    border-radius: 5px; 
-    height: auto;
+    position: relative;
+    padding-top: 56.25%;
+  }
+
+  .card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 5px;
   }
 
   .right-part {
@@ -97,8 +107,8 @@ const formattedTime = computed(() => {
     -webkit-box-orient: vertical;
       overflow: hidden;
     text-overflow: ellipsis;
-
-    max-height: 7.8rem;
+    line-height: 1.6;
+    max-height: 7.5rem;
   }
 
   .spacer {
@@ -128,14 +138,18 @@ const formattedTime = computed(() => {
       padding-top: 1px;
     }
 
-    .card__image {
-      height: auto;
+    .image-wrapper {
       width: 50%;
-      object-fit: cover;
-      object-position: center; 
-      border-radius: 5px;
-      margin-right: 10px; 
-      display: block; 
+      padding-top: 28.125%;
+    }
+
+    .card__image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin-right: 10px;
     }
 
     .right-part {

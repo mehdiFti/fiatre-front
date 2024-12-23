@@ -32,10 +32,10 @@
           />
           <div class="internal-hero">
             <img
-              v-if="image.poster"
               class="hero-poster-img"
               :src="`https://www.fiatre.ir${image.poster}`"
               :alt="`${image.alt} poster`"
+              v-if="image.poster"
             />
             <div class="hero-text" v-if="isMounted">
               <h3 class="hero-title">{{ image.title }}</h3>

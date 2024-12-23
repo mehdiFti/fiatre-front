@@ -9,17 +9,26 @@
         <li>
           <Nuxt-icon name="correct"/>
           <span>پاسخ‌های صحیح :</span>
-          <span class="answers">{{ correctAnswers }}</span>
+          <span class="answers">
+            <div v-if="isLoading" class="loader"></div>
+            <template v-else>{{ correctAnswers }}</template>
+          </span>
         </li>
         <li>
           <Nuxt-icon name="wrong"/>
           <span>پاسخ‌های اشتباه :</span>
-          <span class="answers">{{ wrongAnswers }}</span>
+          <span class="answers">
+            <div v-if="isLoading" class="loader"></div>
+            <template v-else>{{ wrongAnswers }}</template>
+          </span>
         </li>
         <li>
           <Nuxt-icon name="stars"/>
           <span>امتیاز کسب شده :</span>
-          <span class="answers">{{ totalPoints }}</span>
+          <span class="answers">
+            <div v-if="isLoading" class="loader"></div>
+            <template v-else>{{ totalPoints }}</template>
+          </span>
         </li>
       </ul>
     </div>
@@ -39,7 +48,14 @@
 </template>
 
 <script setup lang="ts">
- useSeoMeta({
+
+import { ref, onMounted } from 'vue';
+
+definePageMeta({
+  middleware: ['redirect-to-login']
+});
+
+useSeoMeta({
   title: 'پروفایل کاربری',
   description: 'صفحه پروفایل کاربری در سایت FIATRE برای مشاهده امتیازات و جوایز کسب شده.',
   keywords: 'پروفایل, کاربری, امتیازات, جوایز, FIATRE',
@@ -50,10 +66,11 @@
   ogImage: 'https://fiatre.ir/og-image.jpg',
   robots: 'index, follow'
 });
-import { computed } from 'vue';
-import { useScoreStore } from '~/stores/scoreStore';
 
-const scoreStore = useScoreStore(); 
+const correctAnswers = ref(0);
+const wrongAnswers = ref(0);
+const totalPoints = ref(0);
+const isLoading = ref(true);
 
 const rewards = [
   { name: 'بلیت تئاتر / سینما', points: 10000 },
@@ -63,10 +80,25 @@ const rewards = [
   { name: 'اشتراک یک ماهه فیاتر', points: 1000 }
 ];
 
-const correctAnswers = computed(() => scoreStore.correctAnswers);
-const wrongAnswers = computed(() => scoreStore.wrongAnswers);
-const totalPoints = computed(() => scoreStore.score);
+const getProfileData = async () => {
+  const { data: profileData } = await useAuthFetch('/api/games/user-games/your/profile/');
+  return profileData;
+};
 
+onMounted(async () => {
+  try {
+    const data = await getProfileData();
+    if (data.value?.data) {
+      correctAnswers.value = data.value.data.correct_game_choices;
+      wrongAnswers.value = data.value.data.incorrect_game_choices;
+      totalPoints.value = data.value.data.scores;
+    }
+  } catch (error) {
+    console.error('Error fetching profile data:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -161,6 +193,25 @@ const totalPoints = computed(() => scoreStore.score);
 @media (max-width: 440px) {
   .list li {
     font-size: 14px;
+  }
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid $third;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

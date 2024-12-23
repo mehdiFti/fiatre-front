@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <HomeSeprator class="mb-3" :title="section.name" />
+    <HomeSeprator class="mb-3" :slug="section.slug" :title="section.name" />
     <div class="movie-section-container" :style="{ backgroundImage: `url(https://www.fiatre.ir${section.image})` }">
       <div class="content-section"></div>
       <div class="card-section">
@@ -58,7 +58,6 @@ const displayedCards = computed(() => {
 });
 
 </script>
-
 <style lang="scss">
 .movie-section-container {
   background-size: cover;

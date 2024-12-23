@@ -1,5 +1,6 @@
 {
     "html.customData": [
         "./node_modules/vidstack/vscode.html-data.json"
-    ]
+    ],
+    "files.autoSaveDelay": 1000
 }

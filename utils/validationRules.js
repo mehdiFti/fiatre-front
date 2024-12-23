@@ -9,7 +9,7 @@ defineRule('digits', digits);
 defineRule('alpha', alpha);
 defineRule('numeric', numeric); 
 defineRule('password_custom', (value) => {
-  return /^[\w@%]+$/.test(value) || 'از کلمات انگلیسی استفاده کنید';
+  return /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|;:,.<>?]+$/.test(value) || 'اعداد، حروف انگلیسی و نمادها مجاز هستند';
 });
 
 // Custom rule for password to ensure no non-English characters
@@ -51,7 +51,7 @@ configure({
       confirmed: 'رمزهای عبور مطابقت ندارند',
       alpha: 'فقط حروف مجاز هستند',
       numeric: 'فقط اعداد مجاز هستند',
-      password: 'از کلمات انگلیسی استفاده کنید',
+      password: 'فقط حروف انگلیسی و نمادها مجاز هستند',
       phone: 'شماره همراه باید 11 رقم باشد',
       alpha_custom: 'فقط حروف مجاز هستند',
     };

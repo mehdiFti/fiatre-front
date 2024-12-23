@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="rtl-image-header-wrapper">
-        <NuxtImg class="rtl-image-header" :src="imageHeader.src" :alt="imageHeader.alt" />
+        <img class="rtl-image-header" :src="imageHeader.src" />
   
         <h1 class="rtl-image-title">
           {{ imageHeader.title }}
@@ -14,7 +14,6 @@
   const props = defineProps<{
     imageHeader: {
       src: string;
-      alt: string;
       title: string;
     };
   }>();

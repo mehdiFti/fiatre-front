@@ -35,10 +35,16 @@ const props = defineProps<{
     border-radius: 5px;
     overflow: hidden;
     transition: opacity 0.3s ease;
+    aspect-ratio: 16/9;
+    background-color: #f0f0f0;
 
     .exclusive-card-image {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
 
     .exclusive-card-info {

@@ -1,47 +1,48 @@
 <template>
   <div class="container">
-    <main class="quiz-container" v-if="!gameFinished">
+    <main class="quiz-container">
       <div class="quiz-wrapper">
         <div class="timer-display">
-          {{ timeLeft }}
+          <!-- {{ timeLeft }} -->
         </div>
         <transition name="fade">
           <div class="question-display" key="questions[currentQuestion].image">
-            <nuxt-img class="quiz-image" :src="questions[currentQuestion].image" :alt="questions[currentQuestion].question"></nuxt-img>
+            <img class="quiz-image" :src="questions[currentQuestion].image" :alt="questions[currentQuestion].question">
             <!-- <p class="quiz-text">{{ questions[currentQuestion].question }}</p> -->
           </div>
         </transition>
-        <div class="answers-display">
+        <div class="choices-display">
           <button
-            v-for="(answer, index) in questions[currentQuestion].answers"
-            :key="index"
+            v-for="(choice, index) in questions[currentQuestion].choices"
+            :key="choice.id"
             class="quiz-button"
             :class="{
-              correct: selectedAnswer === index && isCorrectAnswer(index),
-              wrong: selectedAnswer === index && !isCorrectAnswer(index)
+              correct: selectedChoice === index && isCorrectChoice(index),
+              wrong: selectedChoice === index && !isCorrectChoice(index)
             }"
-            @click="handleAnswer(index)"
-            :disabled="selectedAnswer !== -1"
+            @click="handleChoice(questions[currentQuestion].id, choice.id)"
+            :disabled="isDisabled"
           >
-            {{ answer }}
+            {{ choice.text }}
           </button>
         </div>
         <div class="score-display">
-          {{ score }} امتیاز
+          <!-- {{ score }} امتیاز -->
         </div>
       </div>
     </main>
-    <section v-else class="result-container">
+    <!-- <section class="result-container">
       <h2>بازی به پایان رسید!</h2>
       <p>برای مشاهده امتیازات به صفحه امتیازات  فیاتر بروید</p>
       <nuxt-link class="profile-btn" to="/profile">صفحه امتیازات</nuxt-link>
-    </section>
+    </section> -->
   </div>
 </template>
   <script setup lang="ts">
 
 definePageMeta({
-  middleware: ['redirect-to-login']
+  middleware: [() => {
+  },'redirect-to-login']
 })  
 
  useSeoMeta({
@@ -56,36 +57,39 @@ definePageMeta({
   robots: 'index, follow'
 });
 
+  // const hasPlayed = ref(false);
+  const currentQuestion = ref(0);
+  const selectedChoice = ref(-1);
+  const timeLeft = ref(10);
+  const gameFinished = ref(false);
+  // const score = ref(0);
 
+  const isDisabled = computed(() => {
+    return selectedChoice.value !== -1 || timeLeft.value <= 0;
+  })
 
-  import { ref, computed, onMounted, nextTick } from 'vue'
-  import { useScoreStore } from '~/stores/scoreStore'; 
-  const scoreStore = useScoreStore();
-  const hasPlayed = ref(false);
-
-  const score = ref(0)
-  const timeLeft = ref(10)
-  const currentQuestion = ref(0)
-  const selectedAnswer = ref(-1)
-  const gameFinished = ref(false) 
-
-  // Fetch questions from the API using useAuthFetch
+  
   const getQuestionsRequest = await useAuthFetch<any>('/api/games/', {});
-  console.log(getQuestionsRequest.data.value);
+
+  const postChoiceRequest = useAuthFetch('/api/games/choices/', {
+      method: 'POST',
+      immediate: false,
+      watch: false,
+      // body: {
+      //   text: selectedChoice,
+      //   is_choice: index === currentQuestionData.correctChoice,
+      //   game: getQuestionsRequest.data.value.results[currentQuestion.value].id
+      // }
+    });
 
   const questions = computed(() => {
     if (getQuestionsRequest.status.value === 'success') {
-      return getQuestionsRequest.data.value.results.map((game) => ({
-        image: game.image,
-        question: game.title,
-        answers: game.choices.map(choice => choice.text),
-        correctAnswer: game.choices.findIndex(choice => choice.is_answer)
-      }));
+      return getQuestionsRequest.data.value.results;
     }
     return [];
   });
 
-  let interval; // Declare interval outside to manage it
+  let interval: NodeJS.Timeout; // Declare interval outside to manage it
 
   const startTimer = () => {
     clearInterval(interval); // Clear any existing interval
@@ -93,16 +97,16 @@ definePageMeta({
       if (timeLeft.value > 0) {
         timeLeft.value -= 1
       } else {
-        nextQuestion()
+        clearInterval(interval);
       }
     }, 1000)
   }
   
-  // Move to the next question
+  // Move to the next z
   const nextQuestion = async () => {
     if (currentQuestion.value < questions.value.length - 1) {
-      currentQuestion.value += 1
-      selectedAnswer.value = -1
+      currentQuestion.value += 1;
+      selectedChoice.value = -1;
       timeLeft.value = 10
       await nextTick(); // Wait for the DOM to update
       startTimer(); // Start the timer after the DOM update
@@ -111,35 +115,45 @@ definePageMeta({
     }
   }
   
-  // Handle answer selection
-  const handleAnswer = (index: number) => {
-    if (selectedAnswer.value !== -1) return;
-    selectedAnswer.value = index;
-    
-    // Stop the timer when an answer is selected
-    clearInterval(interval);
+  // Handle choice selection
+  const handleChoice = async (questionId: number, choiceId: number) => {
+    if (isDisabled.value) return;
 
-    if (index === questions.value[currentQuestion.value].correctAnswer) {
-        score.value += 5;
-        scoreStore.updateCorrectAnswers(scoreStore.correctAnswers + 1);
-    } else {
-        scoreStore.updateWrongAnswers(scoreStore.wrongAnswers + 1);
-    }
-    scoreStore.updateScore(score.value); // Update score
-    setTimeout(nextQuestion, 1000);
+    selectedChoice.value = choiceId;
+
+    await postChoiceRequest.execute();
+    // if (selectedChoice.value !== -1) return;
+    // selectedChoice.value = index;
+    
+    // // clearInterval(interval);
+
+    // const currentQuestionData = questions.value[currentQuestion.value];
+    // const selectedChoice = currentQuestionData.choices[index];
+
+    // try {
+    
+      
+    //   if (index === currentQuestionData.correctChoice) {
+    //     // score.value += 1;
+    //   }
+    // } catch (error) {
+    //   console.error('Error submitting choice:', error);
+    // }
+    
+    // setTimeout(nextQuestion, 1000);
   }
   
-  const isCorrectAnswer = (index: number) => {
-    return index === questions.value[currentQuestion.value].correctAnswer
+  const isCorrectChoice = (index: number) => {
+    return index === questions.value[currentQuestion.value].correctChoice
   }
   
   
-  onMounted(() => {
-    if (!hasPlayed.value) {
-      startTimer();
-      hasPlayed.value = true;
-    }
-  })
+  // onMounted(() => {
+  //   if (!hasPlayed.value) {
+  //     startTimer();
+  //     hasPlayed.value = true;
+  //   }
+  // })
   </script>
   
   <style scoped lang="scss">
@@ -207,7 +221,7 @@ definePageMeta({
       }
     }
   
-    .answers-display {
+    .choices-display {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;

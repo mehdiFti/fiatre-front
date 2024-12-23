@@ -12,9 +12,8 @@
 
     <TheSeparator class="ps-4" title="عناوین مرتبط" />
 
-    <TheSlider class="mb-5" title="کار در سینما" :cardsSlider="cardSlider" />
+    <TheSlider class="mb-5"  :cardsSlider="RelatedArtists" />
 
-    <CommentSection class="mb-5" />
   </div>
 </template>
 
@@ -26,9 +25,9 @@ import ImageHeader from '~/components/core/ImageHeader.vue';
 import Quote from '~/components/pages/biography/Quote.vue';
 import Description from '~/components/core/Description.vue';
 import TheSeparator from '~/components/core/TheSeparator.vue';
-// import TheSlider from '~/components/core/TheSlider.vue';
-import CommentSection from '~/components/core/CommentSection.vue';
+import TheSlider from '~/components/core/TheSlider.vue';
 import { useRoute } from 'vue-router';
+
 
 const route = useRoute();
 
@@ -40,6 +39,18 @@ const getbiographyRequest = await useApiFetch<any>(`/api/artists/${route.params.
 const biography = computed(() => {
   if (getbiographyRequest?.status.value === 'success') {
     return getbiographyRequest.data.value;
+  }
+  return [];
+});
+
+const RelatedArtists = computed(() => {
+  if (biography.value?.related_episodes) {
+    return biography.value.related_episodes.map((episode: any) => ({
+      id: episode.title,
+      title: episode.title,
+      image: episode.image,
+      slug: episode.slug
+    }));
   }
   return [];
 });
@@ -60,7 +71,6 @@ const bio = computed(() => ({
   // secondaryTitle: biography.value?.secondaryTitle || '',
 }));
 
-// const cardSlider = computed(() => biography.value?.cardSlider || []);
 
 </script>
 

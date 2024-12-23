@@ -25,6 +25,11 @@
 </template>
 
 <script setup lang="ts">
+
+definePageMeta({
+  middleware: ['redirect-if-authenticated'],
+});
+
 // SEO metadata
 useSeoMeta({
   title: 'بازیابی رمز عبور',
@@ -40,13 +45,14 @@ useSeoMeta({
 
 import { ErrorMessage } from 'vee-validate';
 import { useValidationRules } from '@/utils/validationRules';
+import { toast } from 'vue3-toastify';
 
 useValidationRules();
 
 const onSubmit = async (values: any) => {
   try {
     if (!values.phone) {
-      alert('لطفا شماره تلفن را وارد کنید');
+      toast.warning('لطفا شماره تلفن را وارد کنید');
       return;
     }
 
@@ -65,7 +71,7 @@ const onSubmit = async (values: any) => {
     });
 
     if (data.value) {
-      alert(data.value.message);
+      toast.success(data.value.message);
       localStorage.setItem('resetPhone', formattedPhone);
       await navigateTo('/password/reset/confirm');
       return;
@@ -77,17 +83,17 @@ const onSubmit = async (values: any) => {
 
       switch (status) {
         case 404:
-          alert(errorMessage || 'کاربری با این شماره موبایل وجود ندارد!');
+          toast.error(errorMessage || 'کاربری با این شماره موبایل وجود ندارد!');
           break;
         default:
-          alert(errorMessage || 'خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
+          toast.error(errorMessage || 'خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
           break;
       }
     }
 
   } catch (err: any) {
     console.error('API Error:', err);
-    alert(err.message || 'خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
+    toast.error(err.message || 'خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
   }
 };
 </script>

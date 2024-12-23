@@ -2,8 +2,8 @@
   <div class="movie-card">
     <NuxtLink :to="link">
       <div class="movie-card-image-container">
-        <img :src="img" class="movie-card-image" />
-        <h3 class="movie-card-title"> {{ title }} </h3>
+        <img :src="img" class="movie-card-image" alt="movie poster" />
+        <h3 class="movie-card-title">{{ title }}</h3>
       </div>
     </NuxtLink>
   </div>
@@ -26,58 +26,73 @@ defineProps({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .movie-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  position: relative;
   transition: transform 0.25s ease-in-out;
+  border-radius: 8px;
+  overflow: hidden;
 
   &:hover {
     transform: scale(1.05);
   }
 
-  .movie-card-title {
-    position: absolute;
+  .movie-card-image-container {
+    position: relative;
     width: 100%;
-    text-align: center;
-    font-size: 0.8rem;
-    bottom: -1px;
-    color: $light;
-    border-radius: 0 0 5px 5px;
+    padding-top: 150%; // 2:3 aspect ratio for movie posters
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
-    background-color: rgba(black, 0.75);
   }
 
   .movie-card-image {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
+  }
+
+  .movie-card-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    margin: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent);
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.4;
+    max-height: 60px; // Allows for 2-3 lines of text
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
   }
 }
+
 @media (max-width: 768px) {
   .movie-card {
-    flex: 1 1 calc(50% - 10px);
-
+    .movie-card-title {
+      font-size: 0.8rem;
+      padding: 6px;
+    }
   }
 }
 
 @media (max-width: 480px) {
   .movie-card {
-    flex: 1 1 calc(33.33% - 10px);
-
-  }
-}
-
-@media (max-width: 430px) {
-  .movie-card-title {
-    font-size: 0.6rem !important;
+    .movie-card-title {
+      font-size: 0.75rem;
+      padding: 4px;
+      max-height: 50px;
+    }
   }
 }
 </style>

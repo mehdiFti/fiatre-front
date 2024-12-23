@@ -5,7 +5,7 @@
         <div v-for="crew in crews" :key="crew.id">
           <div class="card-container">
             <NuxtLink :to="crew.link">
-              <nuxt-img
+              <img
                 class="crew-card"
                 :src="crew.src || defaultImage"
                 alt="Crew image"
@@ -16,7 +16,12 @@
 
           <div class="crew-name">
             {{ crew.title }} <!-- Displaying the title -->
+            <div class="crew-specialty">
+            {{ crew.specialty }} <!-- Displaying the title -->
           </div>
+          </div>
+
+
         </div>
       </div>
     </div>
@@ -31,6 +36,7 @@ interface Crew {
   link: string;
   src: string | null;
   title: string;
+  specialty: string
 }
 
 const props = defineProps<{
@@ -102,5 +108,29 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
     width: 100px;
     height: 100px; 
   }
+}
+
+.crew-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all transform 0.3s ease;
+}
+
+.crew-image:hover {
+  transition: transform 0.3s ease;
+  transform: scale(1.01);
+}
+
+.crew-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.crew-specialty {
+  font-size: 0.9rem;
+  color: #666666;
+  margin-top: 0;
 }
 </style>

@@ -1,25 +1,30 @@
 <template>
   <main class="container mb-5">
     <section v-for="(item, index) in faqs" :key="index" class="faq-item">
-      <header class="faq-question" @click="toggleAnswer(index)">
+      <header 
+        class="faq-question" 
+        @click="toggleAnswer(index)"
+        :aria-expanded="activeIndex === index"
+        :aria-controls="'faq-collapse-' + index"
+        role="button"
+      >
         <p>{{ item.question }}</p>
         <i :class="{ 'icon-chevron-up': activeIndex === index, 'icon-chevron-down': activeIndex !== index }"></i>
       </header>
-      <transition
-        name="faq"
-        @enter="enter"
-        @leave="leave"
+      <div 
+        :id="'faq-collapse-' + index"
+        class="collapse"
+        :class="{ 'show': activeIndex === index }"
       >
-        <article v-show="activeIndex === index" class="faq-answer">
+        <article class="faq-answer">
           <p>{{ item.answer }}</p>
         </article>
-      </transition>
+      </div>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
-import { nextTick } from 'vue';
 
 useSeoMeta({
   title: 'سوالات متداول',
@@ -95,42 +100,17 @@ const activeIndex = ref<number | null>(null);
 const toggleAnswer = (index: number) => {
   activeIndex.value = activeIndex.value === index ? null : index;
 };
-
-const enter = async (el: any) => {
-  el.style.height = '0';
-  el.style.opacity = '0';
-  await nextTick();
-  el.style.transition = 'height 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out';
-  el.style.height = el.scrollHeight + 'px';
-  el.style.opacity = '1';
-  el.addEventListener('transitionend', () => {
-    el.style.height = 'auto'; // Set height to auto after transition
-  }, { once: true });
-};
-
-const leave = async (el: any) => {
-  el.style.height = el.scrollHeight + 'px';
-  el.style.opacity = '1';
-  await nextTick();
-  el.style.transition = 'height 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out';
-  el.style.height = '0';
-  el.style.opacity = '0';
-};
 </script>
 
 <style lang="scss" scoped>
-.container {
-  width: 100%;
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: $white;
-  border-radius: 10px;
-}
+
+  .container {
+    background-color: $white;
+  }
 
 .faq-item {
   border-bottom: 1px solid $gray-300;
-  padding: 15px 0;
+  padding: 15px 20px;
 }
 
 .faq-question {
@@ -153,6 +133,7 @@ const leave = async (el: any) => {
 .faq-answer {
   padding-top: 10px;
   color: $gray-500;
+  overflow: hidden;
 }
 
 .icon-chevron-up,
@@ -168,16 +149,15 @@ const leave = async (el: any) => {
   transform: rotate(180deg);
 }
 
-.faq-answer {
-  overflow: hidden;
+.collapse {
+  &:not(.show) {
+    display: none;
+  }
 }
 
-.faq-enter-active, .faq-leave-active {
-  transition: height 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out;
-}
-
-.faq-enter, .faq-leave-to {
+.collapsing {
   height: 0;
-  opacity: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
 }
 </style>

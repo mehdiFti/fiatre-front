@@ -48,7 +48,11 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useValidationRules } from '@/utils/validationRules'; 
 import { ErrorMessage, useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
+definePageMeta({
+  middleware: ['redirect-if-authenticated'],
+});
 useValidationRules(); 
 
 const { handleSubmit, values } = useForm({
@@ -98,7 +102,7 @@ const onSubmit = handleSubmit(async (values) => {
     });
 
     if (error.value) {
-      alert(error.value.data?.error || 'خطا در تایید کد');
+      toast.error(error.value.data?.error || 'خطا در تایید کد');
       return;
     }
 
@@ -106,13 +110,13 @@ const onSubmit = handleSubmit(async (values) => {
       // Store the verification code for password reset
       localStorage.setItem('verificationCode', values.code);
       userStore.setLoginData(data.value.refresh, data.value.access, data.value.user);
-      alert('کد با موفقیت تایید شد');
+      toast.success('کد با موفقیت تایید شد');
       await navigateTo('/password/reset/enter');
     }
 
   } catch (err) {
     console.error('API Error:', err);
-    alert('خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
+    toast.error('خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
   }
 });
 </script>

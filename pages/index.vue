@@ -42,7 +42,7 @@ const homeSections = computed(() => {
     const categories = {};
 
     for (const [key,value] of Object.entries(getHomeRequest.data.value)) {   
-      if (key.startsWith('categories_')) {
+      if (key.startsWith('categories_') && value[0]) {
         categories[key] = value[0];
       }
     }
@@ -57,7 +57,7 @@ const posters = computed(() => {
     const postersData = [];
     
     for (const [key, value] of Object.entries(getHomeRequest.data.value)) {
-      if (key.startsWith('posters_')) {
+      if (key.startsWith('posters_') && value) {
         postersData.push(value);
       }
     }
@@ -82,7 +82,7 @@ const heroSections = computed(() => {
       // font: slider.image,
       title: slider.name,
       text: slider.desc || 'برای تماشا کلیک کنید',
-      links: `/episodes/${slider.slug}`,
+      links: `/episodes/${slider.link}`,
     }));
   }
   return [];

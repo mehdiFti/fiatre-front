@@ -4,55 +4,68 @@
     <div class="container">
       <h2 class="incomplete-videos-title">ویدئوهای ناتمام من</h2>
       <hr />
+      
       <div class="video-episode-wrapper">
-        <div v-if="incompleteVideos.length === 0" class="no-videos-message">
-      !ویدیوی ناتمامی ندارید
-    </div>
-        <div
-          v-for="video in incompleteVideos"
-          :key="video.key"
-          :class="{'video-episode-card': true, 'removing': video.removing}"
-        >
-          <media-player
-            ref="addPlayerRef"
-            :title="video.title"
-            :src="video.src"
-            keep-alive
-            :current-time="getSavedTime(video.key)"
-            class="video-player"
-            @play="handlePlay($event.target)"
-            @time-update="handleTimeUpdate(video.key, $event)"
-            @ended="handleVideoEnded(video.key)"
+        <!-- Success State -->
+        <template v-if="getWatchLogsRequest.status.value === 'success'">
+          <div v-if="incompleteVideos.length === 0" class="no-videos-message">
+            !ویدیوی ناتمامی ندارید
+          </div>
+          
+          <div
+            v-for="video in incompleteVideos"
+            :key="video.key"
+            :class="{'video-episode-card': true, 'removing': video.removing}"
           >
-            <media-provider />
-            <media-poster 
-              class="vds-poster"
-              :src="video.poster"
-              :alt="`Poster for ${video.title}`"
-            />
-            <media-video-layout class="video-layout" />
-            <vds-volume></vds-volume>
-          </media-player>
-          <div class="episode-info">
-            <div class="episode-title">
-              <span class="episode-number">{{ video.number }}</span> - {{ video.title }}
+            <media-player
+              ref="addPlayerRef"
+              :title="video.title"
+              :src="video.src"
+              keep-alive
+              :current-time="video.second"
+              class="video-player"
+              @play="handlePlay($event.target)"
+              @time-update="handleTimeUpdate(video.key, $event)"
+              @ended="handleVideoEnded(video.key)"
+            >
+              <media-provider />
+              <media-poster 
+                class="vds-poster"
+                :src="video.poster"
+                :alt="`Poster for ${video.title}`"
+              />
+              <media-video-layout class="video-layout" />
+              <vds-volume></vds-volume>
+            </media-player>
+            
+            <div class="episode-info">
+              <div class="episode-title">{{ video.title }}</div>
+              <hr>
+              <div class="episode-desc">{{ truncateDescription(video.description) }}</div>
             </div>
-            <hr>
-            <div class="episode-desc">
-              {{ truncateDescription(video.description) }}
+            
+            <div class="other-buttons">
+              <DownloadButton :videoUrl="video.src" />
+              <BookmarkButton
+                :videoId="video.key"
+                :videoDetails="{ key: video.key, title: video.title, src: video.src, poster: video.poster, description: video.description }"
+              />
+              <button class="remove-button" @click="removeVideo(video.key)" title="ویدئو از صفحه حذف شود؟">
+                <nuxt-icon name="cancel" />
+              </button>
             </div>
           </div>
-          <div class="other-buttons">
-            <DownloadButton />
-            <BookmarkButton
-              :videoId="video.key"
-              :videoDetails="{ key: video.key, title: video.title, src: video.src, poster: video.poster, description: video.description }"
-            />
-            <button class="remove-button" @click="removeVideo(video.key)" title="ویدئو از صفحه حذف شود؟">
-              <nuxt-icon name="cancel" />
-            </button>
-          </div>
-        </div>
+        </template>
+
+        <!-- Loading State -->
+        <main v-else-if="getWatchLogsRequest.status.value === 'pending'" class="loading-message">
+          در حال بارگذاری...
+        </main>
+
+        <!-- Error State -->
+        <main v-else-if="getWatchLogsRequest.status.value === 'error'" class="error-message">
+          خطا در بارگذاری ویدئوها
+        </main>
       </div>
     </div>
   </ClientOnly>
@@ -60,12 +73,12 @@
 </template>
 
 <script setup lang="ts">
- 
 definePageMeta({
-layout: 'custom'
-})
+  layout: 'custom'
+});
 
-  useSeoMeta({
+// SEO Meta
+useSeoMeta({
   title: 'ویدئوهای من',
   description: 'صفحه ویدئوهای من در سایت FIATRE برای مشاهده ویدئوهای ذخیره شده و ادامه تماشا.',
   keywords: 'ویدئوهای من, تماشا, ذخیره شده, سایت FIATRE',
@@ -77,32 +90,59 @@ layout: 'custom'
   robots: 'index, follow'
 });
 
-import { ref, onMounted, onBeforeUnmount } from 'vue';
 import RtlHeader from '~/components/core/RtlHeader.vue';
 import Footer from '~/components/core/Footer.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
+import 'vidstack/bundle';
+import 'vidstack/icons';
+import { MediaPlayerElement } from 'vidstack/elements';
 
-
-interface Video {
-  key: string;
-  title: string;
-  src: string;
-  poster: string;
-  number: string;
-  description: string;
-  removing?: boolean;
+// Types
+interface WatchLogResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: {
+    id: number;
+    second: number;
+    episode: {
+      title: string;
+      en_title: string | null;
+      slug: string;
+      image: string;
+    };
+  }[];
 }
 
-const incompleteVideos = ref<Video[]>([]);
+const addPlayerRef = ref();
+
+// API Call
+const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/');
+
+// Computed
+const incompleteVideos = computed(() => {
+  if (getWatchLogsRequest.status.value === 'success' && getWatchLogsRequest.data.value?.results) {
+    return getWatchLogsRequest.data.value.results.map(item => ({
+      key: item.id.toString(),
+      title: item.episode.title,
+      src: item.episode.video,
+      poster: `https://fiatre.ir/${item.episode.image}`,
+      second: item.second,
+      description: item.episode.en_title || item.episode.title,
+      removing: false
+    }));
+  }
+  return [];
+});
+
+watch(addPlayerRef, (newRef) => {
+  console.log(newRef);
+}, {immediate: true});
+
+// Player Management
 const playerRefs = ref<HTMLMediaElement[]>([]);
 const currentPlaying = ref<HTMLMediaElement | null>(null);
-
-const addPlayerRef = (el: HTMLMediaElement) => {
-  if (el && !playerRefs.value.includes(el)) {
-    playerRefs.value.push(el);
-  }
-};
 
 const handlePlay = (player: EventTarget) => {
   const mediaPlayer = player as HTMLMediaElement;
@@ -112,17 +152,29 @@ const handlePlay = (player: EventTarget) => {
   currentPlaying.value = mediaPlayer;
 };
 
-const handleTimeUpdate = (key: string, event: Event) => {
-  const currentTime = (event.target as HTMLMediaElement).currentTime;
-  localStorage.setItem(`video-${key}-time`, currentTime.toString());
+const handleTimeUpdate = async (key: string, event: Event) => {
+  console.log(key, event)
+  // const currentTime = (event.target as HTMLMediaElement).currentTime;
+  // try {
+  //   await useAuthFetch(`/api/episodes/watch-logs/${key}/`, {
+  //     method: 'PATCH',
+  //     body: {
+  //       second: currentTime
+  //     }
+  //   });
+  // } catch (error) {
+  //   console.error('Failed to update watch time:', error);
+  // }
 };
 
 const getSavedTime = (key: string) => {
-  const savedTime = localStorage.getItem(`video-${key}-time`);
-  return savedTime ? parseFloat(savedTime) : 0;
+  const video = incompleteVideos.value.find(v => v.key === key);
+  return video ? video.second : 0;
 };
 
-const truncateDescription = (description: string) => {
+const truncateDescription = (description?: string) => {
+  if (!description) return '';
+  
   const maxWords = 100;
   const words = description.split(' ');
   if (words.length > maxWords) {
@@ -151,26 +203,6 @@ const removeVideo = (key: string) => {
       incompleteVideos.value = incompleteVideos.value.filter(video => video.key !== key);
     }, 500);
   }
-};
-
-onMounted(() => {
-  loadIncompleteVideos();
-});
-
-const loadIncompleteVideos = () => {
-  const keys = Object.keys(localStorage).filter(key => key.startsWith('incomplete-video-'));
-  const videos = keys.map(key => {
-    const videoData = JSON.parse(localStorage.getItem(key) || '{}');
-    return {
-      key: key.replace('incomplete-video-', ''),
-      title: videoData.title || 'Unknown Title',
-      src: videoData.src || 'https://example.com/video.mp4',
-      poster: videoData.poster || 'https://example.com/poster.jpg',
-      number: videoData.number || '',
-      description: videoData.description || 'No description available'
-    };
-  });
-  incompleteVideos.value = videos;
 };
 
 onBeforeUnmount(() => {
@@ -204,8 +236,10 @@ onBeforeUnmount(() => {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  height: 400px;
+  height: auto;
   position: relative;
+  aspect-ratio: 3/4;
+  min-height: 0;
 }
 
 .video-episode-card.removing {
@@ -215,8 +249,20 @@ onBeforeUnmount(() => {
 
 .video-player {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 0;
+  padding-bottom: 56.25%;
   background-color: $light;
+  position: relative;
+
+  ::v-deep(video),
+  ::v-deep(.vds-poster) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .episode-info {
@@ -306,21 +352,18 @@ hr {
 @media (max-width: 1024px) {
   .video-episode-card {
     flex: 0 0 calc(50% - 20px);
-    height: 420px;
   }
 }
 
 @media (max-width: 768px) and (min-width: 421px) {
   .video-episode-card {
     flex: 0 0 calc(100% - 20px); 
-    height: 400px;
   }
 }
 
 @media (max-width: 420px) {
   .video-episode-card {
     flex: 0 0 calc(100% - 20px); 
-    height: 320px;
   }
 }
 
@@ -330,5 +373,19 @@ hr {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.loading-message,
+.error-message,
+.no-videos-message {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+  color: $dark;
+}
+
+.error-message {
+  color: $third;
 }
 </style>

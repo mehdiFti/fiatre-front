@@ -1,15 +1,7 @@
 <template>
     <div class="container mb-5">
-      <div @click="onClicked">
-        dd
-      </div>
-  
-      <div @click="onClicked2">
-        dd2
-      </div>
-  
       <div class="login-container">
-        <NuxtImg class="login-image" src="/image/thisis.jpg" alt="login-image" />
+        <img class="login-image" src="/image/thisis.jpg" alt="login-image" />
   
         <div class="login-form-wrapper">
           <h2 class="login-title">
@@ -72,7 +64,11 @@
   import { ref } from 'vue';
   import { ErrorMessage, useForm, Field as VeeField, Form as VeeForm } from 'vee-validate';
   import { useValidationRules } from '@/utils/validationRules';
+  import { toast } from 'vue3-toastify';
   
+definePageMeta({
+  middleware: ['redirect-to-login'],
+});
   useValidationRules();
   
   const formData = ref({
@@ -87,13 +83,13 @@
   const requestNewCode = async () => {
     const phone = localStorage.getItem('resetPhone');
     if (!phone) {
-      alert('شماره تلفن یافت نشد');
+      toast.error('شماره تلفن یافت نشد');
       return navigateTo('/password/reset');
     }
 
     try {
-      const { data, error } = await useAuthFetch('/api/auth/login/code/', {
-        method: 'POST',
+      const { data, error } = await useAuthFetch('/api/auth/profile/', {
+        method: 'PATCH',
         body: { phone },
         headers: {
           'Accept': 'application/json',
@@ -103,66 +99,55 @@
       });
 
       if (error.value) {
-        alert(error.value.data?.error || 'خطا در ارسال کد جدید');
+        toast.error(error.value.data?.error || 'خطا در ارسال کد جدید');
         return;
       }
 
       if (data.value) {
-        alert('کد جدید ارسال شد');
+        toast.success('کد جدید ارسال شد');
         await navigateTo('/password/reset/confirm');
       }
     } catch (err) {
       console.error('Error requesting new code:', err);
-      alert('خطا در ارسال کد جدید');
+      toast.error('خطا در ارسال کد جدید');
     }
   };
   
+  const profileEditRequest = useAuthFetch('/api/auth/profile/', {
+        method: 'PATCH',
+        body: formData,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        immediate: false,
+        watch: false,
+        credentials: 'include'
+      });
+
   const onSubmit = handleSubmit(async () => {
     try {
       const code = localStorage.getItem('verificationCode');
       const phone = localStorage.getItem('resetPhone');
-      const confirmationResponse = localStorage.getItem('confirmationResponse');
-      
-      console.log('Stored confirmation response:', confirmationResponse);
-      
+
       if (!code || !phone) {
-        alert('اطلاعات ناقص است. لطفا دوباره تلاش کنید');
+        toast.error('اطلاعات ناقص است. لطفا دوباره تلاش کنید');
         return navigateTo('/password/reset');
       }
-
-      // Format code to ensure it's exactly 5 digits
-      // const formattedCode = code.padStart(5, '0');
-console.log();
 
       const requestData = {
         password: formData.value.password,
         password2: formData.value.password2,
-        code,
-        phone, // Try including phone in the request
+        code: code
       };
 
-      console.log('Sending request with:', requestData);
-      // console.log('Using access token:', accessToken.value);
-      console.log('Using verification code:', code);
+      await profileEditRequest.execute();
 
-      const { data, error } = await useAuthFetch('/api/auth/password/reset/enter/', {
-        method: 'POST',
-        body: requestData,
-      });
-
-      if (error.value) {
-        console.error('Full error details:', {
-          status: error.value.status,
-          statusText: error.value.statusText,
-          data: error.value.data,
-          message: error.value.message
-        });
+      if (profileEditRequest.error.value) {
+        console.error('Error response:', profileEditRequest.error.value);
         
-        if (error.value.data?.error === 'کد وارد شده اشتباه است! دوباره درخواست کنید.') {
-          // Log the stored code and confirmation response for debugging
-          console.log('Stored code:', code);
-          console.log('Confirmation response:', confirmationResponse);
-          
+        const errorMessage = profileEditRequest.error.value.data?.error || profileEditRequest.error.value.data?.message;
+        if (errorMessage?.includes('کد')) {
           const shouldRequestNew = confirm('کد وارد شده اشتباه است. آیا میخواهید کد جدید دریافت کنید؟');
           if (shouldRequestNew) {
             await requestNewCode();
@@ -170,23 +155,20 @@ console.log();
           return;
         }
 
-        alert(error.value.data?.error || error.value.data?.message || 'خطا در تغییر رمز عبور');
+        toast.error(errorMessage || 'خطا در تغییر رمز عبور');
         return;
       }
 
-      if (data.value) {
-        alert('رمز عبور با موفقیت تغییر کرد');
+      if (profileEditRequest.data.value) {
+        toast.success('رمز عبور با موفقیت تغییر کرد');
         localStorage.removeItem('resetPhone');
         localStorage.removeItem('verificationCode');
-        localStorage.removeItem('confirmationResponse');
-        // accessToken.value = null;
-        // refreshToken.value = null;
-        await navigateTo('/profile');
+        await navigateTo('/account');
       }
 
     } catch (err) {
-      console.error('Full API Error:', err);
-      alert('خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
+      console.error('API Error:', err);
+      toast.error('خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
     }
   });
   </script>

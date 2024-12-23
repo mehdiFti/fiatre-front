@@ -49,6 +49,7 @@ useSeoMeta({
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ModalMessage from '@/components/core/ModalMessage.vue';
+import redirectToLogin from '~/middleware/redirectToLogin';
 
 const route = useRoute();
 const originalPrice = ref(parseFloat(route.query.finalPrice as string) || 0);

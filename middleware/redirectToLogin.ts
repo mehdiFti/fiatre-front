@@ -11,6 +11,7 @@ const logout = async (path: string) => {
 
 export default defineNuxtRouteMiddleware(async(to, from) => {
     const refreshToken = useCookie('refresh-token').value;
+console.log('redirect to login',refreshToken);
 
     if (refreshToken) {
       const decodedRefreshToken = jwtDecode(refreshToken as string);

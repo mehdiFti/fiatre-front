@@ -8802,6 +8802,7 @@ __metadata:
     vidstack: "npm:^1.11.21"
     vue: "npm:^3.4.21"
     vue-router: "npm:^4.3.0"
+    vue3-toastify: "npm:^0.2.8"
   languageName: unknown
   linkType: soft
 
@@ -12783,6 +12784,18 @@ __metadata:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: 10c0/21d27d1c6afe10a47f17793e18afb7f321888d3ca728bfdb2a79ff49789ed9b40e98abcb68b5499f3da1bbb76a0f188b94aeb5ab0e879f46d6399ac5d4ae38c8
+  languageName: node
+  linkType: hard
+
+"vue3-toastify@npm:^0.2.8":
+  version: 0.2.8
+  resolution: "vue3-toastify@npm:0.2.8"
+  peerDependencies:
+    vue: ">=3.2.0"
+  peerDependenciesMeta:
+    vue:
+      optional: true
+  checksum: 10c0/14d7aadd4663cc83dff25da730e6522d1c6735f6427e7d073b1e574a699a9c54d8be9965842a934ab271a127fb3cf850891092e67760773e119caf94c35f67f5
   languageName: node
   linkType: hard
 

@@ -1,17 +1,11 @@
 <template>
   <div class="container mb-5">
-    <div @click="onClicked">
-      dd
-    </div>
-
-    <div @click="onClicked2">
-      dd2
-    </div>
-
     <div class="login-container">
-      <NuxtImg class="login-image" src="/image/thisis.jpg" alt="login-image" />
+      <img class="login-image" src="/image/thisis.jpg" alt="login-image" />
 
       <div class="login-form-wrapper">
+
+
         <h2 class="login-title">
           ورود
         </h2>
@@ -46,7 +40,7 @@
               v-model="form.password"
               name="password"
               class="login-input"
-              type="password"
+              :type="isPasswordVisible ? 'text' : 'password'"
               rules="required|min:8|password_custom"
             />
 
@@ -54,11 +48,24 @@
               رمز
             </label>
 
+            <button 
+              type="button" 
+              @click="togglePasswordVisibility" 
+              class="toggle-password-visibility"
+            >
+              <nuxt-icon 
+                :name="isPasswordVisible ? 'eye-off' : 'eye'" 
+                class="icon-move-up" 
+              />
+            </button>
+
             <ErrorMessage name="password" as="span" class="error-message" />
           </div>
 
           <div class="login-btn">
-            <button type="submit" class="login-submit">ورود به فیاتر</button>
+            <button type="submit" class="login-submit">
+              {{ isLoading ? 'لطفا منتظر بمانید' : 'ورود به فیاتر' }}
+            </button>
 
             <NuxtLink to="/password/reset" class="login-forget">
               بازیابی رمز عبور
@@ -71,10 +78,11 @@
 </template>
 
 <script setup lang="ts">
-import {jwtDecode} from 'jwt-decode';
+
 import {useValidationRules} from '@/utils/validationRules';
 import {ErrorMessage, useForm, Field as VeeField, Form as VeeForm} from 'vee-validate';
 import {ref} from 'vue';
+import { toast } from 'vue3-toastify';
 
 definePageMeta({
   middleware: ['redirect-if-authenticated'],
@@ -82,25 +90,7 @@ definePageMeta({
 
 const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore();
-
-const profileGetRequest = useAuthFetch('/api/auth/profile/', {
-  immediate: false,
-  watch: false,
-  onResponseError(error) {
-    console.log(error);
-  },
-});
-
-const onClicked = async () => {
-  await profileGetRequest.execute();
-  console.log(profileGetRequest);
-};
-
-const onClicked2 = () => {
-  console.log(Date.now() >= jwtDecode(useCookie('refresh-token').value as string).exp! * 1000, Date.now() - jwtDecode(useCookie('refresh-token').value as string).exp! * 1000);
-  console.log(Date.now() >= jwtDecode(useCookie('access-token').value as string).exp! * 1000, Date.now() - jwtDecode(useCookie('access-token').value as string).exp! * 1000);
-};
+const userStore = useUserStore(); 
 
 useSeoMeta({
   title: 'ورود',
@@ -124,21 +114,37 @@ const {handleSubmit} = useForm({
   initialValues: form.value,
 });
 
+const isPasswordVisible = ref(false);
+const isLoading = ref(false);
+
+const togglePasswordVisibility = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log(values, form);
-  userStore.phone = form.value.phone;
-  userStore.password = form.value.password;
-  await userStore.loginPostRequest.execute();
-
-  const redirect = route.query.redirect;
-
-  if (userStore.loginPostRequest.status.value === 'success') {
-    if (redirect) {
-      router.push(decodeURIComponent(redirect as string));
+  isLoading.value = true;
+  
+  try {
+    userStore.phone = form.value.phone;
+    userStore.password = form.value.password;
+    await userStore.loginPostRequest.execute();
+console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
+    if (userStore.loginPostRequest.status.value === 'success') {
+        const redirect = route.query.redirect;
+        if (redirect) {
+            await router.push(decodeURIComponent(redirect as string));
+        } else {
+          console.log('router.push /account');
+          
+            await router.push('/account');
+        }
+    } else if (userStore.loginPostRequest.error.value.statusCode === 400) {
+      toast.error(userStore.loginPostRequest.error.value.data.error);
     } else {
-      router.push('/account');
+      toast.error(userStore.loginPostRequest.error.value.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 </script>
@@ -148,6 +154,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 
 .login-container {
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -267,5 +274,33 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 
+}
+
+.toggle-password-visibility {
+  position: absolute;
+  left: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #8c8c8c;
+
+  &:hover {
+    color: $dark;
+  }
+}
+
+.login-form-control {
+  .login-input {
+    padding-right: 40px;
+  }
+}
+
+.icon-move-up {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 </style>

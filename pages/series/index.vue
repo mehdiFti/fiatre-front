@@ -52,7 +52,6 @@ import TheSeparator from '~/components/core/TheSeparator.vue';
 
 const imageHeader = {
   src: 'https://www.fiatre.ir/uploads/episodes/images/%D8%A7%DA%A9%D8%AA%D9%88%D8%B1%D8%B2-%D8%A7%D8%B3%D8%AA%D9%88%D8%AF%DB%8C%D9%88-%D8%A2%D9%84-%D9%BE%D8%A7%DA%86%DB%8C%D9%86%D9%88/1672820616.289091-NNpbcZz8MQWc-1668591177.28411_bZPcU1r.jpg',
-  alt: 'تصویر دوره بازیگری الپاچینو',
   title: 'دوره بازیگری آل پاچینو',
 };
 

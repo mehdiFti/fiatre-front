@@ -1,6 +1,5 @@
 <template>
-  <main v-if="profileRequest.status.value === 'success'" class="container mb-5">
-    <NuxtLink to="/biography"> sds</NuxtLink>
+  <main v-if="profileRequest.status.value === 'success'" class="container">
     <section class="profile-container">
       <img class="profile-image" src="/public/image/thisis.jpg" alt="پروفایل کاربر">
       <div class="profile-form-wrapper">
@@ -110,18 +109,19 @@
     </section>
   </main>
 
-  <main v-else-if="profileRequest.status.value === 'pending'">pending</main>
+  <main class="container" v-else-if="profileRequest.status.value === 'pending'">pending</main>
 
-  <main v-else-if="profileRequest.status.value === 'error'">error</main>
+  <main class="container" v-else-if="profileRequest.status.value === 'error'">error</main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Form as VeeForm, Field as VeeField, useForm } from 'vee-validate';
 import Avatar from '~/components/core/Avatar.vue';
 import { useValidationRules } from '~/utils/validationRules';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
 import { useRouter, useRoute  } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
 definePageMeta({
   middleware: ['redirect-to-login'],
@@ -210,7 +210,7 @@ watch(profileData, (newVal) => {
   }
 }, {
   immediate: true
-})
+});
 
 const getDirection = (val: string) => {
   return /^[a-zA-Z]/.test(val) ? 'ltr' : 'rtl'
@@ -237,35 +237,36 @@ const computedProfileBodyRequest = computed(() => {
 
 // Function to handle the PATCH request
 const updateProfile = async () => {
-  try {
-    const formData = new FormData();
-    
-    // Append profile data
-    Object.entries(computedProfileBodyRequest.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
+  try {    
     const response = await useAuthFetch('/api/auth/profile/', {
       method: 'PATCH',
-      body: formData,
+      body: computedProfileBodyRequest.value,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json'
       }
     });
 
     if (response.status.value === 'success') {
-      alert('اطلاعات با موفقیت به‌روزرسانی شد!');
+      toast.success('اطلاعات با موفقیت به‌روزرسانی شد!');
       isEditing.value = false;
       formChanged.value = false;
-      // Refresh profile data
-      await profileRequest.refresh();
+      
+      const freshProfileData = await useAuthFetch<IProfile>('api/auth/profile', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      
+      if (freshProfileData.data.value) {
+        Object.assign(profileData.value, freshProfileData.data.value);
+      }
+
     } else {
-      console.error('Response not OK:', response);
-      alert('خطا در به‌روزرسانی اطلاعات');
+      toast.error('خطا در به‌روزرسانی اطلاعات');
     }
   } catch (error) {
-    console.error('Error updating profile:', error);
-    alert('خطا در به‌روزرسانی اطلاعات');
+    toast.error('خطا در به‌روزرسانی اطلاعات');
   }
 };
 
@@ -367,7 +368,7 @@ const handleAvatarChange = async (file: File) => {
         transition: background-color 0.3s ease;
 
         &:not(:disabled) {
-          background-color: $gray-400; 
+          background-color: $gray-300; 
           font-style: italic;
           color: $white;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -394,15 +395,19 @@ const handleAvatarChange = async (file: File) => {
       }
 
       .toggle-password-visibility {
-        display: flex;
-        margin-top: 5px;
-        background: none;
-        border: none;
-        color: $third;
-        font-size: 1rem;
-        cursor: pointer;
-        transform: translate(45px,-42px)!important;
-        transition: transform 0.3s ease;
+  position: absolute;
+  left: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #8c8c8c;
+
+  &:hover {
+    color: $dark;
+  }
       }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="container" dir="rtl">
+    <div :class="['container', $attrs.class]" :dir="direction">
       <header class="header-container">
         <hr class="header-hr" />
         <div class="left-section">
@@ -123,7 +123,6 @@
   import ModalWarn from './ModalWarn.vue';
   import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
   import MailBox from '~/components/core/MailBox.vue';
-  import { isLoggedIn } from '~/utils/eventBus';
   import { useRouter } from 'vue-router';
   import { useWindowSize } from '@vueuse/core';
 
@@ -154,6 +153,19 @@
         modal.style.transform = 'translateX(0)';
       }
     });
+  });
+
+  // Define props
+  const props = defineProps({
+    direction: {
+      type: String,
+      default: 'rtl'
+    }
+  });
+
+  // Make sure to explicitly inherit attrs
+  defineOptions({
+    inheritAttrs: false
   });
   </script>
   

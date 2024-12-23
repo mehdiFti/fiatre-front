@@ -6,23 +6,65 @@
           <div class="footer-col contact">
             <h3 class="footer-title">بهترین خودت باش</h3>
             <ul class="footer-list">
-              <li><NuxtLink to="#">تماس با ما</NuxtLink></li>
-              <li><NuxtLink to="/register">درباره ما</NuxtLink></li>
-              <li><NuxtLink to="#">قوانین و مقررات</NuxtLink></li>
-              <li><NuxtLink to="#">سوالات متداول</NuxtLink></li>
+              <!-- <li><NuxtLink to="">تماس با ما</NuxtLink></li> -->
+              <li><NuxtLink to="/about-us">درباره ما</NuxtLink></li>
+              <li><NuxtLink to="/terms">قوانین و مقررات</NuxtLink></li>
+              <li><NuxtLink to="/faq">سوالات متداول</NuxtLink></li>
             </ul>
           </div>
           <div class="footer-col about">
             <h3 class="footer-title">نامفهوم از صنعت چاپ</h3>
             <p class="footer-text">نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p>
           </div>
+
           <div class="footer-col social">
-            <a class="footer-icon"><JJIcon icon="instagram" /></a>
-            <a class="footer-icon"><JJIcon icon="whatsapp" /></a>
-            <a class="footer-icon"><JJIcon icon="telegram" /></a>
+            <div>
+              <nuxt-link class="footer-icon" to="https://instagram.com/fiatre.ir"><JJIcon icon="instagram" /></nuxt-link>
+              <nuxt-link class="footer-icon" to="https://wa.me/989123456789"><JJIcon icon="whatsapp" /></nuxt-link>
+              <nuxt-link class="footer-icon" to="https://t.me/fiatre"><JJIcon icon="telegram" /></nuxt-link>
+            </div>
+            <div>
+              
+              <nuxt-link to="https://mag.fiatre.ir/">
+                <img src="https://www.fiatre.ir/static/front/src/icons/fiatremag-smal.png" alt="fiatreMag"/>
+              </nuxt-link>
+            </div>
           </div>
+          <!-- <div class="footer-col social">
+          </div> -->
         </div>
-        <p class="footer-copyright primary-bold">خدمات ارائه شده در فیاتر دارای مجوز است و هر گونه سوء استفاده از محتوای فیاتر، پیگرد قانونی دارد.</p>
+        
+        <div class="certification-logos">
+          <img 
+            src="https://www.fiatre.ir/static/front/src/icons/samandehi.png" 
+            alt="Samandehi"
+            class="cert-logo"
+          />
+          <nuxt-link 
+            href="https://trustseal.enamad.ir/?id=165550&Code=17pT7etE2rxSIRb0m5Z0" 
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img 
+              src="https://www.fiatre.ir/static/front/src/icons/enamad.png" 
+              alt="Enamad"
+              class="cert-logo"
+            />
+          </nuxt-link>
+          <img 
+            src="https://www.fiatre.ir/static/front/src/icons/satra.png" 
+            alt="Satra"
+            class="cert-logo"
+          />
+          <img 
+            src="https://www.fiatre.ir/static/front/src/icons/sapra.png" 
+            alt="Sapra"
+            class="cert-logo"
+          />
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copyright primary-bold" v-html="copyright"></p>
+        </div>
     </footer>
   </div>
 </div>
@@ -31,19 +73,19 @@
 <script setup lang="ts">
 import JJIcon from '~/components/core/icons/JJIcon.vue';
 
-// const { data: settings, pending } = await useApiFetch('/api/settings/', {
-//   query: {
-//     offset: 10,
-//   }
-// });
+const { data: settings, pending } = await useApiFetch('/api/settings/');
 
-// const terms = computed(() => {
-//   const termsItem = settings.value?.results?.find(item => item?.key === 'terms_text');
-//   return termsItem?.value || '';
-// });
+const terms = computed(() => {
+  const termsItem = settings.value?.results?.find(item => item?.key === 'terms_text');
+  return termsItem?.value || '';
+});
 
-// const isLoading = computed(() => pending.value);
+const isLoading = computed(() => pending.value);
 
+const copyright = computed(() => {
+  const copyrightItem = settings.value?.results?.find(item => item?.key === 'copyright');
+  return copyrightItem?.value || '';
+});
 
 </script>
 
@@ -160,6 +202,22 @@ import JJIcon from '~/components/core/icons/JJIcon.vue';
   font-weight: 700;
   font-size: 20px;
   color: $white;
+}
+
+.certification-logos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+
+  .cert-logo {
+    width: 100px;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
 }
 
 </style>

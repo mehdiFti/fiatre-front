@@ -1,21 +1,25 @@
 <template>
   <div class="container mt-5 mb-5">
     <div class="category-wrapper">
-      <CategoryItem
-        v-for="item in categories"
+      <div 
+        v-for="item in categories" 
         :key="item.id"
-        :src="getImageUrl(item.image)"
-        :name="item.name"
-        :link="item.slug"
-        class="category-card"
-      />
+        class="category-card category-item-containers"
+      >
+        <div class="category-item">
+          <NuxtLink :to="linkPath + item.slug">
+            <img class="category-img" :src="getImageUrl(item.image)" />
+          </NuxtLink>
+          <div class="category-text">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import CategoryItem from '~/components/pages/categories/CategoryItem.vue';
-
 const props = defineProps<{
   categories: Array<{
     id: number;
@@ -24,7 +28,13 @@ const props = defineProps<{
     slug: string;
     description: string;
   }>;
+  linkType?: 'categories' | 'episodes';
 }>();
+
+// Set the link path based on the linkType prop
+const linkPath = computed(() => {
+  return `/${props.linkType || 'categories'}/`;
+});
 
 // Define the base URL for the image
 const baseUrl = 'https://www.fiatre.ir';
@@ -39,13 +49,56 @@ const getImageUrl = (imagePath: string) => {
 .category-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .category-card {
-  flex: 1 1 calc(33.33% - 20px);
-  max-width: calc(33.33% - 20px);
+  flex: 1 1 calc(25% - 10px);
+  max-width: calc(25% - 10px);
   box-sizing: border-box;
+}
+
+.category-item-containers {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px
+}
+
+.category-item {
+  width: 100%;
+  max-width: 250px;
+  aspect-ratio: 3/2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.category-item:hover {
+  transform: scale(1.05);
+}
+
+.category-img {
+
+  width: 100%; 
+  height: auto; 
+  object-fit: cover; 
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.3s;
+}
+
+.category-text {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  text-align: center;
+  font-weight: 500;
+  word-wrap: break-word;
+  color: #333;
 }
 
 @media (max-width: 991px) {

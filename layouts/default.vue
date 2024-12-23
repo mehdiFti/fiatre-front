@@ -1,7 +1,7 @@
 <template>
   <div class="color">
     <Header class="mb-5" />
-    <main>
+    <main class="main-layout">
       <slot />
     </main>
     <Footer />
@@ -36,4 +36,8 @@ useHead(head);
 <style lang="scss">
 @import "/assets/scss/common/app";
 @import "/assets/scss/layout/default";
+
+.main-layout {
+  min-height: 100dvh;
+}
 </style>

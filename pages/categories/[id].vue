@@ -8,7 +8,7 @@
         </ul>
     </div> -->
     <!-- {{ categories }} -->
-  <CategoryParent :status="getCategoriesRequest.status.value" :categories="categories" class="mb-5" />
+  <CategoryParent :status="getCategoriesRequest.status.value" :categories="categories" linkType="episodes" class="mb-5" />
 </template>
 
 <script setup lang="ts">

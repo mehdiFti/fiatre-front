@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="image-header-wrapper">
-      <NuxtImg :src="imageHeader.image"
+      <img :src="imageHeader.image"
        :alt="imageHeader.title"
          class="image-header"
          v-if="imageHeader.image" />

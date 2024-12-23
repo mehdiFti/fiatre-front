@@ -7,7 +7,7 @@ export const useUserStore = defineStore('user', () => {
   const password = ref('');
 
   const user = ref(null);
-
+const isProfileFetched = ref(false)
   const refreshToken = useCookie('refresh-token');
   const accessToken = useCookie('access-token');
 
@@ -27,6 +27,7 @@ export const useUserStore = defineStore('user', () => {
     refreshToken.value = undefined;
     accessToken.value = undefined;
     user.value = null;
+    isProfileFetched.value = false;
 
     let fullpath = '';
     if (to) {
@@ -53,6 +54,14 @@ export const useUserStore = defineStore('user', () => {
   const profileGetRequest = useAuthFetch('/api/auth/profile/', {
     immediate: false,
   });
+
+  const getMe = async () => {
+    await profileGetRequest.execute();
+
+    if (profileGetRequest.status.value === 'success') {
+      isProfileFetched.value = true;
+    }
+  }
 
   const computedRefreshTokenRequestBody = computed(() => ({
     refresh: useCookie('refresh-token').value,
@@ -82,10 +91,13 @@ export const useUserStore = defineStore('user', () => {
   });
 
   watch(loginPostRequest.data, (newValue) => {
+    console.log('loginPostRequest',newValue);
+    
     if (newValue) {
       refreshToken.value = newValue.refresh;
       accessToken.value = newValue.access;
       user.value = newValue.user;
+      isProfileFetched.value = true;
     }
   });
 
@@ -101,12 +113,17 @@ export const useUserStore = defineStore('user', () => {
     user.value = _user;
   };
 
+  const setUser = (userData: any) => {
+    user.value = userData;
+  };
+
   return {
     phone,
     password,
     loginPostRequest,
     isAuthenticated,
     profileGetRequest,
+    isProfileFetched,
     user,
     refreshToken,
     accessToken,
@@ -114,6 +131,8 @@ export const useUserStore = defineStore('user', () => {
     lastPlayDate,
     setLastPlayDate,
     logout,
-    setLoginData
+    setLoginData,
+    setUser,
+    getMe,
   };
 });

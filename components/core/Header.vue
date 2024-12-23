@@ -4,7 +4,7 @@
       <hr class="header-hr" />
       <div class="left-section">
         <NuxtLink to="/" class="logo">
-          <img
+          <nuxt-img
             src="https://www.fiatre.ir/static/front/src/icons/logo.png"
             alt="Logo"
             class="logo-img"
@@ -12,27 +12,24 @@
         </NuxtLink>
       </div>
       <li>
-                      <NuxtLink to="/game" class="link-black" @click="toggleMenu">
+                      <NuxtLink to="/game" class="link-black">
                         <NuxtIcon name="game" /> بازی و سرگرمی
                       </NuxtLink>
                     </li>
+                    <li>
+                      <NuxtLink to="/episodes/%D9%81%DB%8C%D9%84%D9%85-%D8%AA%D8%A6%D8%A7%D8%AA%D8%B1-%D9%85%DA%A9%D8%A8%D8%AB/" class="link-black" >
+                        <NuxtIcon name="game" /> بازی و سرگرمی
+                      </NuxtLink>
+                    </li>
+                    
       <div class="right-section">
-        <div class="search-container" v-if="!isSearchInModal">
-          <NuxtIcon name="search" class="search-icon" @click="toggleSearchModal" />
-          
-          <button @click="searchSubmit">
-                      +
-                    </button>
-          <input
-          v-model.trim="searchInput"
-            type="text"
-            placeholder="جستجو..."
-            class="search-input"
-          />
-        </div>
+        <SearchBox />
         <template v-if="userStore.isAuthenticated" dir="rtl">
           <div class="wrapper-when-login">
-            <NuxtLink to="/subscription/plans" class="subscription-button">خرید اشتراک</NuxtLink>
+            <NuxtLink v-show="userStore.user?.is_subscription_active === false" to="/subscription/plans" class="subscription-button-deactive">خرید اشتراک</NuxtLink>
+            <!-- <NuxtLink v-else to="/account" class="subscription-button-active">
+              اشتراک باقی مانده: <SubscriptionDuration :slug="userStore.user?.subscription_slug"/>
+            </NuxtLink> -->
             <div class="burger-menu" @click="toggleMenu">
               <div :class="['burger-icon', isMenuOpen ? 'open' : '']"></div>
             </div>
@@ -95,20 +92,11 @@
                       <div class="timer-subs" @click="toggleMenu">
                         <NuxtIcon name="timer" />زمان باقی مانده از اشتراک: 
                       </div>
-                      <SubscriptionDuration :slug="userStore.user?.subscription_slug"/>
+                      
+                        <SubscriptionDuration :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration" :slug="userStore.user?.subscription_slug"/>
+                     
                     </li>
                   </ul>
-                  <div v-if="isSearchInModal" class="search-container">
-                    <button @click="searchSubmit">
-                      +
-                    </button>
-                    <input 
-                    v-model.trim="searchInput"
-                      type="text"
-                      placeholder="Search..."
-                      class="search-input"
-                    />
-                  </div>
                   <button class="logout-button" @click="logout">خروج از حساب کاربری</button>
                 </div>
               </div>
@@ -128,18 +116,6 @@
     <ModalWarn/>
 
   </div>
-
-  <transition name="fade">
-    <div v-if="isSearchModalOpen" class="search-modal" @click="toggleSearchModal">
-      <div class="search-modal-content" @click.stop>
-        <input
-          type="text"
-          placeholder="سرچ کنید..."
-          class="search-modal-input"
-        />
-      </div>
-    </div>
-  </transition>
 </template>
 
 <script setup>
@@ -148,15 +124,13 @@ import { useWindowSize } from '@vueuse/core';
 import ModalWarn from './ModalWarn.vue';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
 import MailBox from '~/components/core/MailBox.vue';
+import SearchBox from '~/components/core/SearchBox.vue';
 import { useRouter } from 'vue-router';
 
 const route = useRoute();
 
 const isMenuOpen = ref(false);
-const isSearchInModal = ref(false);
-const isSearchModalOpen = ref(false);
 const showMailBox = ref(false);
-const searchInput = ref(route.query.q || '');
 const userStore = useUserStore()
 
 const { width } = useWindowSize();
@@ -178,31 +152,13 @@ function toggleMenu() {
   });
 }
 
-const searchSubmit = () => {
-  router.push(`/search?q=${searchInput.value}`);
-}
-
-
-const router = useRouter();
-
 function logout() {
   userStore.logout();
-}
-
-function toggleSearchModal() {
-  isSearchModalOpen.value = !isSearchModalOpen.value;
 }
 
 function toggleMailBox() {
   showMailBox.value = !showMailBox.value;
 }
-
-
-watch(width, (newWidth) => {
-  if (newWidth > 768) {
-    isSearchModalOpen.value = false;
-  }
-});
 
 </script>
 
@@ -268,21 +224,7 @@ watch(width, (newWidth) => {
   color: $primary;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-  position: relative;
-}
-
-.search-input {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  transition: width 0.3s ease;
-}
-
-.subscription-button {
+.subscription-button-deactive {
   background-color: $third;
   color:$white !important;
   white-space: nowrap;
@@ -296,8 +238,26 @@ watch(width, (newWidth) => {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.subscription-button:hover {
+.subscription-button-deactive:hover {
   background-color: darken($third, 10%);
+}
+
+.subscription-button-active {
+  background-color: $primary;
+  color:$white !important;
+  white-space: nowrap;
+  font-weight: bold;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-button-deactive:hover {
+  background-color: darken($primary, 10%);
 }
 
 .burger-menu {
@@ -382,109 +342,6 @@ watch(width, (newWidth) => {
     justify-content: center;
     align-items: center;
   }
-}
-
-@media (max-width: 768px) {
-  .search-container {
-    position: relative;
-  }
-
-  .search-input {
-    display: none;
-  }
-
-  .search-icon {
-    display: block;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-
-  .search-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .search-modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 400px;
-  }
-
-  .search-modal-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-}
-
-@media (min-width: 769px) {
-  .search-icon {
-    display: none;
-  }
-
-  .search-input {
-    display: block;
-  }
-}
-
-@media (max-width: 480px) {
-  .search-input {
-    width: 150px;
-  }
-
-
-  .search-modal-content {
-    width: 90%;
-    padding: 15px;
-  }
-
-  .search-modal-input {
-    padding: 8px;
-  }
-}
-
-@media (max-width: 390px) {
-  .burger-menu {
-    height: 25px;
-    margin-left: 0;
-    
-  }
-
-  .wrapper-when-login {
-    gap: 0;
-  }
-
-
-  .nav-link,
-  .subscription-button {
-    margin: 0 5px;
-    padding: 5px;
-    font-size: 0.7rem;
-  }
-
-  .search-container {
-    margin-right: 10px;
-  }
-
-  .search-input {
-    width: 120px;
-  }
-}
-
-@media (max-width: 768px) {
-
 }
 
 .wrapper-when-login {
@@ -679,14 +536,16 @@ watch(width, (newWidth) => {
 
   
   .nav-link,
-  .subscription-button,
+  .subscription-button-active,
+  .subscription-button-deactive,
   .category-link {
     margin: 0 2px;
     padding: 2px;
     font-size: 0.8rem;
   }
 
-  .subscription-button {
+  .subscription-button-active,
+  .subscription-button-deactive {
     padding: 4px 2px;
   }
 
@@ -715,14 +574,16 @@ watch(width, (newWidth) => {
   }
 
   .nav-link,
-  .subscription-button,
+  .subscription-button-active,
+  .subscription-button-deactive,
   .category-link {
     margin: 0 1px;
     padding: 0;
     font-size: 0.75rem;
   }
 
-  .subscription-button {
+  .subscription-button-active,
+  .subscription-button-deactive {
     padding: 3px 1px;
   }
 
