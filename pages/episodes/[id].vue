@@ -1,16 +1,11 @@
 <template>
-    <RtlHeader class="mb-5" direction="rtl"/>
-
-    <div v-if="!isProfileLoaded" class="loading-state">
-      Loading...
-    </div>
-
-    <template v-else>
+    <div>
+      <ModalWarn dir="rtl"/>
       <!-- For series -->
       <div v-if="series.length > 0">
         <RtlImageHeader :imageHeader="imageHeader" />
         <VideoSeries 
-          v-if="userStore.user.is_subscription_active"
+          v-if="userStore.user?.is_subscription_active"
           class="mb-5" 
           :episodes="series" 
         />
@@ -21,20 +16,20 @@
         <VideoHeader 
           v-if="userStore.user?.is_subscription_active && movie.title" 
           :movie="movie" 
-          :videoUrl="movie.video_mp4" 
+          :videoUrl="movie.video_mp4"
         /> 
         <RtlImageHeader 
           v-else
           :imageHeader="imageHeader" 
         />
       </div>
-    </template>
+      
 
-    <VideoDetails dir="rtl" :details="details" mb-5 />
+    <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
     
- <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
+    <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
   
-  <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" /> 
+    <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" /> 
 
     <TheSeparator title="توضیحات" dir="rtl" class="mt-5" />
     
@@ -48,6 +43,7 @@
     <TheSeparator v-if="cardSlider.length > 0" title="عناوین مشابه" dir="rtl" />
     
     <TheSlider class="mb-5" :cardsSlider="cardSlider" />
+
     
     <CommentSection 
       :comments="comments" 
@@ -65,9 +61,9 @@
       />
     </CommentSection>
     
-    <Footer dir="rtl"/>
+    <Footer dir="rtl" />
 
-    
+  </div>
 </template>
            
 <script setup lang="ts">
@@ -86,20 +82,16 @@ import CastCrew from '~/components/core/videos/CastCrew.vue';
 import CommentSection from '~/components/core/CommentSection.vue';
 import TheSlider from '~/components/core/TheSlider.vue';
 import Gallery from '~/components/core/Gallery.vue';
-import RtlHeader from '~/components/core/RtlHeader.vue';
 import Footer from '~/components/core/Footer.vue';
 import TheSeparator from '~/components/core/TheSeparator.vue';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import ModalWarn from '~/components/core/ModalWarn.vue';
 import { useUserStore } from '~/stores/userStore';
 import CommentItem from '~/components/core/CommentItem.vue';
 import { useRelatedEpisodes } from '~/composables/useRelatedEpisodes'
 
 const userStore = useUserStore();
 const route = useRoute();
-
-// await userStore.getMe();
-
-
 
 const getEpisodeRequest = await useAuthFetch<any>(`/api/episodes/${route.params.id}/`, {
 });
@@ -148,18 +140,19 @@ const movie = computed(() => {
     image: episode.value.image,
     number: episode.value.number,
     description: episode.value.description,
+    lastWatchedSecond: episode.value.last_watched_second || 0
   }
 })
 
 const details = computed(()=>{
-return {
-genreValue: episode.value.genre,
-productValue: episode.value.country,
-durationValue: episode.value.time,
-ageValue: episode.value.time,
-categoryValue: episode.value.category.name,
-releaseValue: episode.value.construction_year
-}
+  return {
+    genreValue: episode.value.genre,
+    productValue: episode.value.country,
+    durationValue: episode.value.time,
+    ageValue: episode.value.time,
+    categoryValue: episode.value.category.name,
+    releaseValue: episode.value.construction_year
+  }
 })
 
 const artists = computed(() => {
@@ -327,8 +320,19 @@ const series = computed(() => {
 });
 
 
-const { relatedEpisodes } = useRelatedEpisodes(artists, route.params.id)
-const cardSlider = relatedEpisodes
+const episodeId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
+const { relatedEpisodes } = useRelatedEpisodes(artists, episodeId);
+const cardSlider = computed(() => relatedEpisodes.value || []);
+
+const saveWatchProgress = async (second: number) => {
+    await useAuthFetch(`/api/episodes/${episode.value.slug}/watch/log/`, {
+      method: 'POST',
+      body: {
+        second: Math.floor(second),
+        episode: episode.value.id
+      }
+    });
+};
 
 </script>
 

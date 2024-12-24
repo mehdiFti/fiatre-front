@@ -11,6 +11,9 @@
           <button class="apply-button" @click="applyDiscount">اعمال</button>
         </div>
       </div>
+
+      <div>initial price: {{ subscription.price }}</div>
+      <div>price with general discount: {{ subscription.discount_price }}</div>
       <div class="final-price-container">
         <span class='text-final-price'>قیمت نهایی: </span>
         <span class="final-price">{{ formatNumber(finalPrice) }} تومان</span>
@@ -19,11 +22,6 @@
         <p>لطفا قبل از پرداخت اطلاعات خود را بررسی کنید.</p>
       </div>
       <button class="pay-button" @click="proceedToPayment">پرداخت</button>
-      <ModalMessage
-        :visible="isModalVisible"
-        :message="modalMessage"
-        @close="isModalVisible = false"
-      />
     </section>
   </main>
 </template>
@@ -48,16 +46,25 @@ useSeoMeta({
 
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import ModalMessage from '@/components/core/ModalMessage.vue';
+import { toast } from 'vue3-toastify';
 import redirectToLogin from '~/middleware/redirectToLogin';
 
 const route = useRoute();
-const originalPrice = ref(parseFloat(route.query.finalPrice as string) || 0);
+const subscriptionGetRequest = await useAuthFetch(`api/subcriptions/types/${route.params.id}`);
+
+const subscription = computed(() => subscriptionGetRequest.data.value);
+
+const originalPrice = ref(subscription.value?.price);
 const finalPrice = ref(originalPrice.value);
 
+const couponId = ref();
+
 const discountCode = ref('');
-const isModalVisible = ref(false);
-const modalMessage = ref('');
+
+const gatewayLinkBody = computed(() => ({
+  type: subscription.value.id,
+  coupon: couponId.value
+}))
 
 const formatNumber = (number: Number) => {
   const formattedNumber = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -67,6 +74,13 @@ const formatNumber = (number: Number) => {
   }
   return formattedNumber;
 };
+
+const gatewayLinkRequest = useAuthFetch('/api/gateway/payment/link/', {
+  method: 'post',
+  body: gatewayLinkBody,
+  immediate: false,
+  watch: false,
+});
 
 const applyDiscount = async () => {
   try {
@@ -84,21 +98,26 @@ const applyDiscount = async () => {
     if (response.data && response.data.value) {
       if (response.data.value.status === 'success') {
         finalPrice.value = response.data.value.new_amount;
-        modalMessage.value = 'کد تخفیف مورد نظر با موقیت ثبت شد.';
+        couponId.value = response.data.value.coupon_id;
+        toast.success('کد تخفیف مورد نظر با موقیت ثبت شد.');
       } else {
-        modalMessage.value = 'همچین کد تخفیفی وجود ندارد!';
+        toast.error('همچین کد تخفیفی وجود ندارد!');
       }
     } else if (response.error && response.error.value) {
-      modalMessage.value = 'همچین کد تخفیفی وجود ندارد!';
+      toast.error('همچین کد تخفیفی وجود ندارد!');
     }
   } catch (error) {
-    modalMessage.value = 'همچین کد تخفیفی وجود ندارد!';
-  } finally {
-    isModalVisible.value = true;
+    toast.error('همچین کد تخفیفی وجود ندارد!');
   }
 };
 
-const proceedToPayment = () => {
+const proceedToPayment = async () => {
+  await gatewayLinkRequest.execute();
+
+  console.log(gatewayLinkRequest);
+  if (gatewayLinkRequest.status.value === 'success') {
+    location.href = gatewayLinkRequest.data.value.link;
+  }
 };
 </script>
 

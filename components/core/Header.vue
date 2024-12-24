@@ -24,13 +24,22 @@
                     
       <div class="right-section">
         <SearchBox />
-        <template v-if="userStore.isAuthenticated" dir="rtl">
           <div class="wrapper-when-login">
-            <NuxtLink v-show="userStore.user?.is_subscription_active === false" to="/subscription/plans" class="subscription-button-deactive">خرید اشتراک</NuxtLink>
-            <!-- <NuxtLink v-else to="/account" class="subscription-button-active">
-              اشتراک باقی مانده: <SubscriptionDuration :slug="userStore.user?.subscription_slug"/>
-            </NuxtLink> -->
-            <div class="burger-menu" @click="toggleMenu">
+            <NuxtLink 
+              v-if=" userStore.isAuthenticated && !userStore.user?.is_subscription_active" 
+              to="/subscription/plans" 
+              class="subscription-button-deactive">
+              خرید اشتراک
+            </NuxtLink>
+            <NuxtLink 
+              v-else-if="userStore.isAuthenticated"
+              to="/account" 
+              class="subscription-button-active">
+              صفحه اکانت
+            </NuxtLink>
+
+            
+            <div v-if="userStore.isAuthenticated" class="burger-menu" @click="toggleMenu">
               <div :class="['burger-icon', isMenuOpen ? 'open' : '']"></div>
             </div>
             <transition name="slide-fade">
@@ -39,7 +48,7 @@
                   <ul class="modal-list">
                     <li>
                       <NuxtLink to="/account" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="pen" /> zویرایش حساب کاربری
+                        <NuxtIcon name="pen" /> ویرایش حساب کاربری
                       </NuxtLink>
                     </li>
                     <li>
@@ -102,8 +111,7 @@
               </div>
             </transition>
           </div>
-        </template>
-        <template v-else dir="rtl">
+        <template v-if="!userStore.isAuthenticated" dir="rtl">
           <div class="gap-from-burger">
             <NuxtLink to="/login" class="auth-link">ورود</NuxtLink>
             <span>|</span>
@@ -113,15 +121,13 @@
       </div>
     </header>
 
-    <ModalWarn/>
 
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, nextTick } from 'vue';
 import { useWindowSize } from '@vueuse/core';
-import ModalWarn from './ModalWarn.vue';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
 import MailBox from '~/components/core/MailBox.vue';
 import SearchBox from '~/components/core/SearchBox.vue';
@@ -201,6 +207,9 @@ function toggleMailBox() {
 .right-section {
   display: flex;
   align-items: center;
+  &.is-rtl {
+    flex-direction: row-reverse;
+  }
 }
 
 .logo-img {
@@ -256,7 +265,7 @@ function toggleMailBox() {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.subscription-button-deactive:hover {
+.subscription-button-active:hover {
   background-color: darken($primary, 10%);
 }
 

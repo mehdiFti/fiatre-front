@@ -1,5 +1,4 @@
 <template>
-  <RtlHeader dir="rtl"/>
   <ClientOnly>
     <div class="container">
       <h2 class="incomplete-videos-title">ویدئوهای ناتمام من</h2>
@@ -22,10 +21,14 @@
               :title="video.title"
               :src="video.src"
               keep-alive
+              load="play"
+              preload="none"
+              playsInline
+              viewType="video"
               :current-time="video.second"
               class="video-player"
               @play="handlePlay($event.target)"
-              @time-update="handleTimeUpdate(video.key, $event)"
+              @pause="handlePause(video, $event)"
               @ended="handleVideoEnded(video.key)"
             >
               <media-provider />
@@ -34,8 +37,20 @@
                 :src="video.poster"
                 :alt="`Poster for ${video.title}`"
               />
-              <media-video-layout class="video-layout" />
-              <vds-volume></vds-volume>
+              <media-video-layout class="video-layout">
+                <media-controls class="vds-controls">
+                  <media-controls-group class="vds-controls-group">
+                    <div class="vds-controls-spacer"></div>
+                    <media-volume-slider v-if="isMobile" class="vds-slider">
+                      <div class="volume-settings">
+                        <div class="vds-slider-track"></div>
+                        <div class="vds-slider-track-fill vds-slider-track"></div>
+                        <div class="vds-slider-thumb"></div>
+                      </div>
+                    </media-volume-slider>
+                  </media-controls-group>
+                </media-controls>
+              </media-video-layout>
             </media-player>
             
             <div class="episode-info">
@@ -48,22 +63,27 @@
               <DownloadButton :videoUrl="video.src" />
               <BookmarkButton
                 :videoId="video.key"
-                :videoDetails="{ key: video.key, title: video.title, src: video.src, poster: video.poster, description: video.description }"
+                :videoDetails="{ 
+                  key: video.key, 
+                  title: video.title, 
+                  video: video.src, 
+                  cover: video.poster,
+                  description: video.description 
+                }"
+                @bookmark-toggled="handleBookmarkToggled"
               />
-              <button class="remove-button" @click="removeVideo(video.key)" title="ویدئو از صفحه حذف شود؟">
+              <button class="remove-button" @click="removeVideo(video.key)">
                 <nuxt-icon name="cancel" />
               </button>
             </div>
           </div>
         </template>
 
-        <!-- Loading State -->
+        <!-- Loading & Error States -->
         <main v-else-if="getWatchLogsRequest.status.value === 'pending'" class="loading-message">
           در حال بارگذاری...
         </main>
-
-        <!-- Error State -->
-        <main v-else-if="getWatchLogsRequest.status.value === 'error'" class="error-message">
+        <main v-else class="error-message">
           خطا در بارگذاری ویدئوها
         </main>
       </div>
@@ -74,8 +94,13 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'custom'
+  layout: 'custom',
+  middleware: ['redirect-to-sub']
 });
+import 'vidstack/bundle';
+import 'vidstack/icons';
+import { MediaPlayerElement } from 'vidstack/elements';
+import { onBeforeUnmount, ref, computed } from 'vue';
 
 // SEO Meta
 useSeoMeta({
@@ -90,13 +115,11 @@ useSeoMeta({
   robots: 'index, follow'
 });
 
-import RtlHeader from '~/components/core/RtlHeader.vue';
 import Footer from '~/components/core/Footer.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import 'vidstack/bundle';
 import 'vidstack/icons';
-import { MediaPlayerElement } from 'vidstack/elements';
 
 // Types
 interface WatchLogResponse {
@@ -115,7 +138,9 @@ interface WatchLogResponse {
   }[];
 }
 
-const addPlayerRef = ref();
+// Player State
+const playerRefs = ref<MediaPlayerElement[]>([]);
+const currentPlaying = ref<MediaPlayerElement | null>(null);
 
 // API Call
 const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/');
@@ -127,60 +152,39 @@ const incompleteVideos = computed(() => {
       key: item.id.toString(),
       title: item.episode.title,
       src: item.episode.video,
-      poster: `https://fiatre.ir/${item.episode.image}`,
+      poster: `https://fiatre.ir/${item.episode.cover}`,
       second: item.second,
       description: item.episode.en_title || item.episode.title,
-      removing: false
+      removing: false,
+      slug: item.episode.slug,
     }));
   }
   return [];
 });
 
-watch(addPlayerRef, (newRef) => {
-  console.log(newRef);
-}, {immediate: true});
-
-// Player Management
-const playerRefs = ref<HTMLMediaElement[]>([]);
-const currentPlaying = ref<HTMLMediaElement | null>(null);
-
+// Event Handlers
 const handlePlay = (player: EventTarget) => {
-  const mediaPlayer = player as HTMLMediaElement;
+  const mediaPlayer = player as MediaPlayerElement;
   if (currentPlaying.value && currentPlaying.value !== mediaPlayer) {
     currentPlaying.value.pause();
   }
   currentPlaying.value = mediaPlayer;
 };
 
-const handleTimeUpdate = async (key: string, event: Event) => {
-  console.log(key, event)
-  // const currentTime = (event.target as HTMLMediaElement).currentTime;
-  // try {
-  //   await useAuthFetch(`/api/episodes/watch-logs/${key}/`, {
-  //     method: 'PATCH',
-  //     body: {
-  //       second: currentTime
-  //     }
-  //   });
-  // } catch (error) {
-  //   console.error('Failed to update watch time:', error);
-  // }
-};
+const handlePause = async (video: any, event: Event) => {
+  const currentTime = (event.target as HTMLMediaElement).currentTime;
 
-const getSavedTime = (key: string) => {
-  const video = incompleteVideos.value.find(v => v.key === key);
-  return video ? video.second : 0;
-};
-
-const truncateDescription = (description?: string) => {
-  if (!description) return '';
-  
-  const maxWords = 100;
-  const words = description.split(' ');
-  if (words.length > maxWords) {
-    return words.slice(0, maxWords).join(' ') + '...';
+  try {
+    await useAuthFetch(`/api/episodes/${video.slug}/watch/log/`, {
+      method: 'post',
+      body: `second=${currentTime}&episode=${video.key}`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+  } catch (error) {
+    console.error('Failed to update watch time:', error);
   }
-  return description;
 };
 
 const handleVideoEnded = (key: string) => {
@@ -188,29 +192,22 @@ const handleVideoEnded = (key: string) => {
   if (video) {
     video.removing = true;
     setTimeout(() => {
-      localStorage.removeItem(`incomplete-video-${key}`);
-      incompleteVideos.value = incompleteVideos.value.filter(video => video.key !== key);
+      incompleteVideos.value = incompleteVideos.value.filter(v => v.key !== key);
     }, 500);
   }
 };
 
-const removeVideo = (key: string) => {
-  const video = incompleteVideos.value.find(video => video.key === key);
-  if (video) {
-    video.removing = true;
-    setTimeout(() => {
-      localStorage.removeItem(`incomplete-video-${key}`);
-      incompleteVideos.value = incompleteVideos.value.filter(video => video.key !== key);
-    }, 500);
-  }
+// Utils
+const truncateDescription = (description?: string) => {
+  if (!description) return '';
+  const maxWords = 100;
+  const words = description.split(' ');
+  return words.length > maxWords ? words.slice(0, maxWords).join(' ') + '...' : description;
 };
 
+// Cleanup
 onBeforeUnmount(() => {
-  playerRefs.value.forEach((player) => {
-    if (player) {
-      player.pause();
-    }
-  });
+  playerRefs.value.forEach(player => player?.pause());
 });
 </script>
 
@@ -236,10 +233,7 @@ onBeforeUnmount(() => {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  height: auto;
-  position: relative;
-  aspect-ratio: 3/4;
-  min-height: 0;
+  min-height: 400px;
 }
 
 .video-episode-card.removing {
@@ -249,19 +243,28 @@ onBeforeUnmount(() => {
 
 .video-player {
   width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
-  background-color: $light;
+  height: 200px;
   position: relative;
+  overflow: hidden;
 
   ::v-deep(video),
   ::v-deep(.vds-poster) {
     position: absolute;
-    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  ::v-deep(.video-layout) {
+    height: 100%;
+  }
+
+  ::v-deep(.vds-poster :where(img)) {
+    border: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 }
 

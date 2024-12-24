@@ -1,12 +1,12 @@
 <template>
-    <div v-if='false && showModal' class="modal-container">
-      <div  class="warn-wrappers">
+    <div v-if='showModal && !userStore.user?.is_subscription_active' class="modal-container">
+      <div class="warn-wrappers">
         <div class="warn-img">
           <img src="/assets/images/warn.png" alt="warn" class="warn-logo" />
         </div>
         <div class="warn-text">برای تماشا یا دانلود باید اشتراک تهیه کنید.</div>
         <div class="warn-button">
-          <NuxtLink class="warn-subscription" to="/subscription/plans" @click.native="closeModal">خرید اشتراک</NuxtLink>
+          <NuxtLink class="warn-subscription" to="/subscription/plans" @click="closeModal">خرید اشتراک</NuxtLink>
           <button class="warn-close" @click="closeModal">بستن</button>
         </div>
       </div>
@@ -14,13 +14,22 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
-  
-  const showModal = ref(true);
+  import { ref, onMounted } from 'vue';
+  import { useUserStore } from '~/stores/userStore';
+  const userStore = useUserStore();
+  const showModal = ref(false);
   
   const closeModal = () => {
     showModal.value = false;
+    console.log('Modal closed:', showModal.value); // Debug log
   };
+  
+  onMounted(() => {
+    setTimeout(() => {
+      showModal.value = true;
+      console.log('Modal opened:', showModal.value); // Debug log
+    }, 5000);
+  });
   </script>
   
   <style lang="scss" scoped>
@@ -33,6 +42,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1000;
   }
 
   .warn-wrappers {

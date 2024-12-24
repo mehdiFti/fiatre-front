@@ -1,38 +1,42 @@
 <template>
   <div class="container mt-4" dir="rtl">
-    <div class="video-details-wrapper">
-      <div class="video-details">
+    <div class="video-details-wrapper" :class="{ 'is-series': isSeries }">
+      <div v-if="!isSeries" class="video-details">
         <div class="video-detail-desc">
           <nuxt-icon name="daily-calendar" class="icon" />
           سال انتشار: {{ details.releaseValue }}
         </div>
       </div>
-      <div class="video-details">
+
+      <div v-if="!isSeries" class="video-details">
         <div class="video-detail-desc">
           <nuxt-icon name="camera-movie" class="icon" />
           ژانر: {{ details.genreValue }}
         </div>
       </div>
-      <div class="video-details">
+
+      <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
           <nuxt-icon name="category" class="icon" />
           دسته بندی: {{ details.categoryValue }}
         </div>
       </div>
-      <div class="video-details">
+
+      <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
           <nuxt-icon name="age-alt" class="icon" />
-          <!-- رده بندی سنی: {{ details.ageValue }} -->
           رده بندی سنی: 15+
         </div>
       </div>
-      <div class="video-details">
+
+      <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
           <nuxt-icon name="time" class="icon" />
           مدت زمان: {{ details.durationValue }} دقیقه 
         </div>
       </div>
-      <div class="video-details">
+
+      <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
           <nuxt-icon name="earth" class="icon" />
           محصول: {{ details.productValue }}
@@ -47,6 +51,10 @@ defineProps({
   details: {
     type: Object,
     required: true
+  },
+  isSeries: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
@@ -59,12 +67,17 @@ defineProps({
   align-items: center;
   background: darken($light, 10);
   padding-top: 0;
+  
+  &.is-series {
+    justify-content: space-evenly;
+    align-items: start;
+  }
 }
 
 .video-details {
   display: flex;
   gap: 10px;
-  height: 2.6rem;
+  min-height: 2.6rem;
   overflow: hidden;
   padding-top: 0;
 
@@ -75,6 +88,20 @@ defineProps({
 
   @include media-breakpoint-down(md) {
     width: calc(100%/2);
+  }
+
+  &.series-item {
+    @include media-breakpoint-up(lg) {
+      width: calc(100%/4);
+    }
+    
+    @include media-breakpoint-down(lg) {
+      width: calc(100%/2);
+    }
+    
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+    }
   }
 
   @media (max-width: 1200px) and (min-width: 769px) {

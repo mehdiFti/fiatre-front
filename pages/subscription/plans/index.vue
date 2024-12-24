@@ -24,7 +24,7 @@
                 <span class="original-price">{{ formatNumber(plan.originalPrice) }}</span>
                 <span class="final-price">{{ formatNumber(plan.finalPrice) }}</span>
               </div>
-              <NuxtLink :to="{ name: 'subscription-buys-id', params: { id: plan.plansRoute }, query: { finalPrice: plan.finalPrice, duration: plan.duration } }" class="select-button">
+              <NuxtLink :to="{ name: 'subscription-buys-id', params: { id: plan.plansRoute }}" class="select-button">
                 {{ plan.buttonText }}
               </NuxtLink>
             </div>
@@ -93,10 +93,6 @@ const fetchSubscriptionPlans = async () => {
   }
 };
 fetchSubscriptionPlans();
-// Watch for changes and refetch
-watchEffect(() => {
-  fetchSubscriptionPlans();
-});
 
 // Update plans computed property
 const plans = computed(() => {

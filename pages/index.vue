@@ -82,7 +82,7 @@ const heroSections = computed(() => {
       // font: slider.image,
       title: slider.name,
       text: slider.desc || 'برای تماشا کلیک کنید',
-      links: `/episodes/${slider.link}`,
+      links: slider.link,
     }));
   }
   return [];

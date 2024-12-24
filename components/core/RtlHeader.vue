@@ -77,7 +77,7 @@
                         <div class="timer-subs" @click="toggleMenu">
                           <NuxtIcon name="timer" />زمان باقی مانده از اشتراک: 
                         </div>
-                        <SubscriptionDuration/>
+                        <SubscriptionDuration :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration"/>
                       </li>
                     </ul>
                     <div v-if="isSearchInModal" class="search-container">
@@ -102,7 +102,6 @@
           </template>
         </div>
       </header>
-      <ModalWarn/>
     </div>
     <transition name="fade">
       <div v-if="isSearchModalOpen" class="search-modal" @click="toggleSearchModal">
@@ -120,7 +119,6 @@
   <script setup>
   import { onMounted, nextTick, watch } from 'vue';
   import { useToggle } from '@vueuse/core';
-  import ModalWarn from './ModalWarn.vue';
   import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
   import MailBox from '~/components/core/MailBox.vue';
   import { useRouter } from 'vue-router';

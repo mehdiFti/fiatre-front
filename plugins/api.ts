@@ -39,7 +39,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       },
       async onResponse({request, response, options: _options}) {
-        console.log('nanana', request, response, _options);
         if (response.status === 401) {
           await nuxtApp.runWithContext(async () => {
             const userStore = useUserStore(nuxtApp.$pinia as Pinia);
