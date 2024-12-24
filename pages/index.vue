@@ -3,11 +3,15 @@
     <Hero class="margin-home" :images-hero="heroSections" />
 
     <div v-for="(section, key, index) in homeSections" :key="section.sectionTitle">
-      <HomeSection class="mb-5" :section="section"/>
+      <HomeSection v-if="index % 2 === 1" class="mb-5" :section="section"/>
 
+      <template v-else>
+        <HomeSeprator class="mb-3" :slug="section.slug" :title="section.name" />
+        
+        <TheSlider :cardsSlider="section.episodes" class="mb-5 semi-button" />
+      </template>
+      
       <ExclusiveCard :posters="posters[index]" />
-
-      <TheSlider :cardsSlider="section.episodes" class="mb-5 semi-button" />
     </div>
 
     <TheBlog />
@@ -33,6 +37,8 @@ import Hero from '~/components/pages/index/Hero.vue';
 import TheBlog from '~/components/core/TheBlog.vue';
 import TheSlider from '~/components/core/TheSlider.vue';
 import ExclusiveCard from '~/components/pages/index/ExclusiveCard.vue';
+
+import HomeSeprator from '~/components/core/HomeSeprator.vue';
 
 const getHomeRequest = await useApiFetch('/api/home/');
 

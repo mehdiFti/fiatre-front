@@ -1,28 +1,57 @@
 <template>
-  <main class="subscription-container mb-5">
-    <header>
-      <h1 class="subscription-title">انتخاب اشتراک</h1>
-    </header>
-    <section class="buy-card">
-      <div class="input-container">
-        <label for="discount-code" class="discount-label">کد تخفیف</label>
-        <div class="input-with-button">
-          <input type="text" id="discount-code" v-model="discountCode"/>
-          <button class="apply-button" @click="applyDiscount">اعمال</button>
+  <main class="container">
+    <div class="subscription-card">
+      <div class="subscription-header">
+        <h2>انتخاب اشتراک</h2>
+      </div>
+      <div class="subscription-body">
+        <!-- Discount Code Section -->
+        <div class="info-row">
+          <div class="discount-container">
+            <label for="discount-code" class="info-label">کد تخفیف</label>
+            <div class="input-group">
+              <input 
+                type="text" 
+                id="discount-code" 
+                v-model="discountCode"
+                placeholder="کد تخفیف خود را وارد کنید"
+                :disabled="discountRequest.status.value === 'success' || discountRequest.status.value === 'pending'"
+              />
+              <button class="apply-button dis" 
+              @click="applyDiscount"
+              :disabled="discountRequest.status.value === 'success' || discountRequest.status.value === 'pending'"
+              >
+                اعمال
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div>initial price: {{ subscription.price }}</div>
-      <div>price with general discount: {{ subscription.discount_price }}</div>
-      <div class="final-price-container">
-        <span class='text-final-price'>قیمت نهایی: </span>
-        <span class="final-price">{{ formatNumber(finalPrice) }} تومان</span>
+        <!-- Price Information -->
+        <div class="info-row">
+          <span class="info-label">قیمت اولیه</span>
+          <span class="info-value">{{ formatNumber(subscription.price) }} تومان</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">قیمت با تخفیف عمومی</span>
+          <span class="info-value">{{ formatNumber(subscription.discount_price) }} تومان</span>
+        </div>
+
+        <div class="info-row final-price">
+          <span class="info-label">قیمت نهایی</span>
+          <span class="info-value highlight">{{ formatNumber(finalPrice) }} تومان</span>
+        </div>
+
+        <p class="warning-message">
+          لطفا قبل از پرداخت اطلاعات خود را بررسی کنید.
+        </p>
+
+        <button class="payment-button" @click="proceedToPayment">
+          پرداخت
+        </button>
       </div>
-      <div class="additional-info">
-        <p>لطفا قبل از پرداخت اطلاعات خود را بررسی کنید.</p>
-      </div>
-      <button class="pay-button" @click="proceedToPayment">پرداخت</button>
-    </section>
+    </div>
   </main>
 </template>
 
@@ -54,11 +83,9 @@ const subscriptionGetRequest = await useAuthFetch(`api/subcriptions/types/${rout
 
 const subscription = computed(() => subscriptionGetRequest.data.value);
 
-const originalPrice = ref(subscription.value?.price);
-const finalPrice = ref(originalPrice.value);
+const finalPrice = ref(subscription.value?.discount_price);
 
 const couponId = ref();
-
 const discountCode = ref('');
 
 const gatewayLinkBody = computed(() => ({
@@ -81,35 +108,44 @@ const gatewayLinkRequest = useAuthFetch('/api/gateway/payment/link/', {
   immediate: false,
   watch: false,
 });
-
-const applyDiscount = async () => {
-  try {
-    const response = await useAuthFetch('/api/coupons/check/', {
+  const discountbody = computed(()=> {
+    return { 
+        code: discountCode.value,
+        amount: subscription.value.discount_price
+        }
+  })
+  const discountRequest = useAuthFetch('/api/coupons/check/', {
       method: 'POST',
+      watch: false,
+      immediate: false,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        code: discountCode.value,
-        amount: originalPrice.value
-      }),
-    });
+      body: discountbody,
+      });
+      const applyDiscount = async () => {
+      try {
+        await discountRequest.execute();
+    
 
-    if (response.data && response.data.value) {
-      if (response.data.value.status === 'success') {
-        finalPrice.value = response.data.value.new_amount;
-        couponId.value = response.data.value.coupon_id;
-        toast.success('کد تخفیف مورد نظر با موقیت ثبت شد.');
-      } else {
+        if (discountRequest.data && discountRequest.data.value) {
+          if (discountRequest.data.value.status === 'success') {
+            finalPrice.value = discountRequest.data.value.new_amount;
+            couponId.value = discountRequest.data.value.coupon_id;
+            toast.success('کد تخفیف مورد نظر با موقیت ثبت شد.');
+          } else {
+            finalPrice.value = subscription.value.discount_price;
+            toast.error('همچین کد تخفیفی وجود ندارد!');
+          }
+        } else if (discountRequest.error && discountRequest.error.value) {
+          finalPrice.value = subscription.value.discount_price;
+          toast.error('همچین کد تخفیفی وجود ندارد!');
+        }
+      } catch (error) {
+        finalPrice.value = subscription.value.discount_price;
         toast.error('همچین کد تخفیفی وجود ندارد!');
       }
-    } else if (response.error && response.error.value) {
-      toast.error('همچین کد تخفیفی وجود ندارد!');
-    }
-  } catch (error) {
-    toast.error('همچین کد تخفیفی وجود ندارد!');
-  }
-};
+    };
 
 const proceedToPayment = async () => {
   await gatewayLinkRequest.execute();
@@ -122,136 +158,163 @@ const proceedToPayment = async () => {
 </script>
 
 <style lang="scss" scoped>
-.subscription-container {
+
+.container {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
+
+.container-wr {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #f7f9fc, #e0e7ff);
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin: 20px auto;
-  font-family: 'Roboto', sans-serif;
+  justify-content: center;
+  padding: 0.75rem;
+  background-color: #f5f5f5;
 }
 
-.subscription-title {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
+.subscription-card {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-.buy-card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  width: 400px;
-}
+  .subscription-header {
+    background-color: #0066cc;
+    text-align: center;
+    color: white;
+    padding: 0.75rem;
 
-.input-container {
-  margin-bottom: 20px;
-
-  .discount-label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-    color: #666;
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
   }
 
-  .input-with-button {
-    position: relative;
-    width: 100%;
+  .subscription-body {
+    padding: 1.5rem;
 
-    input {
-      width: 100%;
-      padding: 12px;
-      padding-right: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: #f8f8f8;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+
+      &.final-price {
+        background-color: #e8f4ff;
+        border: 1px solid #0066cc;
+
+        .info-value.highlight {
+          color: #0066cc;
+          font-size: 1.1rem;
+        }
+      }
+
+      .info-label {
+        color: #666;
+        font-weight: 500;
+      }
+
+      .info-value {
+        color: #333;
+        font-weight: 600;
+      }
     }
 
-    .apply-button {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      background-color: #ff6f61;
-      color: #fff;
+    .discount-container {
+      width: 100%;
+
+      .input-group {
+        display: flex;
+        gap: 0.4rem;
+        margin-top: 0.4rem;
+
+        input {
+          flex: 1;
+          padding: 0.6rem;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 0.85rem;
+        }
+
+        .apply-button {
+          padding: 0.6rem 1.2rem;
+          background-color: #0066cc;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          font-size: 0.85rem;
+
+          &:hover {
+            background-color: darken(#0066cc, 10%);
+          }
+        }
+      }
+    }
+
+    .warning-message {
+      text-align: center;
+      color: #666;
+      line-height: 1.8;
+      margin: 1.5rem 0;
+      font-size: 0.85rem;
+    }
+
+    .payment-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #0066cc;
+      color: white;
+      text-align: center;
       border: none;
-      padding: 0 15px;
-      border-radius: 0 8px 8px 0;
+      border-radius: 6px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.2s;
+      font-size: 0.9rem;
 
       &:hover {
-        background-color: #e65b52;
+        background-color: darken(#0066cc, 10%);
       }
     }
   }
 }
 
-.final-price-container {
-  font-size: 1.4rem;
-  color: #333;
-  margin: 20px 0;
-  text-align: center;
+@media (max-width: 480px) {
+  .subscription-card {
+    margin: 0.75rem;
+    
+    .subscription-body {
+      padding: 1rem;
 
-  .final-price {
-    font-weight: bold;
-    color: #4caf50;
-    margin-left: 10px;
-  }
+      .info-row {
+        padding: 0.6rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+      }
 
-  .text-final-price {
-    display: flex;
-    align-items: flex-end;
-    font-size: 20px;
-  }
-}
+      .discount-container {
+        .input-group {
+          flex-direction: column;
 
-.additional-info {
-  font-size: 1rem;
-  color: #777;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.pay-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 15px 20px;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #43a047;
+          .apply-button {
+            width: 100%;
+          }
+        }
+      }
+    }
   }
 }
-
-@media (max-width: 600px) {
-  .subscription-container {
-    padding: 10px;
-  }
-
-  .buy-card {
-    width: 100%;
-    padding: 15px;
-  }
-
-  .final-price-container {
-    font-size: 1.2rem;
-  }
-
-  .pay-button {
-    font-size: 1rem;
-    padding: 10px;
-  }
 }
 </style>

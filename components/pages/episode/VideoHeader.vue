@@ -43,11 +43,19 @@
         </media-video-layout>
       </media-player>
       <div class="other-buttons-sm" v-if="!isPlaying">
-        <ButtonPreview />
+        <ButtonPreview 
+          :episodeId="movie.key"
+          :slug="movie.title"
+          @showModal="handlePreviewModal"
+        />
         <DownloadButton :videoUrl="movie.video_mp4" />
       </div>
       <div class="other-buttons-lg" v-if="!isPlaying">
-        <ButtonPreview />
+        <ButtonPreview 
+          :episodeId="movie.key"
+          :slug="movie.title"
+          @showModal="handlePreviewModal"
+        />
         <DownloadButton :videoUrl="movie.video_mp4" />
         <BookmarkButton 
           :videoId="movie.key" 
@@ -175,6 +183,15 @@ const isMobile = computed(() => {
 if (typeof navigator !== 'undefined') {
   console.log('User Agent:', navigator.userAgent);
 }
+
+const handlePreviewModal = (isShowing: boolean) => {
+  if (isShowing) {
+    isPlaying.value = false;
+    if (currentPlaying.value) {
+      currentPlaying.value.pause();
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 .player {

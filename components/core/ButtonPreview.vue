@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <button @click="showModal = true" class="hero-btn-preview">
-      <nuxt-icon class="hero-play" name="camera-movie"></nuxt-icon> 
-      پیش نمایش
-    </button>
+  <button 
+    v-if="teaser" 
+    @click="showModal = true" 
+    class="hero-btn-preview"
+  >
+    <nuxt-icon class="hero-play" name="camera-movie"></nuxt-icon> 
+    پیش نمایش
+  </button>
 
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">>
-        <video controls autoplay class="video">
-          <source src="https://dl.fiatre.ir/Movie-theater/True%20West-gghRcQ.m4v" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <button @click="closeModal" class="close-modal-btn">&times;</button>
-      </div>
+  <div v-if="showModal" class="modal">
+    <div class="modal-content">
+      <video controls autoplay class="video">
+        <source :src="teaser.teaser" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <button @click="closeModal" class="close-modal-btn">&times;</button>
     </div>
   </div>
 </template>
@@ -20,17 +22,51 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-const showModal = ref(false);
-
-watch(showModal, (newVal) => {
-  emit('showModal', newVal);
+const props = defineProps({
+  episodeId: {
+    type: [String, Number],
+    required: true
+  },
+  slug: {
+    type: String,
+    required: true
+  }
 });
+
+const showModal = ref(false);
+const teaser = ref(null);
+
+// Fetch teaser data when component mounts or when slug changes
+watch(() => props.slug, fetchTeaser, { immediate: true });
+
+async function fetchTeaser() {
+  if (!props.slug) return;
+  
+  const { data } = await useApiFetch(`/api/teasers/`, {
+    params: {
+      title: props.slug // Filter by title matching the slug
+    }
+  });
+  
+  // If we have results and the title matches exactly
+  if (data.value?.results?.length > 0) {
+    const matchingTeaser = data.value.results.find(t => t.title === props.slug);
+    teaser.value = matchingTeaser || null;
+  } else {
+    teaser.value = null;
+  }
+}
 
 const emit = defineEmits(['showModal'])
 
 function closeModal() {
   showModal.value = false;
+  emit('showModal', false);
 }
+
+watch(showModal, (newVal) => {
+  emit('showModal', newVal);
+});
 </script>
 
 <style scoped lang="scss">

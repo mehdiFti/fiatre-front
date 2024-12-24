@@ -250,18 +250,6 @@ const updateProfile = async () => {
       toast.success('اطلاعات با موفقیت به‌روزرسانی شد!');
       isEditing.value = false;
       formChanged.value = false;
-      
-      const freshProfileData = await useAuthFetch<IProfile>('api/auth/profile', {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-      
-      if (freshProfileData.data.value) {
-        Object.assign(profileData.value, freshProfileData.data.value);
-      }
-
     } else {
       toast.error('خطا در به‌روزرسانی اطلاعات');
     }

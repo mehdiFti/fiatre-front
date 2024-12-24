@@ -46,7 +46,10 @@
                   <nuxt-icon class="hero-plays" name="play"></nuxt-icon> 
                   پخش آنلاین
                 </NuxtLink>
-                <ButtonPreview @showModal="toggleAutoplay" />
+                <!-- <ButtonPreview 
+                  :episodeId="image.id"
+                  @showModal="(showing) => handlePreviewModal(showing, image.id)" 
+                /> -->
               </div>
             </div>
     
