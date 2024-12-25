@@ -4,11 +4,11 @@
       <hr class="header-hr" />
       <div class="left-section">
         <NuxtLink to="/" class="logo">
-          <nuxt-img
-            src="https://www.fiatre.ir/static/front/src/icons/logo.png"
-            alt="Logo"
-            class="logo-img"
-          />
+          <NuxtImg
+              src="https://www.fiatre.ir/static/front/src/icons/logo.png"
+              alt="Logo"
+              class="logo-img"
+            />
         </NuxtLink>
       </div>
       
@@ -110,8 +110,6 @@
         </template>
       </div>
     </header>
-
-
   </div>
 </template>
 
@@ -155,9 +153,7 @@ onMounted(() => {
   });
 });
 
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
+
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;

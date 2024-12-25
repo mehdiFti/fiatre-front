@@ -64,14 +64,10 @@ defineProps({
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
+  // align-items: center;
   background: darken($light, 10);
   padding-top: 0;
   
-  &.is-series {
-    justify-content: space-evenly;
-    align-items: start;
-  }
 }
 
 .video-details {
@@ -91,18 +87,41 @@ defineProps({
   }
 
   &.series-item {
-    @include media-breakpoint-up(lg) {
-      width: calc(100%/4);
+
+    @media (max-width: 1200px) and (min-width: 992px) {
+    width: calc(50% - 50px);
+    padding: 0 0 0 120px;
+    // background-color: red;
     }
-    
-    @include media-breakpoint-down(lg) {
-      width: calc(100%/2);
+
+    @media (max-width: 992px) {
+    width: calc(50% - 50px);
+    justify-content: start;;
+    padding: 0 0 0 60px;
+    // background-color: green;
     }
-    
-    @include media-breakpoint-down(sm) {
-      width: 100%;
+
+    @media (max-width: 769px) {
+    width: calc(50% - 20px);
+    padding: 0 0 0 40px;
+
+    .icon {
+      font-size: 1.3rem;
     }
+
+    .video-detail-desc {
+      font-size: 13px;
+      
+    }
+
+    @media (max-width: 408px) {
+    width: calc(100% - 10px);
+
   }
+  }
+}
+
+
 
   @media (max-width: 1200px) and (min-width: 769px) {
     width: calc(33.33% - 20px);
@@ -110,11 +129,6 @@ defineProps({
   }
 
   @media (max-width: 508px) {
-    align-items: center;
-    padding: 0 0 0 40px;
-    gap: 0;
-    margin: 0;
-    padding-top: 0;
 
     .icon {
       font-size: 1.4rem;

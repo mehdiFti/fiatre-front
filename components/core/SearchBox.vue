@@ -4,6 +4,10 @@
     <transition name="fade">
       <div v-if="isSearchModalOpen" class="search-modal" @click="toggleSearchModal">
         <div class="search-modal-content" @click.stop>
+          <div class="modal-header">
+            <h3>جستجو</h3>
+            <button class="close-button" @click="toggleSearchModal">×</button>
+          </div>
           <div class="input-wrapper">
             <input
               v-model.trim="searchInput"
@@ -12,7 +16,11 @@
               class="search-modal-input"
               spellcheck="false"
             />
-            <button class="search-button" @click="searchSubmit">
+            <button 
+              class="modal-search-button" 
+              @click="searchSubmit"
+              :disabled="!searchInput"
+            >
               <NuxtIcon name="search" />
             </button>
           </div>
@@ -30,10 +38,18 @@
           class="search-input"
           spellcheck="false"
         />
-        <button class="search-button" @click="searchSubmit">
+        <button 
+          class="search-button" 
+          @click="searchSubmit"
+          :disabled="!searchInput"
+        >
           <NuxtIcon name="search" />
         </button>
       </div>
+      <!-- Add search icon for mobile -->
+      <button class="search-icon-button" @click="toggleSearchModal">
+        <NuxtIcon name="search" />
+      </button>
     </div>
   </div>
 </template>
@@ -52,7 +68,12 @@ const searchInput = ref(route.query.q || '');
 const { width } = useWindowSize();
 
 const searchSubmit = () => {
-  router.push(`/search?q=${searchInput.value}`);
+  if (searchInput.value) {
+    router.push(`/search?q=${searchInput.value}`);
+    if (isSearchModalOpen.value) {
+      toggleSearchModal();
+    }
+  }
 };
 
 function toggleSearchModal() {
@@ -86,14 +107,13 @@ watch(width, (newWidth) => {
     position: relative;
   }
 
-  .search-input {
+  .search-input,
+  .search-button {
     display: none;
   }
 
-  .search-icon {
+  .search-icon-button {
     display: block;
-    font-size: 1.5rem;
-    cursor: pointer;
   }
 
   .search-modal {
@@ -102,7 +122,7 @@ watch(width, (newWidth) => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,17 +132,94 @@ watch(width, (newWidth) => {
   .search-modal-content {
     background: #fff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    animation: modalSlideIn 0.3s ease;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2rem;
+    }
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: gray-500;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #f5f5f5;
+      color: gray-200;
+    }
   }
 
   .search-modal-input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px 45px 12px 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  .modal-search-button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: gray-500;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #007bff;
+    }
+
+    &:disabled {
+      color: $gray-300;
+
+    }
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .search-container {
+    margin: 0 15px;
   }
 }
 
@@ -189,9 +286,42 @@ watch(width, (newWidth) => {
   &:hover {
     color: #333;
   }
+
+  &:disabled {
+    color: #ccc;
+  }
 }
 
 .search-input, .search-modal-input {
   padding-right: 35px; // Make room for the button
+}
+
+.search-icon-button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #666;
+  font-size: 1.5rem;
+  
+  &:hover {
+    color: #333;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    position: relative;
+  }
+
+  .search-input,
+  .search-button {
+    display: none;
+  }
+
+  .search-icon-button {
+    display: block;
+  }
 }
 </style>

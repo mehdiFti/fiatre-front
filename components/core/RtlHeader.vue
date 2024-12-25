@@ -1,60 +1,69 @@
 <template>
-    <div :class="['container', $attrs.class]" :dir="direction">
-      <header class="header-container">
-        <hr class="header-hr" />
-        <div class="left-section">
-          <NuxtLink to="/" class="logo">
-            <NuxtImg
+  <div class="container" dir="rtl">
+    <header class="header-container">
+      <hr class="header-hr" />
+      <div class="left-section">
+        <NuxtLink to="/" class="logo">
+          <NuxtImg
               src="https://www.fiatre.ir/static/front/src/icons/logo.png"
               alt="Logo"
               class="logo-img"
             />
-          </NuxtLink>
-        </div>
-  
-        <!-- <div class="center-section">
-          <NuxtLink to="/category" class="nav-link">دسته</NuxtLink>
-          <NuxtLink to="/series" class="nav-link">سریال</NuxtLink>
-        </div> -->
-  
-        <div class="right-section">
-          <div class="search-container" v-if="!isSearchInModal">
-            <NuxtIcon name="search" class="search-icon" @click="toggleSearchModal" />
-            <input
-              type="text"
-              placeholder="جستجو..."
-              class="search-input"
-            />
-          </div>
-          <template v-if="userStore.isAuthenticated" dir="rtl">
-            <div class="wrapper-when-login">
-              <NuxtLink to="/subscription/plans" class="subscription-button">خرید اشتراک</NuxtLink>
-              <!-- Show burger menu only when logged in -->
-              <div class="burger-menu" @click="toggleMenu">z
-                <div :class="['burger-icon', isMenuOpen ? 'open' : '']"></div>
-              </div>
-              <transition name="slide-fade">
-                <div v-if="isMenuOpen" class="modal-burger" @click="toggleMenu">
-                  <div class="modal-content" @click.stop>
-                    <ul class="modal-list">
-                      <li>
-                        <NuxtLink to="/account" class="link-black" @click="toggleMenu">
-                          <NuxtIcon name="pen" /> ویرایش حساب کاربری
-                        </NuxtLink>
-                      </li>
-                      <li>
-                        <NuxtLink to="/bookmarks" class="link-black" @click="toggleMenu">
-                          <NuxtIcon name="stars" /> علاقه مندی‌ها
-                        </NuxtLink>
-                      </li>
-                      <li>
-                      <NuxtLink to="/episode" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="stars" /> اپیزود
-                      </NuxtLink> 
+        </NuxtLink>
+      </div>
+      
+      <div class="right-section">
+        <RtlSearchBox />
+          <div class="wrapper-when-login">
+            <NuxtLink 
+              v-if=" userStore.isAuthenticated && !userStore.user?.is_subscription_active" 
+              to="/subscription/plans" 
+              class="subscription-button-deactive">
+              خرید اشتراک
+            </NuxtLink>
+            <NuxtLink 
+              v-else-if="userStore.isAuthenticated"
+              to="/account" 
+              class="subscription-button-active">
+              صفحه اکانت
+            </NuxtLink>
+
+            
+            <div v-if="userStore.isAuthenticated" class="burger-menu" @click="toggleMenu">
+              <div :class="['burger-icon', isMenuOpen ? 'open' : '']"></div>
+            </div>
+            <transition name="slide-fade">
+              <div v-if="isMenuOpen" class="modal-burger" @click="toggleMenu">
+                <div class="modal-content" @click.stop>
+                  <ul class="modal-list">
+                    <li>
+                      <NuxtLink to="/account" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="pen" /> ویرایش حساب کاربری
+                      </NuxtLink>
+                    </li>
+                    <li>
+                      <NuxtLink to="/biography" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="pen" /> بیوی
+                      </NuxtLink>
+                    </li>
+                    <li>
+                      <NuxtLink to="/login" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="pen" />login
+                      </NuxtLink>
+                    </li>
+                    <li>
+                      <NuxtLink to="/bookmarks" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="stars" /> علاقه مندی‌ها
+                      </NuxtLink>
                     </li>
                     <li>
                       <NuxtLink to="/series" class="link-black" @click="toggleMenu">
                         <NuxtIcon name="stars" /> سریال
+                      </NuxtLink>
+                    </li>
+                    <li>
+                      <NuxtLink to="/episodes" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="stars" /> اپیزود
                       </NuxtLink> 
                     </li>
                     <li>
@@ -62,453 +71,496 @@
                         <NuxtIcon name="stars" /> ادامه ویدئوها
                       </NuxtLink> 
                     </li>
-                      <li>
-                        <NuxtLink to="/game" class="link-black" @click="toggleMenu">
-                          <NuxtIcon name="game" /> بازی و سرگرمی
-                        </NuxtLink>
-                      </li>
-                      <li>
+                    <li>
+                      <NuxtLink to="/terms" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="stars" /> terms
+                      </NuxtLink> 
+                    </li>
+                    <li>
+                      <NuxtLink to="/game" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="game" /> بازی و سرگرمی
+                      </NuxtLink>
+                    </li>
+                    <li>
                       <div class="link-black" @click.stop="toggleMailBox">
                         <NuxtIcon name="mail" /> صندوق پیام
                       </div>
                       <MailBox  :showMailBox="showMailBox" @close="showMailBox = false"/>
                     </li>
-                      <li>
-                        <div class="timer-subs" @click="toggleMenu">
-                          <NuxtIcon name="timer" />زمان باقی مانده از اشتراک: 
-                        </div>
-                        <SubscriptionDuration :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration"/>
-                      </li>
-                    </ul>
-                    <div v-if="isSearchInModal" class="search-container">
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        class="search-input"
-                      />
-                    </div>
-                    <button class="logout-button" @click="logout">خروج از حساب کاربری</button>
-                  </div>
+                    <li>
+                      <div class="timer-subs" @click="toggleMenu">
+                        <NuxtIcon name="timer" />زمان باقی مانده از اشتراک: 
+                      </div>
+                      
+                        <SubscriptionDuration :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration" :slug="userStore.user?.subscription_slug"/>
+                     
+                    </li>
+                  </ul>
+                  <button class="logout-button" @click="logout">خروج از حساب کاربری</button>
                 </div>
-              </transition>
-            </div>
-          </template>
-          <template v-else dir="rtl">
-            <div class="gap-from-burger">
-              <NuxtLink to="/login" class="auth-link">ورود</NuxtLink>
-              <span>|</span>
-              <NuxtLink to="/register" class="auth-link">ثبت نام</NuxtLink>
-            </div>
-          </template>
-        </div>
-      </header>
-    </div>
-    <transition name="fade">
-      <div v-if="isSearchModalOpen" class="search-modal" @click="toggleSearchModal">
-        <div class="search-modal-content" @click.stop>
-          <input
-            type="text"
-            placeholder="سرچ کنید..."
-            class="search-modal-input"
-          />
-        </div>
+              </div>
+            </transition>
+          </div>
+        <template v-if="!userStore.isAuthenticated">
+          <div class="gap-from-burger">
+            <NuxtLink to="/login" class="auth-link">ورود</NuxtLink>
+            <span>|</span>
+            <NuxtLink to="/register" class="auth-link">ثبت نام</NuxtLink>
+          </div>
+        </template>
       </div>
-    </transition>
-  </template>
-  
-  <script setup>
-  import { onMounted, nextTick, watch } from 'vue';
-  import { useToggle } from '@vueuse/core';
-  import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
-  import MailBox from '~/components/core/MailBox.vue';
-  import { useRouter } from 'vue-router';
-  import { useWindowSize } from '@vueuse/core';
+    </header>
+  </div>
+</template>
 
-  const [isMenuOpen, toggleMenu] = useToggle(false);
-  const [isSearchInModal, toggleSearchInModal] = useToggle(false);
-  const [isSearchModalOpen, toggleSearchModal] = useToggle(false);
-  const [showMailBox, toggleMailBox] = useToggle(false);
-  const userStore = useUserStore()
+<script setup lang="ts">
+import { ref, nextTick, watch, onMounted, onUnmounted } from 'vue';
+import { useWindowSize } from '@vueuse/core';
+import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
+import MailBox from '~/components/core/MailBox.vue';
+import RtlSearchBox from '~/components/core/RtlSearchBox.vue';
+import { useRouter } from 'vue-router';
 
-  const router = useRouter();
+const route = useRoute();
 
-  function logout() {
+const isMenuOpen = ref(false);
+const showMailBox = ref(false);
+const userStore = useUserStore()
+
+const { width } = useWindowSize();
+
+// Add watch for route changes
+watch(
+  () => route.path,
+  () => {
+    isMenuOpen.value = false;
+  }
+);
+
+// Add click outside handler
+onMounted(() => {
+  document.addEventListener('click', (event) => {
+    const burgerMenu = document.querySelector('.burger-menu');
+    const modalBurger = document.querySelector('.modal-burger');
+    
+    if (isMenuOpen.value && 
+        burgerMenu && 
+        modalBurger && 
+        !burgerMenu.contains(event.target) && 
+        !modalBurger.contains(event.target)) {
+      isMenuOpen.value = false;
+    }
+  });
+});
+
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+
+  nextTick(() => {
+    const burgerMenu = document.querySelector('.burger-menu');
+    const modal = document.querySelector('.modal-burger');
+    if (burgerMenu) {
+      burgerMenu.classList.toggle('open', isMenuOpen.value);
+    }
+    if (modal && isMenuOpen.value) {
+      modal.style.transform = 'translateX(0)';
+    } else if (modal) {
+      modal.style.transform = 'translateX(-100%)';
+    }
+  });
+}
+
+function logout() {
   userStore.logout();
 }
 
-  const { width } = useWindowSize();
+function toggleMailBox() {
+  showMailBox.value = !showMailBox.value;
+}
 
-  watch(width, (newWidth) => {
-    if (newWidth > 768) {
-      isSearchModalOpen.value = false;
-    }
-  });
+</script>
 
-  onMounted(() => {
-    nextTick(() => {
-      const modal = document.querySelector('.modal-burger');
-      if (modal) {
-        modal.style.transform = 'translateX(0)';
-      }
-    });
-  });
+<style lang="scss" scoped>
+.color {
+  background-color: $light;
+}
 
-  // Define props
-  const props = defineProps({
-    direction: {
-      type: String,
-      default: 'rtl'
-    }
-  });
+.container {
+  position: sticky;
+  z-index: 10000;
+  top: 0;
+}
 
-  // Make sure to explicitly inherit attrs
-  defineOptions({
-    inheritAttrs: false
-  });
-  </script>
-  
-  <style lang="scss" scoped>
-  .container {
-    position: sticky;
-    z-index: 10000;
-    top: 0;
-  }
-  
-  .header-container {
-    position: relative;
-    width: 100%;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(244, 244, 244, 0.9);
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
-  }
-  
-  .header-hr {
-    position: absolute;
-    top: -16px;
-    left: 0;
-    width: 100%;
-    border: 0;
-    height: 5px;
-    background: linear-gradient(to right, $primary, $third);
-    z-index: 999;
-  }
-  
-  .left-section,
-  .right-section {
-    display: flex;
-    align-items: center;
-  }
-  
-  // .center-section {
-  //   font-weight: bold;
-  //   display: flex;
-  //   flex-grow: 1;
-  // }
-  
-  .logo-img {
-    height: 40px;
-  }
-  
-  .nav-link,
-  .link-black {
-    margin: 0 15px;
-    text-decoration: none;
-    color: $black; 
-    transition: color 0.3s;
-    white-space: nowrap;
-    font-size: 0.8rem; 
-  }
-  
+.header-container {
+  position: relative;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(244, 244, 244, 0.9);
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
 
+.header-hr {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  width: 100%;
+  border: 0;
+  height: 5px;
+  background: linear-gradient(to right, $primary, $third);
+  z-index: 999;
+}
 
-  .nav-link:hover,
-  .auth-link:hover,
-  .link-black:hover {
-    color: $primary; 
-  }
-  
-  .search-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    position: relative;
-  }
-  
-  .search-input {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    transition: width 0.3s ease;
-  }
-  
-  .subscription-button {
-    background-color: $third;
-    color:$white !important; 
-    white-space: nowrap;
-    font-weight: bold;
-    padding: 8px 10px;
-    font-size: 0.875rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .subscription-button:hover {
-    background-color: darken($third, 10%);
-  }
-  
-  .burger-menu {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 -20px  0  5px !important;
-    padding: 20px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .burger-icon {
-    margin-right: 10px;
-    width: 30px;
-    text-align: right;
-    height: 4px;
-    background: #333;
-    direction: rtl;
-    border-radius: 2px;
-    position: relative;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    
-  }
-  
-  .burger-icon::before,
-  .burger-icon::after {
-    content: '';
-    text-align: right;
-    width: 30px;
-    height: 4px;
-    background: #333;
-    position: absolute;
-    border-radius: 2px;
-    transition: transform 0.3s ease;
-  }
-  
-  .burger-icon::before {
-    top: -10px;
-  }
-  
-  .burger-icon::after {
-    top: 10px;
-  }
-  
-  .burger-icon.open {
-    background: transparent;
-  }
-  
-  .burger-icon.open::before {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  
-  .burger-icon.open::after {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-  
-  @keyframes slide-down {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  @media (max-width: 992px) {
+.right-section {
+  transform: translateX(20px);
+}
 
-.modal-burger {
-  transform: translateX(2px);
-  background-color: red;
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+  &.is-rtl {
+    flex-direction: row-reverse;
+  }
+}
+
+.logo-img {
+  height: 40px;
+}
+
+.nav-link,
+.link-black {
+  margin: 0 15px;
+  text-decoration: none;
+  color: $black;
+  transition: color 0.3s;
+  white-space: nowrap;
+  font-size: 0.8rem;
 }
 
 
-    .wrapper-when-login {
-      gap: 10px;
-    }
-    
-    .burger-menu {
-      margin-left: 20px;
-    }
+.nav-link:hover,
+.auth-link:hover,
+.link-black:hover {
+  color: $primary;
+}
+
+.subscription-button-deactive {
+  background-color: $third;
+  color:$white !important;
+  white-space: nowrap;
+  font-weight: bold;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-button-deactive:hover {
+  background-color: darken($third, 10%);
+}
+
+.subscription-button-active {
+  background-color: $primary;
+  color:$white !important;
+  white-space: nowrap;
+  font-weight: bold;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-button-active:hover {
+  background-color: darken($primary, 10%);
+}
+
+.burger-menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 5px;
+  padding: 20px 20px;
+  border-radius: 5px;
+}
+
+.burger-icon {
+  direction: rtl;
+  width: 30px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  position: relative;
+  transition: transform 0.3s ease, background-color 0.3s ease;
   
-    .right-section {
-      gap: 10px;
-    }
-  
-    .wrapper-when-login {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+}
+
+.burger-icon::before,
+.burger-icon::after {
+  content: '';
+  width: 30px;
+  height: 4px;
+  background: #333;
+  position: absolute;
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+.burger-icon::before {
+  top: -10px;
+}
+
+.burger-icon::after {
+  top: 10px;
+}
+
+.burger-icon.open {
+  background: transparent;
+}
+
+.burger-icon.open::before {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.burger-icon.open::after {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
   }
-  
-  @media (max-width: 768px) {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 992px) {
+  .wrapper-when-login {
+    gap: 10px;
+  }
 
 
+  .burger-menu {
+    margin-left: 14px;
+  }
 
-    .search-container {
-      position: relative;
-    }
-  
-    .search-input {
-      display: none; 
-    }
-  
-    .search-icon {
-      display: block;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-  
-    .search-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-  
-    .search-modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 80%;
-      max-width: 400px;
-    }
-  
-    .search-modal-input {
-        direction: rtl;
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+  .right-section {
+    gap: 10px;
   }
-  
-  @media (min-width: 769px) {
-    .search-icon {
-      display: none;
-    }
-  
-    .search-input {
-      display: block;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .search-input {
-      width: 150px;
-    }
-  
-    .subscription-button {
-      font-size: 0.7rem;
-      display: flex;
-      flex-direction: column;
-    }
-  
-    .search-modal-content {
-      width: 90%; 
-      padding: 15px;
-    }
-  
-    .search-modal-input {
-      padding: 8px;
-    }
-  }
-  
-  @media (max-width: 390px) {
-    .burger-menu {
-      height: 25px;
-      margin-left: 0;
-      
-    }
-  
-    .wrapper-when-login {
-      gap: 0;
-    }
-  
-    .header-container {
-      padding: 10px 15px;
-    }
-  
-    .nav-link,
-    .subscription-button {
-      margin: 0 5px;
-      padding: 5px;
-      font-size: 0.75rem;
-    }
-  
-    .search-container {
-      margin-right: 10px;
-    }
-  
-    .search-input {
-      width: 120px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-  
-  }
-  
+
   .wrapper-when-login {
     display: flex;
     justify-content: center;
-    align-items: center;;
-  }
-  
-  .slide-fade-enter-active,
-  .slide-fade-leave-active {
-    transition: all 0.3s ease;
-  }
-  
-  .slide-fade-enter,
-  .slide-fade-leave-to {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  
-  .modal-burger {
-    direction: rtl;
-    position: absolute;
-    top: 100%;
-    transform: translateX(-13px) !important;
-    background: #ffffff;
-    border-radius: 0 0 15px 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    width: 250px;
-    padding: 20px 0 0;
-    animation: fade-in 0.3s ease;
-    display: flex;
-    will-change: transform, opacity;
-    flex-direction: column;
     align-items: center;
-    gap: 15px;
+  }
+}
+
+.wrapper-when-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+
+.modal-burger {
+  position: absolute;
+  top: 100%;
+  transform: translateX(-18px) !important;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 15px 15px;
+  width: 250px;
+  padding: 15px 0 0;
+  animation: fade-in 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    will-change: transform, opacity;
+  gap: 15px;
+}
+
+.modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: right;
+  direction: ltr;
+}
+
+.modal-list li {
+  padding: 10px 0;
+  font-size: 1rem;
+  color: $black;
+  cursor: pointer;
+  transition: color 0.3s;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.modal-list li .nuxt-icon {
+  color: $black;
+  margin-right: 8px;
+}
+
+.logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  border: none;
+  border-radius: 0 0 10px  10px  ;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.modal-content .search-container {
+  margin-bottom: 15px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.modal-content .search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.link-black {
+  color: $black;
+  text-decoration: none;
+  
+}
+
+.link-black:hover {
+  color: $primary;
+}
+
+.timer-subs {
+  margin: 0 15px ;
+  color:$black;
+  text-decoration: none;
+  font-size: 0.8rem;
+  cursor: default;
+
+}
+
+.auth-link {
+  margin: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  color: $black;
+  transition: color 0.3s;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.auth-link:hover {
+  color: $primary;
+}
+.modal-burger {
+  transform: translateX(-18px);
+}
+
+@media (max-width: 992px) {
+  .modal-burger {
+    transform: translateX(-8px); 
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-burger {
+    transform: translateX(-16px); 
+  }
+}
+@media (max-width: 390px) {
+  .modal-burger {
+    transform: translateX(-39px); 
+    top:60px;
+  }
+}
+
+@media (max-width: 992px) {
+  .right-section {
+    transform: translateX(30px);
   }
   
-  .category-link {
+  .subscription-button-active,
+  .subscription-button-deactive {
+    transform: translateX(-5px);
+  }
+
+}
+
+.category-link {
   margin-left: 15px;
   margin-top: 5px;
   font-weight: bold;
@@ -519,208 +571,82 @@
   transition: color 0.3s;
 }
 
-  .modal-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    text-align: right; 
-    direction: ltr; 
-  }
-  
-  .modal-list li {
-    padding: 10px 0;
-    font-size: 1rem;
-    color: $black; 
-    cursor: pointer;
-    transition: color 0.3s;
-    display: flex;
-    justify-content: flex-start;
-  }
-  
-  .modal-list li .nuxt-icon {
-    color: $black; 
-    margin-right: 8px; 
-  }
-  
-  .logout-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(to right, #ff416c, #ff4b2b);
-    border: none;
-    border-radius: 0 0 10px  10px  ;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .logout-button:hover {
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
-  }
-  
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-  
-  .modal-content .search-container {
-    margin-bottom: 15px;
-  }
-  
-  .modal-content .search-input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-
-  
-  .link-black {
-    color: $black; 
-    text-decoration: none;
-  }
-  
-  .link-black:hover {
-    color: $primary;
-  }
-  
-  .timer-subs {
-  margin-left: 15px ;
-  color:$black;
-  text-decoration: none;
-  font-size: 0.8rem;
-  cursor: default;
-
+.category-link:hover {
+  color: $primary;
 }
-  
-
-  
-  .auth-link {
-    margin: 5px;
-    font-weight: bold;
-    text-decoration: none;
-    color: $black; 
-    transition: color 0.3s;
-    white-space: nowrap;
-    font-size: 1rem;
-  }
-  
-  .auth-link:hover {
-    color: $primary; 
-  }
-  @media (max-width: 992px) {
-
-.modal-burger {
-  transform: translateX(-7px);
-}}
-
-@media (max-width: 480px) {
-  .modal-burger {
-    transform: translateX(-15px);
-  }
-}
-
-@media (max-width: 390px) {
-  .modal-burger {
-    transform: translateX(-28px); 
-    top:60px;
-  }
-}
-
-
 
 @media (max-width: 490px) {
 
 
-.logo-img {
-  height: 30px;
-}
+  .logo-img {
+    height: 30px;
+  }
 
+  
+  .nav-link,
+  .subscription-button-active,
+  .subscription-button-deactive,
+  .category-link {
+    margin: 0 2px;
+    padding: 2px;
+    font-size: 0.8rem;
+  }
 
-.nav-link,
-.subscription-button,
-.category-link {
-  margin: 0 2px;
-  padding: 2px;
-  font-size: 0.8rem;
-}
+  .subscription-button-active,
+  .subscription-button-deactive {
+    padding: 4px 2px;
+  }
 
-.subscription-button {
-  padding: 4px 2px;
-}
+  .category-link {
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
 
-.category-link {
-  font-size: 0.8rem;
-  font-weight: bold;
-}
+  .search-container {
+    margin-right: 5px;
+  }
 
-.search-container {
-  margin-right: 5px;
-}
-
-.burger-menu {
-  padding: 1px 4px;
-}
+  .burger-menu {
+    padding: 1px 4px;
+  }
 }
 
 @media (max-width: 370px) {
 
-.header-container {
-  padding: 10px 20px;
+  .header-container {
+    padding: 10px 20px;
+  }
+
+  .logo-img {
+    height: 30px;
+  }
+
+  .nav-link,
+  .subscription-button-active,
+  .subscription-button-deactive,
+  .category-link {
+    margin: 0 1px;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+
+  .subscription-button-active,
+  .subscription-button-deactive {
+    padding: 3px 1px;
+  }
+
+  .category-link {
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+
+  .search-container {
+    margin-right: 3px;
+  }
+
+  .burger-menu {
+    padding: 1px 3px;
+  }
 }
 
-.logo-img {
-  height: 30px;
-}
-
-.nav-link,
-.subscription-button,
-.category-link {
-  margin: 0 1px;
-  padding: 0;
-  font-size: 0.75rem;
-}
-
-.subscription-button {
-  padding: 3px 1px;
-}
-
-.category-link {
-  font-size: 0.7rem;
-  font-weight: bold;
-}
-
-.search-container {
-  margin-right: 3px;
-}
-
-.burger-menu {
-  padding: 1px 3px;
-}
-}
-
-  </style>
+</style>
