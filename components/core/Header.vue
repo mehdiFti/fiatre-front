@@ -11,17 +11,7 @@
           />
         </NuxtLink>
       </div>
-      <li>
-                      <NuxtLink to="/game" class="link-black">
-                        <NuxtIcon name="game" /> بازی و سرگرمی
-                      </NuxtLink>
-                    </li>
-                    <li>
-                      <NuxtLink to="/episodes/%D9%81%DB%8C%D9%84%D9%85-%D8%AA%D8%A6%D8%A7%D8%AA%D8%B1-%D9%85%DA%A9%D8%A8%D8%AB/" class="link-black" >
-                        <NuxtIcon name="game" /> بازی و سرگرمی
-                      </NuxtLink>
-                    </li>
-                    
+      
       <div class="right-section">
         <SearchBox />
           <div class="wrapper-when-login">
@@ -126,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, watch, onMounted, onUnmounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
 import MailBox from '~/components/core/MailBox.vue';
@@ -140,6 +130,34 @@ const showMailBox = ref(false);
 const userStore = useUserStore()
 
 const { width } = useWindowSize();
+
+// Add watch for route changes
+watch(
+  () => route.path,
+  () => {
+    isMenuOpen.value = false;
+  }
+);
+
+// Add click outside handler
+onMounted(() => {
+  document.addEventListener('click', (event) => {
+    const burgerMenu = document.querySelector('.burger-menu');
+    const modalBurger = document.querySelector('.modal-burger');
+    
+    if (isMenuOpen.value && 
+        burgerMenu && 
+        modalBurger && 
+        !burgerMenu.contains(event.target) && 
+        !modalBurger.contains(event.target)) {
+      isMenuOpen.value = false;
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
