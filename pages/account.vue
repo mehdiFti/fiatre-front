@@ -1,5 +1,5 @@
 <template>
-  <main v-if="profileRequest.status.value === 'success'" class="container">
+  <main  v-if="profileRequest.status.value === 'success'" class="container mb-5">
     <section class="profile-container">
       <img class="profile-image" src="/image/background.jpg" alt="پروفایل کاربر">
       <div class="profile-form-wrapper">
@@ -88,7 +88,7 @@
                 class="profile-input"
                 @input="handleInputChange"
               />
-              <label for="password" class="profile-label">رمز:</label>
+              <label for="password" class="profile-label"> تغییر رمز:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
               <button type="button" @click="togglePasswordVisibility" class="toggle-password-visibility">
                 <nuxt-icon :name="isPasswordVisible ? 'eye-off' : 'eye'" class="icon-move-up" />
@@ -148,7 +148,8 @@ const form = ref({
   email: '',
   password: '',
   phone: '',
-  avatar: ''
+  avatar: '',
+  originalPassword: ''
 });
 
 const isEditing = ref(false);
@@ -207,6 +208,8 @@ watch(profileData, (newVal) => {
     form.value.email = newVal.email;
     form.value.phone = newVal.phone;
     form.value.avatar = newVal.avatar;
+    form.value.password = '';
+    form.value.originalPassword = '';
   }
 }, {
   immediate: true
@@ -215,8 +218,6 @@ watch(profileData, (newVal) => {
 const getDirection = (val: string) => {
   return /^[a-zA-Z]/.test(val) ? 'ltr' : 'rtl'
 }
-
-// const route = useRoute();
 
 // Define the computed property for the request body
 const computedProfileBodyRequest = computed(() => {
@@ -227,8 +228,8 @@ const computedProfileBodyRequest = computed(() => {
     email: form.value.email,
   };
 
-  // Include password only if it has been changed
-  if (form.value.password) {
+  // Only include password if it has been changed and is not empty
+  if (form.value.password && form.value.password !== form.value.originalPassword) {
     body.password = form.value.password;
   }
 
@@ -266,7 +267,7 @@ const handleSubmit = () => {
 };
 
 const passwordRules = computed(() => {
-  return form.value.password ? 'required|min:8|password_custom' : 'min:8|password_custom';
+  return form.value.password ? 'min:8|password_custom' : '';
 });
 
 const avatarRef = ref(null);
@@ -383,18 +384,18 @@ const handleAvatarChange = async (file: File) => {
       }
 
       .toggle-password-visibility {
-  position: absolute;
-  left: 45px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  color: #8c8c8c;
+      position: absolute;
+      left: 45px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      color: #8c8c8c;
 
-  &:hover {
-    color: $dark;
+      &:hover {
+        color: $dark;
   }
       }
     }
@@ -499,7 +500,10 @@ const handleAvatarChange = async (file: File) => {
     }
   }
 }
+ .icon-move-up { 
+  padding-left: 30px;
 
+ }
 .profile-icon {
   width: 100px;
   height: 100px;

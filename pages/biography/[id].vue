@@ -2,12 +2,10 @@
   <div>
     <ImageHeader :imageHeader="imageHeader" />
 
-    <!-- Ensure the quote data is passed to the Quote component -->
     <Quote :quote="quote" />
 
     <TheSeparator class="ps-4" title="توضیحات" />
 
-    <!-- Ensure the bio data is passed to the Description component -->
     <Description class="mb-5" :bDescription="bio" />
 
     <TheSeparator class="ps-4" title="عناوین مرتبط" />

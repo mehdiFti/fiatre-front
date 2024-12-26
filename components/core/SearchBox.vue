@@ -97,7 +97,7 @@ watch(width, (newWidth) => {
 
 .search-input {
   padding: 5px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid $gray-300;
   border-radius: 20px;
   transition: width 0.3s ease;
 }
@@ -130,7 +130,7 @@ watch(width, (newWidth) => {
   }
 
   .search-modal-content {
-    background: #fff;
+    background: $white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -171,14 +171,14 @@ watch(width, (newWidth) => {
   .search-modal-input {
     width: 100%;
     padding: 12px 45px 12px 15px;
-    border: 2px solid #eee;
+    border: 2px solid $gray-300;
     border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.2s ease;
     
     &:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: $gray-400;
     }
   }
 
@@ -198,7 +198,7 @@ watch(width, (newWidth) => {
     transition: color 0.2s ease;
 
     &:hover {
-      color: #007bff;
+      color: $gray-500;
     }
 
     &:disabled {
@@ -278,17 +278,17 @@ watch(width, (newWidth) => {
   border: none;
   cursor: pointer;
   padding: 5px;
-  color: #666;
+  color: $gray-800;
   display: flex;
   align-items: center;
   transition: color 0.2s ease;
 
   &:hover {
-    color: #333;
+    color: $gray-500;;
   }
 
   &:disabled {
-    color: #ccc;
+    color: $gray-300;
   }
 }
 
@@ -302,11 +302,12 @@ watch(width, (newWidth) => {
   border: none;
   cursor: pointer;
   padding: 8px;
-  color: #666;
+  color: $gray-600;
+  transition: color 0.2s;
   font-size: 1.5rem;
   
   &:hover {
-    color: #333;
+    color: $gray-500;
   }
 }
 

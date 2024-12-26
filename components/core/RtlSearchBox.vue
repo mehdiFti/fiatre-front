@@ -15,7 +15,7 @@
                   v-model.trim="searchQuery"
                   type="text"
                   placeholder="جستجو کنید..."
-                  class="search-input"
+                  class="modal-search-input"
                   spellcheck="false"
                 />
                 <button 
@@ -118,24 +118,35 @@ watch(width, (newWidth) => {
 }
 
 .modal-content {
+  direction: rtl;
   position: relative;
   width: 90%;
   max-width: 500px;
   background: white;
   border-radius: 16px;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  .search-button {
+    position: absolute;
+    left: -120px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $gray-500;
+    font-size: 1.2rem;
+  }
 }
 
 .modal-header {
   display: flex;
+  padding-right: 5px;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
 
   h3 {
     font-size: 1.25rem;
-    font-weight: 600;
+
     margin: 0;
   }
 }
@@ -143,7 +154,7 @@ watch(width, (newWidth) => {
 .close-button {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 8px;
@@ -167,37 +178,51 @@ watch(width, (newWidth) => {
 
 .search-input {
   width: 100%;
-  padding: 12px 45px 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  padding: 5px 35px 5px 10px;
+  transform: translateX(-20px);
+  border: 1px solid $gray-300;
+  border-radius: 25px;
   font-size: 1rem;
   transition: all 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: $gray-300;
   }
 }
 
+.modal-search-input {
+    width: 100%;
+    padding: 12px 45px 12px -1px;
+    border: 2px solid $gray-300;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: $gray-400;
+    }
+  }
+
 .search-button {
   position: absolute;
-  right: 12px;
+  right: 160px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #6b7280;
+  color: $gray-800;
   padding: 4px;
   cursor: pointer;
   transition: color 0.2s;
 
   &:hover {
-    color: #3b82f6;
+    color: $gray-400;
   }
 
   &:disabled {
-    color: #d1d5db;
+    color: $gray-300;
   }
 }
 
@@ -205,12 +230,14 @@ watch(width, (newWidth) => {
   background: none;
   border: none;
   padding: 8px;
+  transform: translateX(-25px);
   cursor: pointer;
-  color: #374151;
+  color: $gray-600;
   transition: color 0.2s;
+  font-size: 1.5rem;
 
   &:hover {
-    color: #1f2937;
+    color: $gray-500;
   }
 }
 
@@ -224,5 +251,68 @@ watch(width, (newWidth) => {
 .fade-leave-to {
   opacity: 0;
 }
+
+// Media query for mobile screens
+@media screen and (max-width: 768px) {
+  .modal-content {
+    .input-wrapper {
+      
+      position: relative;
+    }
+
+    .search-button {
+      position: absolute;
+      left: 12px;
+      right: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 8px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        color: $gray-500;
+      }
+
+      &:disabled {
+        color: $gray-300;
+      }
+    }
+
+    .modal-search-input {
+      padding-left: 40px;
+      padding-right: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .modal-search-input {
+    padding: 8px;
+  }
+
+  .search-button {
+    padding: 5px;
+  }
+}
+
+// .modal-search-button {
+//   color: red !important;
+  
+//   &:hover {
+//     color: darkred !important;
+//   }
+
+//   &:disabled {
+//     color: rgba(255, 0, 0, 0.5) !important;
+//   }
+// }
 </style>
   

@@ -19,7 +19,8 @@
   <style lang="scss">
   
   .desc-wrapper {
-    padding:  20px 10px;
+    border-radius: 10px;
+    padding: 20px 40px;
     background: $white;
     direction: ltr;
   

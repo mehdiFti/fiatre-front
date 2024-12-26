@@ -70,11 +70,11 @@ const props = defineProps({
 }
 @media (max-width: 500px) {
   .title-statics {
-    font-size: 14px;
+    font-size: 16px;
 
     .gradient-button {
-      padding: 0.2rem 0.5rem; 
-      font-size: 10px; 
+      padding: 0.5rem 0.8rem; 
+      font-size: 12px; 
     }
   }
 }

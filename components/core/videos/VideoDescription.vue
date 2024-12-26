@@ -17,7 +17,8 @@ const props = defineProps<{
 
 <style lang="scss">
 .video-desc-wrapper {
-  padding: 20px 10px;
+  border-radius: 10px;
+  padding: 20px 40px;
   background: $white;
   text-align: right;
 

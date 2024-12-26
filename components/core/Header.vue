@@ -42,38 +42,13 @@
                       </NuxtLink>
                     </li>
                     <li>
-                      <NuxtLink to="/biography" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="pen" /> بیوی
-                      </NuxtLink>
-                    </li>
-                    <li>
-                      <NuxtLink to="/login" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="pen" />login
-                      </NuxtLink>
-                    </li>
-                    <li>
                       <NuxtLink to="/bookmarks" class="link-black" @click="toggleMenu">
                         <NuxtIcon name="stars" /> علاقه مندی‌ها
                       </NuxtLink>
                     </li>
                     <li>
-                      <NuxtLink to="/series" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="stars" /> سریال
-                      </NuxtLink>
-                    </li>
-                    <li>
-                      <NuxtLink to="/episodes" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="stars" /> اپیزود
-                      </NuxtLink> 
-                    </li>
-                    <li>
                       <NuxtLink to="/my-video" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="stars" /> ادامه ویدئوها
-                      </NuxtLink> 
-                    </li>
-                    <li>
-                      <NuxtLink to="/terms" class="link-black" @click="toggleMenu">
-                        <NuxtIcon name="stars" /> terms
+                        <NuxtIcon name="camera-movie" /> ادامه ویدئوها
                       </NuxtLink> 
                     </li>
                     <li>
@@ -519,19 +494,25 @@ function toggleMailBox() {
 
 @media (max-width: 992px) {
   .modal-burger {
-    transform: translateX(-8px); 
+    transform: translateX(-11px) !important; 
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 490px) {
   .modal-burger {
-    transform: translateX(-16px); 
+    transform: translateX(-36px) !important; 
   }
 }
 @media (max-width: 390px) {
   .modal-burger {
-    transform: translateX(-39px); 
-    top:60px;
+    transform: translateX(-36px) !important; 
+    // top:60px;
+  }
+}
+@media (max-width: 370px) {
+  .modal-burger {
+    transform: translateX(-51px) !important; 
+    // top:60px;
   }
 }
 
