@@ -49,7 +49,7 @@ const status = computed(()=>  {
 .container {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   min-height: 100vh;
   padding: 0.75rem;
   background-color: #f5f5f5;
