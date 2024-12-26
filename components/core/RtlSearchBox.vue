@@ -1,339 +1,228 @@
 <template>
-    <div>
-      <!-- Modal Search -->
+  <div>
+    <!-- Modal Search -->
+    <Teleport to="body">
       <transition name="fade">
-        <div v-if="isSearchModalOpen" class="search-modal" @click="toggleSearchModal">
-          <div class="search-modal-content" @click.stop>
+        <div v-if="isSearchModalOpen" class="search-modal" @click="closeModal">
+          <div class="modal-content" @click.stop>
             <div class="modal-header">
               <h3>جستجو</h3>
-              <button class="close-button" @click="toggleSearchModal">×</button>
+              <button class="close-button" @click="closeModal">×</button>
             </div>
-            <div class="input-wrapper">
-              <input
-                v-model.trim="searchInput"
-                type="text"
-                placeholder="سرچ کنید..."
-                class="search-modal-input"
-                spellcheck="false"
-              />
-              <button 
-                class="modal-search-button" 
-                @click="searchSubmit"
-                :disabled="!searchInput"
-              >
-                <NuxtIcon name="search" />
-              </button>
-            </div>
+            <form @submit.prevent="handleSubmit" class="search-form">
+              <div class="input-wrapper">
+                <input
+                  v-model.trim="searchQuery"
+                  type="text"
+                  placeholder="جستجو کنید..."
+                  class="search-input"
+                  spellcheck="false"
+                />
+                <button 
+                  type="submit" 
+                  class="search-button"
+                  :disabled="!searchQuery"
+                >
+                  <NuxtIcon name="search" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </transition>
-  
-      <!-- Regular Search -->
-      <div class="search-container" v-if="!isSearchInModal">
+    </Teleport>
+
+    <!-- Regular Search for Desktop -->
+    <div class="search-container" v-if="!isMobile">
+      <form @submit.prevent="handleSubmit" class="search-form">
         <div class="input-wrapper">
           <input
-            v-model.trim="searchInput"
+            v-model.trim="searchQuery"
             type="text"
             placeholder="جستجو..."
             class="search-input"
             spellcheck="false"
           />
           <button 
-            class="search-button" 
-            @click="searchSubmit"
-            :disabled="!searchInput"
+            type="submit" 
+            class="search-button"
+            :disabled="!searchQuery"
           >
             <NuxtIcon name="search" />
           </button>
         </div>
-        <!-- Add search icon for mobile -->
-        <button class="search-icon-button" @click="toggleSearchModal">
-          <NuxtIcon name="search" />
-        </button>
-      </div>
+      </form>
     </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, watch } from 'vue';
-  import { useWindowSize } from '@vueuse/core';
-  import { useRouter, useRoute } from 'vue-router';
-  
-  const route = useRoute();
-  const router = useRouter();
-  const isSearchModalOpen = ref(false);
-  const isSearchInModal = ref(false);
-  const searchInput = ref(route.query.q || '');
-  
-  const { width } = useWindowSize();
-  
-  const searchSubmit = () => {
-    if (searchInput.value) {
-      router.push(`/search?q=${searchInput.value}`);
-      if (isSearchModalOpen.value) {
-        toggleSearchModal();
-      }
-    }
-  };
-  
-  function toggleSearchModal() {
-    isSearchModalOpen.value = !isSearchModalOpen.value;
-  }
-  
-  watch(width, (newWidth) => {
-    if (newWidth > 768) {
-      isSearchModalOpen.value = false;
-    }
-  });
-  </script>
-  
-  <style lang="scss" scoped>
-  .search-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    position: relative;
-  }
-  
-  .search-input {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    transition: width 0.3s ease;
-  }
-  
-  @media (max-width: 768px) {
-    .search-container {
-      position: relative;
-    }
-  
-    .search-input,
-    .search-button {
-      display: none;
-    }
-  
-    .search-icon-button {
-      display: block;
-    }
-  
-    .search-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-  
-    .search-modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 500px;
-      animation: modalSlideIn 0.3s ease;
-    }
-  
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      
-      h3 {
-        margin: 0;
-        color: #333;
-        font-size: 1.2rem;
-      }
-    }
-  
-    .close-button {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: gray-500;
-      cursor: pointer;
-      padding: 5px 10px;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-      
-      &:hover {
-        background: #f5f5f5;
-        color: gray-200;
-      }
-    }
-  
-    .search-modal-input {
-      width: 100%;
-      padding: 12px 45px 12px 15px;
-      border: 2px solid #eee;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: border-color 0.2s ease;
-      
-      &:focus {
-        outline: none;
-        border-color: #007bff;
-      }
-    }
-  
-    .modal-search-button {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      color: gray-500;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      transition: color 0.2s ease;
-  
-      &:hover {
-        color: #007bff;
-      }
-  
-      &:disabled {
-        color: $gray-300;
-  
-      }
-    }
-  
-    @keyframes modalSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  
-    .search-container {
-      margin: 0 15px;
-    }
-  }
-  
-  @media (min-width: 769px) {
-    .search-icon {
-      display: none;
-    }
-  
-    .search-input {
-      display: block;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .search-input {
-      width: 150px;
-    }
-  
-    .search-modal-content {
-      width: 90%;
-      padding: 15px;
-    }
-  
-    .search-modal-input {
-      padding: 8px;
-    }
-  }
-  
-  @media (max-width: 390px) {
-    .search-input {
-      width: 120px;
-    }
-  }
-  
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-  
-  .input-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  
-  .search-button {
-    position: absolute;
-    left: 180px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    color: #666;
-    display: flex;
-    align-items: center;
-    transition: color 0.2s ease;
-  
-    &:hover {
-      color: #333;
-    }
-  
-    &:disabled {
-      color: #ccc;
-    }
-  }
-  
-  .search-input, .search-modal-input {
-    padding-right: 35px;
-    padding-left: 10px;
-    // Make room for the button
-  }
-  
-  .search-icon-button {
-    transform: translateX(-5px);
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    color: #666;
-    font-size: 1.5rem;
-    
-    &:hover {
-      color: #333;
-    }
 
-    
-  }
-  
-  @media (max-width: 768px) {
-    .search-container {
-      position: relative;
-    }
-  
-    .search-input,
-    .search-button {
-      display: none;
-    }
-  
-    .search-icon-button {
-      display: block;
-    }
-  }
+    <!-- Search Trigger Button (for mobile) -->
+    <button v-else class="search-trigger" @click="openModal">
+      <NuxtIcon name="search" />
+    </button>
+  </div>
+</template>
 
-  @media (max-width: 992px) {
-  .input-wrapper {
-    transform: translateX(-5px);
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+import { useRouter, useRoute } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+const { width } = useWindowSize()
+
+const isSearchModalOpen = ref(false)
+const searchQuery = ref(route.query.q || '')
+
+const isMobile = computed(() => width.value <= 768)
+
+const openModal = () => {
+  isSearchModalOpen.value = true
+  // Focus input when modal opens
+  nextTick(() => {
+    document.querySelector('.search-input')?.focus()
+  })
+}
+
+const closeModal = () => {
+  isSearchModalOpen.value = false
+  searchQuery.value = ''
+}
+
+const handleSubmit = () => {
+  if (searchQuery.value) {
+    router.push(`/search?q=${searchQuery.value}`)
+    if (isSearchModalOpen.value) {
+      closeModal()
+    }
   }
 }
-  </style>
+
+// Close modal on desktop view
+watch(width, (newWidth) => {
+  if (newWidth > 768) {
+    isSearchModalOpen.value = false
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.search-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: #666;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: #000;
+  }
+}
+
+.search-form {
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+.search-button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6b7280;
+  padding: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #3b82f6;
+  }
+
+  &:disabled {
+    color: #d1d5db;
+  }
+}
+
+.search-trigger {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #374151;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #1f2937;
+  }
+}
+
+// Animation
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
   

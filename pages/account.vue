@@ -1,7 +1,7 @@
 <template>
   <main v-if="profileRequest.status.value === 'success'" class="container">
     <section class="profile-container">
-      <img class="profile-image" src="/public/image/thisis.jpg" alt="پروفایل کاربر">
+      <img class="profile-image" src="/image/background.jpg" alt="پروفایل کاربر">
       <div class="profile-form-wrapper">
           <h2 class="profile-title">ویرایش پروفایل</h2>
         <VeeForm :initialValues="form" @submit="handleSubmit" class="profile-form">

@@ -324,15 +324,6 @@ const episodeId = Array.isArray(route.params.id) ? route.params.id[0] : route.pa
 const { relatedEpisodes } = useRelatedEpisodes(artists, episodeId);
 const cardSlider = computed(() => relatedEpisodes.value || []);
 
-const saveWatchProgress = async (second: number) => {
-    await useAuthFetch(`/api/episodes/${episode.value.slug}/watch/log/`, {
-      method: 'POST',
-      body: {
-        second: Math.floor(second),
-        episode: episode.value.id
-      }
-    });
-};
 
 </script>
 

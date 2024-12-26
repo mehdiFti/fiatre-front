@@ -1,30 +1,39 @@
 <template>
   <div class="blog_card">
     <div class="image-wrapper">
+      <NuxtLink :to="link" class="read-more" target="_blank"> 
       <img
         :src="imageSrc"
         :alt="title"
         class="card__image"
       />
+      </NuxtLink> 
     </div>
 
     <div class="right-part">
+
       <h3 class="blog-title">
         {{ title }}
       </h3>
+  
 
+     
       <p class="blog-description">
         {{ truncatedDescription }}
       </p>
-
+      <!-- <NuxtLink to="link" class="read-more">ادامه مطلب</NuxtLink> -->
       <div class="spacer"></div>
 
       <div class="blog-time">
         تاریخ انتشار: <span class="reverse-date">{{ formattedTime }}</span>
       </div>
+      
+
+      
     </div>
 
   </div>
+  
 </template>
 
 <script setup>
@@ -35,6 +44,7 @@ const props = defineProps({
   title: String,
   description: String,
   timestamp: String,
+  link: String,
 });
 
 const truncatedDescription = computed(() => {
@@ -67,6 +77,9 @@ const formattedTime = computed(() => {
     width: 100%;
     position: relative;
     padding-top: 56.25%;
+    // &:hover {
+    //   background-color: red;
+    // }
   }
 
   .card__image {
@@ -141,6 +154,7 @@ const formattedTime = computed(() => {
     .image-wrapper {
       width: 50%;
       padding-top: 28.125%;
+      
     }
 
     .card__image {
@@ -183,4 +197,5 @@ const formattedTime = computed(() => {
     }
   }
 }
+
 </style>

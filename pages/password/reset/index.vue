@@ -1,7 +1,7 @@
 <template>
   <div class="container mb-5">
     <div class="reset-container">
-      <img class="reset-image" src="/public/image/thisis.jpg" alt="">
+      <img class="reset-image" src="/image/background.jpg" alt="">
 
       <div class="reset-form-wrapper">
         <h2 class="reset-title">بازیابی رمز عبور</h2>

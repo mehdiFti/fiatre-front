@@ -37,19 +37,15 @@
               :alt="`${image.alt} poster`"
               v-if="image.poster"
             />
-            <div class="hero-text" v-if="isMounted">
+            <div class="hero-text">
               <h3 class="hero-title">{{ image.title }}</h3>
-              <p class="hero-description" v-html="image.text"></p>
+              <p class="hero-description"> {{ image.text }}</p>
 
               <div class="button-container">
                 <NuxtLink :to="image.links" class="hero-btn-paly">
                   <nuxt-icon class="hero-plays" name="play"></nuxt-icon> 
                   پخش آنلاین
                 </NuxtLink>
-                <!-- <ButtonPreview 
-                  :episodeId="image.id"
-                  @showModal="(showing) => handlePreviewModal(showing, image.id)" 
-                /> -->
               </div>
             </div>
     
@@ -86,11 +82,6 @@ const props = defineProps<{
 }>();
 
 const swiperRef = ref(null);
-const isMounted = ref(true);
-
-onMounted(() => {
-  isMounted.value = true;
-});
 
 const toggleAutoplay = (value: boolean) => {
   console.log(swiperRef.value.autoplay);
@@ -103,6 +94,15 @@ const toggleAutoplay = (value: boolean) => {
     // }
   }
 }
+
+const stripHtml = (html: string) => {
+  if (!html) return '';
+  // Create a temporary div element
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  // Return just the text content
+  return temp.textContent || temp.innerText || '';
+};
 </script>
 
 <style lang="scss">

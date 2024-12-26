@@ -3,7 +3,7 @@
     <h2 class="title-seprator">{{ title }}</h2>
     <hr class="home-hr">
     <NuxtLink 
-      :to="`/categories/${slug}`" 
+      :to="`https://mag.fiatre.ir/`" 
       class="gradient-button"
     >
       مشاهده همه

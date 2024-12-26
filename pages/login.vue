@@ -1,7 +1,7 @@
 <template>
   <div class="container mb-5">
     <div class="login-container">
-      <img class="login-image" src="/image/thisis.jpg" alt="login-image" />
+      <img class="login-image" src="/image/background.jpg" alt="login-image" />
 
       <div class="login-form-wrapper">
 

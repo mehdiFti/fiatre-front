@@ -3,7 +3,7 @@
   
   
     <div class="confirm-container">
-      <img class="confirm-image" src="/public/image/thisis.jpg" alt="">
+      <img class="confirm-image" src="/image/background.jpg" alt="">
   
       <div class="confirm-form-wrapper">
         <h2 class="confirm-title">کد فعال سازی را وارد کنید</h2>

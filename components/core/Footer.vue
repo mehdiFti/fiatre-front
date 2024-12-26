@@ -6,15 +6,15 @@
           <div class="footer-col contact">
             <h3 class="footer-title">بهترین خودت باش</h3>
             <ul class="footer-list">
-              <!-- <li><NuxtLink to="">تماس با ما</NuxtLink></li> -->
+              <li><NuxtLink to="https://t.me/fiatre">تماس با ما</NuxtLink></li>
               <li><NuxtLink to="/about-us">درباره ما</NuxtLink></li>
               <li><NuxtLink to="/terms">قوانین و مقررات</NuxtLink></li>
               <li><NuxtLink to="/faq">سوالات متداول</NuxtLink></li>
             </ul>
           </div>
           <div class="footer-col about">
-            <h3 class="footer-title">نامفهوم از صنعت چاپ</h3>
-            <p class="footer-text">نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p>
+            <h3 class="footer-title"> حقوق کپی رایت </h3>
+            <p class="footer-text"> {{copyright  }} </p>
           </div>
 
           <div class="footer-col social">
@@ -26,7 +26,7 @@
             <div>
               
               <nuxt-link to="https://mag.fiatre.ir/">
-                <img src="https://www.fiatre.ir/static/front/src/icons/fiatremag-smal.png" alt="fiatreMag"/>
+                <img class="mt-3" src="https://www.fiatre.ir/static/front/src/icons/fiatremag-smal.png" alt="fiatreMag"/>
               </nuxt-link>
             </div>
           </div>
@@ -63,7 +63,7 @@
           />
         </div>
         <div class="footer-bottom">
-          <p class="footer-copyright primary-bold" v-html="copyright"></p>
+          <!-- <p class="footer-copyright primary-bold"> {{ copyright }} </p> -->
         </div>
     </footer>
   </div>

@@ -10,6 +10,7 @@
         :image-src="item.imageSrc"
         :title="item.title"
         :description="item.description"
+        :link="item.link"
         :timestamp="item.timestamp"
       />
     </div>

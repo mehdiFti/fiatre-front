@@ -1,7 +1,7 @@
 <template>
   <main class="container mb-5">
     <section class="register-container" dir="rtl">
-      <img class="register-image" src="/image/thisis.jpg" alt=""/>
+      <img class="register-image" src="/image/background.jpg" alt=""/>
       <div class="register-form-wrapper">
         <h1 class="register-title">ثبت نام</h1>
         <VeeForm
