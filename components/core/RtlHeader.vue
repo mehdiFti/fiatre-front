@@ -42,6 +42,11 @@
                       </NuxtLink>
                     </li>
                     <li>
+                      <NuxtLink to="/categories" class="link-black" @click="toggleMenu">
+                        <NuxtIcon name="category" /> دسته‌بندی‌ها
+                      </NuxtLink>
+                    </li>
+                    <li>
                       <NuxtLink to="/bookmarks" class="link-black" @click="toggleMenu">
                         <NuxtIcon name="stars" /> علاقه مندی‌ها
                       </NuxtLink>

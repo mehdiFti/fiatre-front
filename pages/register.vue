@@ -104,6 +104,11 @@
 </template>
 
 <script setup lang="ts">
+
+definePageMeta({
+  middleware: ['redirect-if-authenticated'],
+});
+
 useSeoMeta({
   title: 'ثبت نام',
   description: 'صفحه ثبت نام در سایت FIATRE برای دسترسی به خدمات و محتوای ویژه.',

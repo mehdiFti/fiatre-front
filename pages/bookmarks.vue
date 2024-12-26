@@ -139,7 +139,7 @@ const emit = defineEmits(['bookmark-removed']);
 
   @media (max-width: 991px) {
     .video-list > * {
-      max-width: calc(33.33% - 20px);
+      max-width: calc(50% - 20px);
     }
   }
 

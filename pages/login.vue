@@ -300,7 +300,7 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
 
 .icon-move-up {
   display: block;
-   transform: translateX(-20px) !important;
+   transform: translateX(10px) !important;
   width: 20px;
   height: 20px;
 }
