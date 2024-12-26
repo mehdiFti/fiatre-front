@@ -63,7 +63,7 @@ defineProps({
     right: 0;
     padding: 8px;
     margin: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9), transparent);
     color: white;
     font-size: 0.9rem;
     text-align: center;

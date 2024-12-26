@@ -24,6 +24,28 @@
           :alt="`Poster for ${movie.title}`"
         />
         <media-video-layout class="video-layout">
+
+          <div class="other-buttons-lg" v-if="!isPlaying">
+        <ButtonPreview 
+          :episodeId="movie.key"
+          :slug="movie.title"
+          @showModal="handlePreviewModal"
+        />
+        <DownloadButton :videoUrl="movie.video_mp4" />
+        <BookmarkButton 
+          :videoId="movie.key" 
+          :videoDetails="{
+            key: movie.key, 
+            title: movie.title, 
+            video: movie.video, 
+            cover: movie.cover, 
+            description: movie.description 
+          }" 
+          @bookmark-toggled="handleBookmarkToggled" 
+        />
+      </div>
+
+
           <media-controls class="vds-controls">
             <media-controls-group class="vds-controls-group">
               <div class="vds-controls-spacer"></div>
@@ -49,15 +71,7 @@
           @showModal="handlePreviewModal"
         />
         <DownloadButton :videoUrl="movie.video_mp4" />
-      </div>
-      <div class="other-buttons-lg" v-if="!isPlaying">
-        <ButtonPreview 
-          :episodeId="movie.key"
-          :slug="movie.title"
-          @showModal="handlePreviewModal"
-        />
-        <DownloadButton :videoUrl="movie.video_mp4" />
-        <BookmarkButton 
+                <BookmarkButton 
           :videoId="movie.key" 
           :videoDetails="{
             key: movie.key, 
@@ -69,6 +83,7 @@
           @bookmark-toggled="handleBookmarkToggled" 
         />
       </div>
+ 
     </div>
   </ClientOnly>
 </template>
@@ -236,7 +251,7 @@ const handlePreviewModal = (isShowing: boolean) => {
 .other-buttons-lg {
   display: none; 
   position: absolute;
-  top: 85px;
+  top: 10px;
   z-index: 1001;
   justify-content: center;
   align-items: center;
@@ -332,4 +347,3 @@ media-controls[data-visible] {
   transform: translate(-50%, -50%);
 }
 </style>
-

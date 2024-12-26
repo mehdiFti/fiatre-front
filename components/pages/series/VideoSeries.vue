@@ -14,8 +14,8 @@
             keep-alive
             playsinline
             class="video-player"
-            @play="handlePlay($event.target)"
-            @pause="handlePause"
+            @play="handlePlay($event.target, episode.key)"
+            @pause="handlePause(episode.key)"
             @bookmark-toggled="handleBookmarkToggled"
           >
             <media-provider />
@@ -28,7 +28,10 @@
             <media-controls class="vds-controls">
               <media-controls-group class="vds-controls-group">
                 <div class="vds-controls-spacer"></div>
-                <media-volume-slider v-if="isMobile" class="vds-slider">
+                <media-volume-slider 
+                  v-if="isMobile && isActivePlayer(episode.key)" 
+                  class="vds-slider"
+                >
                   <div class="volume-settings">
                     <div class="vds-slider-track"></div>
                     <div class="vds-slider-track-fill vds-slider-track"></div>
@@ -132,6 +135,7 @@ const playerRefs = ref<MediaPlayerElement[]>([]);
 const showMore = ref(false);
 const currentPlaying = ref<MediaPlayerElement | null>(null);
 const isPlaying = ref(false);
+const activePlayerId = ref<string | null>(null);
 
 const isMobile = computed(() => {
   if (typeof navigator !== 'undefined') {
@@ -151,16 +155,21 @@ const addPlayerRef = (el: MediaPlayerElement) => {
   }
 };
 
-const handlePlay = (player: EventTarget) => {
+const handlePlay = (player: EventTarget, videoId: string) => {
   const mediaPlayer = player as MediaPlayerElement;
   if (currentPlaying.value && currentPlaying.value !== mediaPlayer) {
     currentPlaying.value.pause();
   }
   currentPlaying.value = mediaPlayer;
+  activePlayerId.value = videoId;
+  isPlaying.value = true;
 };
 
-const handlePause = () => {
-  isPlaying.value = false;
+const handlePause = (videoId: string) => {
+  if (activePlayerId.value === videoId) {
+    isPlaying.value = false;
+    activePlayerId.value = null;
+  }
 };
 
 const sanitizeAndTruncateDescription = (description: string) => {
@@ -239,6 +248,9 @@ const { width } = useWindowSize();
 
 const isScreenSmall = computed(() => width.value < 680);
 
+const isActivePlayer = (videoId: string) => {
+  return activePlayerId.value === videoId && isPlaying.value;
+};
 
 </script>
 

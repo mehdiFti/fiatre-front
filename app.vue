@@ -1,5 +1,5 @@
 <template>
-  <NuxtLoadingIndicator />
+  <NuxtLoadingIndicator color="#2975df"/>
 
   <NuxtLayout>
     <NuxtPage />
@@ -21,3 +21,4 @@ nuxtApp.hook('page:finish', () => {
   });
 });
 </script>
+

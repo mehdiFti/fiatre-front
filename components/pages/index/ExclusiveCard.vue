@@ -24,9 +24,15 @@ const props = defineProps<{
   flex-wrap: wrap;
   justify-content: space-between;
 
-
   @media (max-width: 768px) {
-    flex-direction: column;
+    width: 250px;
+  }
+
+  @media (max-width: 450px) {
+    .exclusive-card {
+      flex: 1 0 100% !important;
+  
+    }
   }
 
   .exclusive-card {

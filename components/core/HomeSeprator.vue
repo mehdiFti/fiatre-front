@@ -73,18 +73,18 @@ const props = defineProps({
     font-size: 16px;
 
     .gradient-button {
-      padding: 0.5rem 0.8rem; 
-      font-size: 12px; 
+      padding: 0.6rem 0.8rem; 
+      font-size: 14px; 
     }
   }
 }
 
 @media (max-width: 430px) {
   .title-statics {
-    font-size: 10px;
+    font-size: 14px;
 
     .gradient-button {
-      padding: 0.4rem 0.3rem;
+      padding: 0.6rem 0.7rem;
       font-size: 8px;
     }
   }

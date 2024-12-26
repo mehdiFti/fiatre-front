@@ -1,4 +1,8 @@
 <template>
+  <div class="md-5">
+
+
+  <ClientOnly>
   <div class="container movie-hero-container">
     <Swiper
       class="custom-swiper"
@@ -19,13 +23,6 @@
         :key="image.id"
       >
         <div class="wrapper-image-hero">
-          <!-- <div class="dynamic-font-wrapper">
-            <NuxtImg 
-              class="font-dynamic-img"
-              :src="`https://www.fiatre.ir${image.font}`"
-            />
-          </div> -->
-
           <img
             class="hero-background-img"
             :src="`https://www.fiatre.ir${image.background}`"
@@ -39,8 +36,8 @@
             />
             <div class="hero-text">
               <h3 class="hero-title">{{ image.title }}</h3>
-              <p class="hero-description"> {{ image.text }}</p>
-
+              <p class="hero-description"  v-html="image.text"/>
+              <!-- {{ image.text }} -->
               <div class="button-container">
                 <NuxtLink :to="image.links" class="hero-btn-paly">
                   <nuxt-icon class="hero-plays" name="play"></nuxt-icon> 
@@ -54,6 +51,8 @@
       </SwiperSlide>
     </Swiper>
   </div>
+  </ClientOnly>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -159,8 +158,11 @@ const stripHtml = (html: string) => {
         line-clamp: 2;
 
         .hero-title {
+          
           color: $white;
+          display:flex;
           font-size: 1.5rem;
+          font-weight: bold;
           padding-bottom: 10px;
 
           @media (max-width: 1024px) {
@@ -190,7 +192,7 @@ const stripHtml = (html: string) => {
 
         @media (min-width: 770px) {
           .hero-description {
-            width: 55%;
+            width: 70%;
           }
         }
 
@@ -216,6 +218,7 @@ const stripHtml = (html: string) => {
           width: 25%;
           max-width: 50%;
         }
+
       }
 
       .hero-btn {
@@ -292,7 +295,7 @@ const stripHtml = (html: string) => {
     .dynamic-font-wrapper {
       position: absolute; // Make the wrapper absolute
       top: 200px; // Align to the top
-      left: 0px; // Align to the right
+      left: 40px; // Align to the right
     }
 
     .font-dynamic-img {

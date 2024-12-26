@@ -38,7 +38,7 @@
     <TheSeparator  title="عوامل و بازیگران" dir="rtl" />  
     <!-- v-if="artists.length > 0" -->
     
-    <CastCrew  :crews="artists" class="mb-5"/>
+    <CastCrew v-if="artists.length > 0"  :crews="artists" class="mb-5"/>
     
     <TheSeparator v-if="cardSlider.length > 0" title="عناوین مشابه" dir="rtl" />
     
