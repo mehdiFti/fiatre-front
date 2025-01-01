@@ -2,7 +2,7 @@
   <div>
     <ImageHeader :imageHeader="imageHeader" />
 
-    <Quote :quote="quote" />
+    <Quote v-if="quote.length > 0" :quote="quote" />
 
     <TheSeparator class="ps-4" title="توضیحات" />
 

@@ -1,51 +1,68 @@
 <template>
   <div class="container">
     <main class="quiz-container">
-      <div class="quiz-wrapper">
+      <!-- Loading State -->
+      <div v-if="activeGameRequest.status.value === 'pending'">
+        loading game
+      </div>
+
+      <!-- Active Game State -->
+      <div v-else-if="hasActiveGame" class="quiz-wrapper">
         <div class="timer-display">
-          <!-- {{ timeLeft }} -->
+          {{ timeLeft }}
         </div>
+
         <transition name="fade">
-          <div class="question-display" key="questions[currentQuestion].image">
-            <img class="quiz-image" :src="questions[currentQuestion].image" :alt="questions[currentQuestion].question">
-            <!-- <p class="quiz-text">{{ questions[currentQuestion].question }}</p> -->
+          <div class="question-display">
+            <img class="quiz-image" :src="getImageUrl(activeGame.image)">
           </div>
         </transition>
+
         <div class="choices-display">
           <button
-            v-for="(choice, index) in questions[currentQuestion].choices"
+            v-for="choice in activeGame.choices"
             :key="choice.id"
             class="quiz-button"
             :class="{
-              correct: selectedChoice === index && isCorrectChoice(index),
-              wrong: selectedChoice === index && !isCorrectChoice(index)
+              'wrong': opportunityEnded && selectedChoiceId === choice.id && !choice.is_answer,
+              'correct': opportunityEnded && choice.is_answer,
             }"
-            @click="handleChoice(questions[currentQuestion].id, choice.id)"
-            :disabled="isDisabled"
+            :disabled="isChoicesDisabled"
+            @click="selectAnswer(choice.id)"
           >
             {{ choice.text }}
           </button>
         </div>
+
         <div class="score-display">
-          <!-- {{ score }} امتیاز -->
+          <button
+            class="profile-btn"
+            style="display: none;"
+            :disabled="!opportunityEnded || activeGameRequest.status.value === 'pending'"
+            @click="getNextQuestion"
+          >
+            سوال بعدی
+          </button>
         </div>
       </div>
+
+      <!-- No Active Game State -->
+      <div v-else class="result-container">
+        <h2>بازی به پایان رسید!</h2>
+        <p>برای مشاهده امتیازات به صفحه امتیازات فیاتر بروید</p>
+        <nuxt-link class="profile-btn" to="/profile">صفحه امتیازات</nuxt-link>
+      </div>
     </main>
-    <!-- <section class="result-container">
-      <h2>بازی به پایان رسید!</h2>
-      <p>برای مشاهده امتیازات به صفحه امتیازات  فیاتر بروید</p>
-      <nuxt-link class="profile-btn" to="/profile">صفحه امتیازات</nuxt-link>
-    </section> -->
   </div>
 </template>
-  <script setup lang="ts">
+<script setup lang="ts">
 
 definePageMeta({
   middleware: [() => {
-  },'redirect-to-login']
-})  
+  }, 'redirect-to-login'],
+});
 
- useSeoMeta({
+useSeoMeta({
   title: 'بازی کوییز',
   description: 'صفحه بازی کوییز برای تست دانش شما در مورد فیلم‌ها و سریال‌ها.',
   keywords: 'بازی, کوییز, فیلم, سریال, تست دانش',
@@ -54,115 +71,110 @@ definePageMeta({
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/game',
   ogImage: 'https://fiatre.ir/og-image.jpg',
-  robots: 'index, follow'
+  robots: 'index, follow',
 });
 
-  // const hasPlayed = ref(false);
-  const currentQuestion = ref(0);
-  const selectedChoice = ref(-1);
-  const timeLeft = ref(10);
-  const gameFinished = ref(false);
-  // const score = ref(0);
+const DEFAULT_TIME_LEFT = 10;
 
-  const isDisabled = computed(() => {
-    return selectedChoice.value !== -1 || timeLeft.value <= 0;
-  })
+const selectedChoiceId = ref<number | undefined>(undefined);
+const opportunityEnded = ref(false);
+const timer = ref<NodeJS.Timeout>();
+const timeLeft = ref(DEFAULT_TIME_LEFT);
 
-  
-  const getQuestionsRequest = await useAuthFetch<any>('/api/games/', {});
+const getNextQuestion = async () => {
+  await activeGameRequest.execute();
 
-  const postChoiceRequest = useAuthFetch('/api/games/choices/', {
-      method: 'POST',
-      immediate: false,
-      watch: false,
-      // body: {
-      //   text: selectedChoice,
-      //   is_choice: index === currentQuestionData.correctChoice,
-      //   game: getQuestionsRequest.data.value.results[currentQuestion.value].id
-      // }
-    });
+  if (!hasActiveGame.value) {
+    return;
+  }
 
-  const questions = computed(() => {
-    if (getQuestionsRequest.status.value === 'success') {
-      return getQuestionsRequest.data.value.results;
+  timeLeft.value = DEFAULT_TIME_LEFT;
+  selectedChoiceId.value = undefined;
+  opportunityEnded.value = false;
+
+  timer.value = setInterval(async () => {
+    timeLeft.value--;
+
+    if (timeLeft.value <= 0) {
+      clearInterval(timer.value);
+      opportunityEnded.value = true;
+
+      await answerGameRequest.execute();
+      await getNextQuestion();
     }
-    return [];
-  });
+  }, 1000);
+};
 
-  let interval: NodeJS.Timeout; // Declare interval outside to manage it
+const activeGameRequest = useAuthFetch<any>('/api/games/active/games/', {
+  immediate: false,
+  watch: false,
+});
 
-  const startTimer = () => {
-    clearInterval(interval); // Clear any existing interval
-    interval = setInterval(() => {
-      if (timeLeft.value > 0) {
-        timeLeft.value -= 1
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000)
+const hasActiveGame = computed(() => {
+  if (activeGameRequest.data.value) {
+    return Object.keys(activeGameRequest.data.value).length;
   }
-  
-  // Move to the next z
-  const nextQuestion = async () => {
-    if (currentQuestion.value < questions.value.length - 1) {
-      currentQuestion.value += 1;
-      selectedChoice.value = -1;
-      timeLeft.value = 10
-      await nextTick(); // Wait for the DOM to update
-      startTimer(); // Start the timer after the DOM update
-    } else {
-      gameFinished.value = true 
-    }
+
+  return false;
+});
+
+const answerGameRequestBody = computed(() => {
+  return {
+    game: activeGame.value.id,
+    answer: selectedChoiceId.value,
+  };
+});
+
+const activeGame = computed(() => {
+  return activeGameRequest.data.value;
+});
+
+const isChoicesDisabled = computed(() => {
+  return typeof selectedChoiceId.value === 'number' || opportunityEnded.value;
+});
+
+const getImageUrl = (imageUrl: string) => {
+  if (!imageUrl) {
+    return '';
   }
-  
-  // Handle choice selection
-  const handleChoice = async (questionId: number, choiceId: number) => {
-    if (isDisabled.value) return;
 
-    selectedChoice.value = choiceId;
+  return `https://www.fiatre.ir${imageUrl}`;
+};
 
-    await postChoiceRequest.execute();
-    // if (selectedChoice.value !== -1) return;
-    // selectedChoice.value = index;
-    
-    // // clearInterval(interval);
+const selectAnswer = async (choiceId: number) => {
+  clearInterval(timer.value);
+  selectedChoiceId.value = choiceId;
+  opportunityEnded.value = true;
 
-    // const currentQuestionData = questions.value[currentQuestion.value];
-    // const selectedChoice = currentQuestionData.choices[index];
+  await answerGameRequest.execute();
+  await getNextQuestion();
+};
 
-    // try {
-    
-      
-    //   if (index === currentQuestionData.correctChoice) {
-    //     // score.value += 1;
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting choice:', error);
-    // }
-    
-    // setTimeout(nextQuestion, 1000);
-  }
-  
-  const isCorrectChoice = (index: number) => {
-    return index === questions.value[currentQuestion.value].correctChoice
-  }
-  
-  
-  // onMounted(() => {
-  //   if (!hasPlayed.value) {
-  //     startTimer();
-  //     hasPlayed.value = true;
-  //   }
-  // })
-  </script>
-  
+const answerGameRequest = useAuthFetch<any>('/api/games/user-games/', {
+  immediate: false,
+  watch: false,
+  method: 'post',
+  body: answerGameRequestBody,
+});
+
+onMounted(() => {
+  getNextQuestion();
+});
+
+onBeforeUnmount(() => {
+  clearInterval(timer.value);
+});
+
+
+</script>
+
   <style scoped lang="scss">
   .quiz-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 40px;
-  
+
     .quiz-wrapper {
       border-radius: 10px;
       display: flex;
@@ -175,7 +187,7 @@ definePageMeta({
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
     }
-  
+
     .score-display {
       font-size: 24px;
       background-color: $primary;
@@ -185,7 +197,7 @@ definePageMeta({
       text-align: center;
       margin-top: 30px;
     }
-  
+
     .timer-display {
       font-size: 20px;
       background-color: $third;
@@ -197,15 +209,15 @@ definePageMeta({
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      justify-content: center; 
+      justify-content: center;
     }
-  
+
     .question-display {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-bottom: 20px;
-  
+
       .quiz-image {
         width: 360px;
         height: 220px;
@@ -213,20 +225,20 @@ definePageMeta({
         margin-bottom: 10px;
         border-radius: 5px;
       }
-  
+
       .quiz-text {
         font-size: 18px;
         text-align: center;
         max-width: 300px;
       }
     }
-  
+
     .choices-display {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       width: 100%;
-  
+
       .quiz-button {
         padding: 10px;
         font-size: 16px;
@@ -238,12 +250,12 @@ definePageMeta({
         width: 100%;
         height: 50px;
         white-space: nowrap;
-  
+
         &.correct {
           background-color: green;
           color: white;
         }
-  
+
         &.wrong {
           background-color: red;
           color: $white;
@@ -251,24 +263,24 @@ definePageMeta({
       }
     }
   }
-  
+
   .result-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 40px;
-  
+
     h2 {
       font-size: 24px;
       margin-bottom: 20px;
     }
-  
+
     p {
       font-size: 20px;
       margin-bottom: 20px;
     }
-  
+
     button {
       padding: 10px 20px;
       font-size: 16px;
@@ -278,13 +290,13 @@ definePageMeta({
       background-color: $primary;
       color: $white;
       transition: background-color 0.3s ease;
-  
+
       &:hover {
         background-color: darken($primary, 10);
       }
     }
   }
-  
+
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -296,15 +308,16 @@ definePageMeta({
       transform: scale(1);
     }
   }
-  
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.5s ease;
   }
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
-  
+
   .profile-btn {
+    display: none;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -323,3 +336,4 @@ definePageMeta({
     }
   }
   </style>
+

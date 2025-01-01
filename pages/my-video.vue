@@ -16,42 +16,22 @@
             :key="video.key"
             :class="{'video-episode-card': true, 'removing': video.removing}"
           >
-            <media-player
-              ref="addPlayerRef"
-              :title="video.title"
-              :src="video.src"
-              keep-alive
-              load="play"
-              preload="none"
-              playsInline
-              viewType="video"
-              :current-time="video.second"
-              class="video-player"
-              @play="handlePlay($event.target)"
-              @pause="handlePause(video, $event)"
-              @ended="handleVideoEnded(video.key)"
-            >
-              <media-provider />
-              <media-poster 
-                class="vds-poster"
-                :src="video.poster"
-                :alt="`Poster for ${video.title}`"
-              />
-              <media-video-layout class="video-layout">
-                <media-controls class="vds-controls">
-                  <media-controls-group class="vds-controls-group">
-                    <div class="vds-controls-spacer"></div>
-                    <media-volume-slider v-if="isMobile" class="vds-slider">
-                      <div class="volume-settings">
-                        <div class="vds-slider-track"></div>
-                        <div class="vds-slider-track-fill vds-slider-track"></div>
-                        <div class="vds-slider-thumb"></div>
-                      </div>
-                    </media-volume-slider>
-                  </media-controls-group>
-                </media-controls>
-              </media-video-layout>
-            </media-player>
+            <VideoHeader
+              :movie="{
+                key: video.key,
+                title: video.title,
+                video: video.src,
+                cover: video.poster,
+                image: video.poster,
+                number: '',
+                description: video.description,
+                slug: video.slug
+              }"
+              :videoUrl="video.src"
+              :startTime="video.second"
+              :isInsideVideoSeries="true"
+              :onPause="(currentTime) => handlePause(video, { target: { currentTime } })"
+            />
             
             <div class="episode-info">
               <div class="episode-title">{{ video.title }}</div>
@@ -118,8 +98,7 @@ useSeoMeta({
 import Footer from '~/components/core/Footer.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
-import 'vidstack/bundle';
-import 'vidstack/icons';
+import VideoHeader from '~/components/pages/episode/VideoHeader.vue';
 
 // Types
 interface WatchLogResponse {
@@ -137,10 +116,6 @@ interface WatchLogResponse {
     };
   }[];
 }
-
-// Player State
-const playerRefs = ref<MediaPlayerElement[]>([]);
-const currentPlaying = ref<MediaPlayerElement | null>(null);
 
 // API Call
 const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/');
@@ -163,16 +138,12 @@ const incompleteVideos = computed(() => {
 });
 
 // Event Handlers
-const handlePlay = (player: EventTarget) => {
-  const mediaPlayer = player as MediaPlayerElement;
-  if (currentPlaying.value && currentPlaying.value !== mediaPlayer) {
-    currentPlaying.value.pause();
-  }
-  currentPlaying.value = mediaPlayer;
+const handlePlay = () => {
+  // This is now handled by VideoHeader
 };
 
-const handlePause = async (video: any, event: Event) => {
-  const currentTime = (event.target as HTMLMediaElement).currentTime;
+const handlePause = async (video: any, event: { target: { currentTime: number } }) => {
+  const currentTime = event.target.currentTime;
 
   try {
     await useAuthFetch(`/api/episodes/${video.slug}/watch/log/`, {

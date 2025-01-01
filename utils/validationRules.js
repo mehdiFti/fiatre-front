@@ -7,7 +7,7 @@ defineRule('email', email);
 defineRule('min', min);
 defineRule('digits', digits);
 defineRule('alpha', alpha);
-defineRule('numeric', numeric); 
+defineRule('numeric', numeric);
 defineRule('password_custom', (value) => {
   return /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|;:,.<>?]+$/.test(value) || 'اعداد، حروف انگلیسی و نمادها مجاز هستند';
 });
@@ -33,7 +33,7 @@ defineRule('alpha_custom', (value) => {
   if (value.length < 3) {
     return 'حداقل سه حرف باشد';
   }
-  return /^[a-zA-Z\u0600-\u06FF]+$/.test(value) || 'فقط حروف مجاز هستند';
+  return /^[a-zA-Z0-9\u0600-\u06FF]+$/.test(value) || 'فقط حروف و اعداد مجاز هستند';
 });
 
 // Custom rule for confirming password
@@ -53,7 +53,7 @@ configure({
       numeric: 'فقط اعداد مجاز هستند',
       password: 'فقط حروف انگلیسی و نمادها مجاز هستند',
       phone: 'شماره همراه باید 11 رقم باشد',
-      alpha_custom: 'فقط حروف مجاز هستند',
+      alpha_custom: 'فقط حروف و اعداد مجاز هستند',
     };
     return messages[ctx.rule.name] || `The field ${ctx.field} is invalid`;
   },

@@ -24,47 +24,58 @@ const props = defineProps<{
 const emit = defineEmits(['bookmark-toggled']); 
 const isBookmarked = ref(false); 
 
+// Check if video is bookmarked when component mounts
+const checkBookmarkStatus = async () => {
+  try {
+    const { data } = await useAuthFetch('/api/episodes/bookmarks/list/user/bookmark/');
+    if (data.value) {
+      // Check if current video exists in user's bookmarks
+      isBookmarked.value = data.value.some(
+        (bookmark: any) => bookmark.episode.id.toString() === props.videoDetails.key
+      );
+    }
+  } catch (error) {
+    console.error('Failed to check bookmark status:', error);
+  }
+};
+
 const toggleBookmark = async () => {
   try {
     const episodeId = parseInt(props.videoDetails.key);
     
-    if (!isBookmarked.value) {
-      // Add bookmark
-      const { data, error } = await useAuthFetch('/api/episodes/bookmarks/submit/user/bookmark/', {
-        method: 'POST',
-        body: {
-          episode: episodeId
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+    // Use the appropriate endpoint based on the action
+    const endpoint = !isBookmarked.value 
+      ? '/api/episodes/bookmarks/submit/user/bookmark/'
+      : '/api/episodes/bookmarks/delete/user/bookmark/';
 
-      if (error.value) {
-        throw new Error('Failed to add bookmark');
+    const { error } = await useAuthFetch(endpoint, {
+      method: 'POST',
+      body: {
+        episode: episodeId
       }
-    } else {
-      // Delete bookmark using the episode ID directly
-      const { error } = await useAuthFetch(`/api/episodes/bookmarks/${episodeId}/`, {
-        method: 'DELETE'
-      });
+    });
 
-      if (error.value) {
-        throw new Error('Failed to delete bookmark');
-      }
+    if (error.value) {
+      throw new Error(`Failed to ${isBookmarked.value ? 'remove' : 'add'} bookmark`);
     }
 
-    // Toggle bookmark state and emit event
+    // Toggle state and emit event
     isBookmarked.value = !isBookmarked.value;
-    emit('bookmark-toggled', { videoId: props.videoId, isBookmarked: isBookmarked.value });
+    emit('bookmark-toggled', { 
+      videoId: props.videoId, 
+      isBookmarked: isBookmarked.value,
+      episodeId 
+    });
 
   } catch (error) {
     console.error('Failed to toggle bookmark:', error);
   }
 };
 
-// Also update the onMounted hook to store the bookmark ID when checking initial status
-const bookmarkId = ref<number | null>(null);
+// Check initial bookmark status when component mounts
+onMounted(() => {
+  checkBookmarkStatus();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -11,7 +11,6 @@
           :videoId="episode.key"
           :videoDetails="episode"
           :isInBookmarksPage="isInBookmarksPage"
-          @bookmark-toggled="handleBookmarkToggled"
         />
       </div>
     </div>
@@ -19,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
+
 
 interface Episode {
   key: string;
@@ -30,7 +29,7 @@ interface Episode {
 }
 
 // Props
-defineProps({
+const props = defineProps({
   src: {
     type: String,
     required: true,
@@ -52,15 +51,6 @@ defineProps({
   }
 });
 
-// Emits
-const emit = defineEmits(['remove-bookmark']);
-
-// Methods
-const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string, isBookmarked: boolean }) => {
-  if (!isBookmarked && props.isInBookmarksPage) {
-    emit('remove-bookmark', videoId);
-  }
-};
 </script>
 
 <style lang="scss" scoped>

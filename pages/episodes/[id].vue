@@ -4,28 +4,32 @@
       <!-- For series -->
       <div v-if="series.length > 0">
         <RtlImageHeader :imageHeader="imageHeader" />
+        <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
         <VideoSeries 
           v-if="userStore.user?.is_subscription_active"
           class="mb-5" 
           :episodes="series" 
+          :onPause="handleVideoPause"
         />
-      </div>
-
+        </div>
       <!-- For single episode -->
       <div v-else>
         <VideoHeader 
           v-if="userStore.user?.is_subscription_active && movie.title" 
           :movie="movie" 
           :videoUrl="movie.video_mp4"
+          :onPause="handleVideoPause"
+          :startTime="movie.lastWatchedSecond"
         /> 
         <RtlImageHeader 
           v-else
           :imageHeader="imageHeader" 
         />
+      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
       </div>
       
 
-    <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
+
     
     <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
   
@@ -134,12 +138,12 @@ const movie = computed(() => {
     cover: episode.value.cover,
     title: episode.value.title,
     video: episode.value.video,
-    video_mp4: episode.value.video,
+    video_mp4: episode.value.video_mp4,
     key: episode.value.id,
     image: episode.value.image,
     number: episode.value.number,
     description: episode.value.description,
-    lastWatchedSecond: episode.value.last_watched_second || 0
+    lastWatchedSecond: episode.value.last_episode_watch_log?.second || 0
   }
 })
 
@@ -312,7 +316,8 @@ const series = computed(() => {
       src: ep.video_mp4,
       poster: ep.image,
       number: ep.episode,
-      description: ep.description
+      description: ep.description,
+      lastWatchedSecond: ep.last_episode_watch_log?.second || 0
     }));
   }
   return [];
@@ -323,6 +328,19 @@ const episodeId = Array.isArray(route.params.id) ? route.params.id[0] : route.pa
 const { relatedEpisodes } = useRelatedEpisodes(artists, episodeId);
 const cardSlider = computed(() => relatedEpisodes.value || []);
 
+const handleVideoPause = async (currentTime: number) => {
+  try {
+    await useAuthFetch(`/api/episodes/${episode.value.slug}/watch/log/`, {
+      method: 'post',
+      body: `second=${currentTime}&episode=${episode.value.id}`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+  } catch (error) {
+    console.error('Failed to update watch time:', error);
+  }
+};
 
 </script>
 

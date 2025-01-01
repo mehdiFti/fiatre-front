@@ -9,7 +9,6 @@
         <h2 class="login-title">
           ورود
         </h2>
-
         <VeeForm
           class="login-form"
           :validate-on-blur="true"

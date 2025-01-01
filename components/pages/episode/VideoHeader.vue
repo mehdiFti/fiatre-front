@@ -1,20 +1,19 @@
 <template>
   <ClientOnly>
-    <div>
-    </div>
     <div class="container">
       <media-player
         ref="addPlayerRef"
         :title="movie.title"
-        :src="movie.video"
+        :src="videoUrl"
+        :current-time="startTime"
+        keep-alive
         load="play"
         preload="none"
-        keep-alive
         playsInline
         viewType="video"
         class="video-player"
         @play="handlePlay($event.target)"
-        @pause="handlePause"
+        @pause="handlePause($event)"
       >
         <media-provider />
         <media-poster 
@@ -22,10 +21,10 @@
           :src="movie.cover"
           posterLoad="visible"
           :alt="`Poster for ${movie.title}`"
-        />
+        /> 
+        > 
         <media-video-layout class="video-layout">
-
-          <div class="other-buttons-lg" v-if="!isPlaying">
+          <div class="other-buttons-lg" v-if="!isPlaying && !isInsideVideoSeries">
         <ButtonPreview 
           :episodeId="movie.key"
           :slug="movie.title"
@@ -45,7 +44,6 @@
         />
       </div>
 
-
           <media-controls class="vds-controls">
             <media-controls-group class="vds-controls-group">
               <div class="vds-controls-spacer"></div>
@@ -64,7 +62,7 @@
           </media-controls>
         </media-video-layout>
       </media-player>
-      <div class="other-buttons-sm" v-if="!isPlaying">
+      <div class="other-buttons-sm" v-if="!isPlaying && !isInsideVideoSeries">
         <ButtonPreview 
           :episodeId="movie.key"
           :slug="movie.title"
@@ -83,7 +81,6 @@
           @bookmark-toggled="handleBookmarkToggled" 
         />
       </div>
- 
     </div>
   </ClientOnly>
 </template>
@@ -97,6 +94,7 @@ import { defineCustomElement, MediaTitleElement, MediaControlsElement } from "vi
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import ButtonPreview from '~/components/core/ButtonPreview.vue';
+import { useVideoPlayer } from '~/composables/useVideoPlayer' // for palying only one video at a time
 
 defineCustomElement(MediaTitleElement);
 defineCustomElement(MediaControlsElement);
@@ -109,13 +107,19 @@ const props = defineProps<{
     image: string;
     number: string;
     description: string;
+    slug: string;
   };
   videoUrl: string;
+  isInsideVideoSeries?: boolean;
+  onPause?: (currentTime: number) => void;
+  startTime?: number;
 }>();
 
 const playerRefs = ref<MediaPlayerElement[]>([]);
 const currentPlaying = ref<MediaPlayerElement | null>(null);
 const isPlaying = ref(false);
+
+const { pauseAllOtherPlayers } = useVideoPlayer()
 
 const addPlayerRef = (el: MediaPlayerElement) => {
   if (el && !playerRefs.value.includes(el)) {
@@ -124,16 +128,15 @@ const addPlayerRef = (el: MediaPlayerElement) => {
 };
 
 const handlePlay = (player: EventTarget) => {
-  const mediaPlayer = player as MediaPlayerElement;
-  if (currentPlaying.value && currentPlaying.value !== mediaPlayer) {
-    currentPlaying.value.pause();
-  }
-  currentPlaying.value = mediaPlayer;
-  isPlaying.value = true;
-};
+  const mediaPlayer = player as MediaPlayerElement
+  pauseAllOtherPlayers(mediaPlayer)
+  isPlaying.value = true
+}
 
-const handlePause = () => {
+const handlePause = (event: Event) => {
+  const mediaPlayer = event.target as MediaPlayerElement;
   isPlaying.value = false;
+  props.onPause?.(mediaPlayer.currentTime);
 };
 
 const handleVolumeChange = (newVolume: number) => {

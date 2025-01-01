@@ -7,40 +7,19 @@
           :key="episode.key"
           class="video-episode-card"
         >
-          <media-player
-            ref="addPlayerRef"
-            :title="episode.title"
-            :src="episode.src"
-            keep-alive
-            playsinline
-            class="video-player"
-            @play="handlePlay($event.target, episode.key)"
-            @pause="handlePause(episode.key)"
-            @bookmark-toggled="handleBookmarkToggled"
-          >
-            <media-provider />
-            <media-poster 
-              class="vds-poster"
-              :src="episode.poster"
-              :alt="`Poster for ${episode.title}`"
-            />
-            <media-video-layout class="video-layout" />
-            <media-controls class="vds-controls">
-              <media-controls-group class="vds-controls-group">
-                <div class="vds-controls-spacer"></div>
-                <media-volume-slider 
-                  v-if="isMobile && isActivePlayer(episode.key)" 
-                  class="vds-slider"
-                >
-                  <div class="volume-settings">
-                    <div class="vds-slider-track"></div>
-                    <div class="vds-slider-track-fill vds-slider-track"></div>
-                    <div class="vds-slider-thumb"></div>
-                  </div>
-                </media-volume-slider>
-              </media-controls-group>
-            </media-controls>
-          </media-player>
+          <VideoHeader 
+            :movie="{
+              key: episode.key,
+              title: episode.title,
+              video: episode.src,
+              cover: episode.poster,
+              description: episode.description
+            }"
+            :videoUrl="episode.src"
+            :isInsideVideoSeries="true"
+            :onPause="onPause"
+            :startTime="getStartTime(episode.key)"
+          />
           <div class="episode-info">
             <h4 class="episode-title">
               <span class="episode-number">{{ episode.number }}</span> - {{ episode.title }}
@@ -66,25 +45,19 @@
             :key="episode.key"
             class="video-episode-card"
           >
-            <media-player
-              ref="addPlayerRef"
-              :title="episode.title"
-              :src="episode.src"
-              keep-alive
-              :current-time="getSavedTime(episode.key)"
-              class="video-player"
-              @play="handlePlay($event.target)"
-              @time-update="handleTimeUpdate(episode.key, $event)"
-              @ended="handleVideoEnded(episode.key)"
-            >
-              <media-provider />
-              <media-poster 
-                class="vds-poster"
-                :src="episode.poster || ''"
-                :alt="`Poster for ${episode.title}`"
-              />
-              <media-video-layout class="video-layout" />
-            </media-player>
+            <VideoHeader 
+              :movie="{
+                key: episode.key,
+                title: episode.title,
+                video: episode.src,
+                cover: episode.poster,
+                description: episode.description
+              }"
+              :videoUrl="episode.src"
+              :isInsideVideoSeries="true"
+              :onPause="onPause"
+              :startTime="getStartTime(episode.key)"
+            />
             <div class="episode-info">
               <h4 class="episode-title">
                 <span class="episode-number">{{ episode.number }} -</span> {{ episode.title }}
@@ -109,15 +82,14 @@
 </template>
 
 <script setup lang="ts">
-import 'vidstack/bundle';
-import 'vidstack/icons';
-import { MediaPlayerElement } from 'vidstack/elements';
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed } from 'vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
+import VideoHeader from '~/components/pages/episode/VideoHeader.vue';
 
 const props = defineProps<{
   episodes: Episode[];
+  onPause?: (currentTime: number) => void;
 }>();
 
 interface Episode {
@@ -130,47 +102,7 @@ interface Episode {
 }
 
 const { width: screenWidth } = useWindowSize();
-
-const playerRefs = ref<MediaPlayerElement[]>([]);
 const showMore = ref(false);
-const currentPlaying = ref<MediaPlayerElement | null>(null);
-const isPlaying = ref(false);
-const activePlayerId = ref<string | null>(null);
-
-const isMobile = computed(() => {
-  if (typeof navigator !== 'undefined') {
-    return /Mobi|Android/i.test(navigator.userAgent);
-  }
-  return false;
-});
-
-
-if (typeof navigator !== 'undefined') {
-  console.log('User Agent:', navigator.userAgent);
-}
-
-const addPlayerRef = (el: MediaPlayerElement) => {
-  if (el && !playerRefs.value.includes(el)) {
-    playerRefs.value.push(el);
-  }
-};
-
-const handlePlay = (player: EventTarget, videoId: string) => {
-  const mediaPlayer = player as MediaPlayerElement;
-  if (currentPlaying.value && currentPlaying.value !== mediaPlayer) {
-    currentPlaying.value.pause();
-  }
-  currentPlaying.value = mediaPlayer;
-  activePlayerId.value = videoId;
-  isPlaying.value = true;
-};
-
-const handlePause = (videoId: string) => {
-  if (activePlayerId.value === videoId) {
-    isPlaying.value = false;
-    activePlayerId.value = null;
-  }
-};
 
 const sanitizeAndTruncateDescription = (description: string) => {
   const cleanText = description.replace(/<\/?[^>]+(>|$)/g, "");
@@ -186,38 +118,6 @@ const toggleShowMore = () => {
   showMore.value = !showMore.value;
 };
 
-onMounted(() => {
-  playerRefs.value = [];
-
-  const removeElement = (selector: string) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.remove();
-    }
-  };
-
-  const removeGoogleCastButton = () => {
-    const googleCastButton = document.querySelector('media-google-cast-button');
-    if (googleCastButton) {
-      googleCastButton.remove();
-    }
-  };
-
-  removeElement('media-pip-button');
-  removeGoogleCastButton();
-
-  const observer = new MutationObserver(() => {
-    removeElement('media-pip-button');
-    removeGoogleCastButton();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  onBeforeUnmount(() => {
-    observer.disconnect();
-  });
-});
-
-
 const episodesToShow = computed(() => {
   if (screenWidth.value >= 421 && screenWidth.value <= 1024) {
     return props.episodes.slice(0, 4);
@@ -226,14 +126,6 @@ const episodesToShow = computed(() => {
   }
 });
 
-
-const handleVideoEnded = (key: string) => {
-  localStorage.removeItem(`incomplete-video-${key}`);
-  const index = props.episodes.findIndex(episode => episode.key === key);
-  if (index !== -1) {
-    props.episodes.splice(index, 1);
-  }
-};
 const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string; isBookmarked: boolean }) => {
   if (!isBookmarked) {
     const bookmarkButton = document.querySelector(`.bookmark-button[data-video-id="${videoId}"]`);
@@ -243,89 +135,26 @@ const handleBookmarkToggled = ({ videoId, isBookmarked }: { videoId: string; isB
   }
 };
 
-
 const { width } = useWindowSize();
-
 const isScreenSmall = computed(() => width.value < 680);
 
-const isActivePlayer = (videoId: string) => {
-  return activePlayerId.value === videoId && isPlaying.value;
+const getStartTime = (episodeKey: string) => {
+  const episode = props.episodes.find(ep => ep.key === episodeKey);
+  return episode?.lastWatchedSecond || 0;
 };
 
+const onPause = (currentTime: number) => {
+  if (props.onPause) {
+    props.onPause(currentTime);
+  }
+};
 </script>
 
-
 <style scoped lang="scss">
-.player {
---brand-color: #f5f5f5;
---focus-color: #4e9cf6;
-
---audio-brand: var(--brand-color);
---audio-focus-ring-color: var(--focus-color);
---audio-border-radius: 2px;
-
---video-brand: var(--brand-color);
---video-focus-ring-color: var(--focus-color);
---video-border-radius: 2px;
-}
-
-
-.vds-slider {
-  margin-top: 2px;
-  position: absolute; 
-  top: 2px; 
-  left: 10px; 
---media-slider-width: 80px ; 
---media-slider-height: 30px; 
-
---media-slider-track-width: 100%;
---media-slider-track-height: 4px; 
---media-slider-track-bg: rgb(255 255 255 / 0.3);
---media-slider-track-fill-bg: var(--media-brand, #f5f5f5);
---media-slider-track-border-radius: 2px;
---media-slider-focused-track-width: var(--media-slider-track-width);
---media-slider-focused-track-height: calc(var(--media-slider-track-height) * 1.25);
-
---media-slider-thumb-size: 12px;
---media-slider-thumb-border: 1px solid #cacaca;
---media-slider-thumb-border-radius: 9999px;
---media-slider-thumb-bg: #fff;
---media-slider-thumb-transition: opacity 0.2s ease-in, box-shadow 0.2s ease;
---media-slider-focused-thumb-size: calc(var(--media-slider-thumb-size) * 1.1);
---media-slider-focused-thumb-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.4);
-}
-
-media-controls[data-visible] {
-  opacity: 0.6;
-  z-index: 1000;
-}
-
-.volume-settings {
-display: flex;
-flex-direction: column;
-align-items: center;
-opacity: 1 ;
-
-
-}
-
-.vds-slider-thumb::before {
-  content: '';
-  background-image: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M17.5091 24.6594C17.5091 25.2066 16.8864 25.5207 16.4463 25.1956L9.44847 20.0252C9.42553 20.0083 9.39776 19.9991 9.36923 19.9991H4.66667C4.29848 19.9991 4 19.7006 4 19.3324V12.6658C4 12.2976 4.29848 11.9991 4.66667 11.9991H9.37115C9.39967 11.9991 9.42745 11.99 9.45039 11.973L16.4463 6.80358C16.8863 6.4784 17.5091 6.79258 17.5091 7.33975L17.5091 24.6594Z" fill="currentColor"/><path d="M22.8424 12.6667C22.8424 12.2985 22.544 12 22.1758 12H20.8424C20.4743 12 20.1758 12.2985 20.1758 12.6667V19.3333C20.1758 19.7015 20.4743 20 20.8424 20H22.1758C22.544 20 22.8424 19.7015 22.8424 19.3333V12.6667Z" fill="currentColor"/></svg>');
-  background-size: cover;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .video-episode-wrapper {
   margin-top: 30px;
   display: flex;
-justify-content: flex-start;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
@@ -336,7 +165,7 @@ justify-content: flex-start;
 
 .video-episode-wrapper-rest {
   display: flex;
-justify-content: flex-end;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
@@ -355,12 +184,6 @@ justify-content: flex-end;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   height: 440px;
   position: relative;
-}
-
-.video-player {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: $light;
 }
 
 .episode-info {
@@ -405,8 +228,6 @@ justify-content: flex-end;
   -webkit-box-orient: vertical;
   line-clamp: 2;
   max-height: 4rem;
-
-
 }
 
 hr {
@@ -435,7 +256,6 @@ hr {
 .show-less-btn:hover {
   background-color: darken($primary, 10%);
 }
-
 
 .other-buttons {
   display: flex;
