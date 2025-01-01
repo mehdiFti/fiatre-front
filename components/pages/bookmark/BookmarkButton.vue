@@ -26,8 +26,9 @@ const isBookmarked = ref(false);
 
 // Check if video is bookmarked when component mounts
 const checkBookmarkStatus = async () => {
+
   try {
-    const { data } = await useAuthFetch('/api/episodes/bookmarks/list/user/bookmark/');
+    const { data } = await useAuthFetch(`/api/episodes/bookmarks/${props.videoId}/`);
     if (data.value) {
       // Check if current video exists in user's bookmarks
       isBookmarked.value = data.value.some(

@@ -1,31 +1,35 @@
 <template>
-  <main class="container">
-    <div class="error-card">
-      <div v-if="status === 'NOK'" class="error-header">
+  <main class="container mb-5">
+    <div class="result-card">
+      <div v-if="status === 'NOK'" class="plan-header error-header">
         <h2>خطا در پرداخت</h2>
       </div>
-      <div v-else class="success-header">
+      <div v-else-if="status === 'OK'" class="plan-header success-header">
         <h2>پرداخت موفقیت‌آمیز</h2>
       </div>
-      
-      <div class="error-body">
+
+      <div class="plan-body">
         <div class="info-row">
-          <span class="info-label">نوع اشتراک</span>
-          <span class="info-value">{{ subscriptionType }}</span>
+          <!-- <span class="info-label">نوع اشتراک:</span>
+          <span class="info-value">{{ subscriptionType }}</span> -->
         </div>
-        
         <div class="info-row">
-          <span class="info-label">مبلغ</span>
-          <span class="info-value">{{ amount }}</span>
+          <!-- <span class="info-label">مبلغ:</span>
+          <span class="info-value">{{ amount }}</span> -->
         </div>
-        
+
+        <div v-if="status === 'OK'" class="info-row">
+          <span class="info-label">کد رهگیری:</span>
+          <span class="info-value">{{ refID }}</span>
+        </div>
+
         <p v-if="status === 'NOK'" class="warning-message">
-          در صورت کسر وجه از حساب تا 72 ساعت تامل نموده
-          <br>
-          و در صورت رفع نشدن مشکل با پشتیبانی تماس حاصل فرمایید
+          در صورت کسر وجه از حساب تا ۷۲ ساعت تامل نموده
+          <br />
+          و در صورت رفع نشدن مشکل با پشتیبانی تماس حاصل فرمایید.
         </p>
-        
-        <NuxtLink to="/" class="home-button">
+
+        <NuxtLink to="/" class="select-button">
           صفحه اصلی
         </NuxtLink>
       </div>
@@ -34,128 +38,101 @@
 </template>
 
 <script setup>
-const subscriptionType = ref('شش ماهه')
-const amount = ref('۷۹۰,۰۰۰')
-const route = useRoute()
 
 
-const status = computed(()=>  {
- return route.query.Status
-})
 
+const route = useRoute();
+
+
+const status = route.query.Status || route.query.status; 
+const refID = route.query.refID; 
+
+// Example values for subscription type and amount (can be dynamic)
+// const subscriptionType = 'ماهانه';
+// const amount = '۵۰٬۰۰۰ تومان';
 </script>
 
 <style lang="scss" scoped>
 .container {
+  padding: 40px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 0.75rem;
-  background-color: #f5f5f5;
+  align-items: center;
+  min-height: 70vh;
 }
 
-.error-card {
+.result-card {
+  background-color: $white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+
 
   .error-header {
-    background-color: #ff0000;
-    color: white;
-    padding: 0.75rem;
-    text-align: center;
-
-    h2 {
-      margin: 0;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+    background-color: $third;
+    color: $white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 15px 15px 0 0;
+    padding: 20px;
   }
 
-  .error-body {
-    padding: 1.5rem;
+  .success-header {
+    background-color: $primary; 
+    color: $white;
+    border-radius: 15px 15px 0 0;
+    padding: 20px;
+  }
+
+  .plan-body {
+    padding: 20px 15px;
 
     .info-row {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem;
-      background-color: #f8f8f8;
-      border-radius: 6px;
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-
+      
       .info-label {
-        color: #666;
-        font-weight: 500;
+        color: $gray-500;
+        font-size: 1.4rem;
+        padding-bottom: 10px;
       }
 
       .info-value {
-        color: #333;
-        font-weight: 600;
+        color: $gray-700;
+        font-weight: bold;
+        font-size: 1.1rem;
+        padding-bottom: 10px;
       }
     }
 
     .warning-message {
-      text-align: center;
-      color: #666;
-      line-height: 1.8;
-      margin: 1.5rem 0;
-      font-size: 0.85rem;
+      padding-bottom: 60px;
+      margin: 20px 0;
+      color: $gray-500;
+      font-size: 1rem;
+      line-height: 1.6;
     }
 
-    .home-button {
-      display: block;
+    .select-button {
+      display: inline-block;
+      background-color: $primary;
+      color: $white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
       width: 100%;
-      padding: 0.75rem;
-      background-color: #0066cc;
-      color: white;
-      text-align: center;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: background-color 0.2s;
-      font-size: 0.9rem;
-      text-decoration: none;
+      transition: background-color 0.3s;
 
       &:hover {
-        background-color: darken(#0066cc, 10%);
+        background-color: darken($primary, 10%);
       }
     }
-  }
-}
-
-@media (max-width: 480px) {
-  .error-card {
-    margin: 0.75rem;
-    
-    .error-body {
-      padding: 1rem;
-
-      .info-row {
-        padding: 0.6rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.4rem;
-      }
-    }
-  }
-}
-
-.success-header {
-  background-color: #28a745;
-  color: white;
-  padding: 0.75rem;
-  text-align: center;
-
-  h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
   }
 }
 </style>

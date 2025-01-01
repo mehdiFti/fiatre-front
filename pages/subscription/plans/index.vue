@@ -9,7 +9,7 @@
 
       <template v-else>
         <header>
-          <h2>پلن‌های اشتراکی فیاتر</h2>
+          <h2 class="title-plan">پلن‌های اشتراکی فیاتر</h2>
         </header>
         <div class="plans-container">
           <div class="plan-card" v-for="plan in plans" :key="plan.id">
@@ -120,6 +120,10 @@ const formatNumber = (number: Number) => {
 
 <style lang="scss" scoped>
 
+.title-plan {
+      font-size: 20px;
+      font-weight: bold;
+    }
      
 
 .subscription-plans {
@@ -150,6 +154,8 @@ const formatNumber = (number: Number) => {
       transform: translateY(-10px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
+
+
 
     .plan-image {
       max-width: 100%;
@@ -207,7 +213,7 @@ const formatNumber = (number: Number) => {
 
       .select-button {
         display: inline-block;
-        background-color: #4caf50;
+        background-color: $primary;
         color: #fff;
         padding: 12px 24px;
         border-radius: 8px;
@@ -215,7 +221,7 @@ const formatNumber = (number: Number) => {
         transition: background-color 0.3s;
 
         &:hover {
-          background-color: #43a047;
+          background-color: darken($primary, 10%);
         }
       }
     }

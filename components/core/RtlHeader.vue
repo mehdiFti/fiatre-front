@@ -182,7 +182,6 @@ function toggleMailBox() {
   background-color: rgba(244, 244, 244, 0.9);
   border-bottom: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 5px;
 }
 
 .header-hr {

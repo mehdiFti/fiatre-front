@@ -27,6 +27,7 @@
                 description: video.description,
                 slug: video.slug
               }"
+              no-container
               :videoUrl="video.src"
               :startTime="video.second"
               :isInsideVideoSeries="true"
@@ -34,29 +35,18 @@
             />
             
             <div class="episode-info">
-              <div class="episode-title">{{ video.title }}</div>
-              <hr>
-              <div class="episode-desc">{{ truncateDescription(video.description) }}</div>
+              <div class="episode-title">
+                <NuxtLink :to="`/episodes/${video.slug}`" target="_blank">
+                  {{ video.title }}
+                </NuxtLink>
+              </div>
+              <div class="other-buttons">
+                <DownloadButton :videoUrl="video.src" />
+              </div>
+            </div>
             </div>
             
-            <div class="other-buttons">
-              <DownloadButton :videoUrl="video.src" />
-              <BookmarkButton
-                :videoId="video.key"
-                :videoDetails="{ 
-                  key: video.key, 
-                  title: video.title, 
-                  video: video.src, 
-                  cover: video.poster,
-                  description: video.description 
-                }"
-                @bookmark-toggled="handleBookmarkToggled"
-              />
-              <button class="remove-button" @click="removeVideo(video.key)">
-                <nuxt-icon name="cancel" />
-              </button>
-            </div>
-          </div>
+
         </template>
 
         <!-- Loading & Error States -->
@@ -118,7 +108,12 @@ interface WatchLogResponse {
 }
 
 // API Call
-const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/');
+const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/',{
+  query:{ 
+    limit: 100,
+    ordering: "-created_at"
+  }
+})
 
 // Computed
 const incompleteVideos = computed(() => {
@@ -168,18 +163,6 @@ const handleVideoEnded = (key: string) => {
   }
 };
 
-// Utils
-const truncateDescription = (description?: string) => {
-  if (!description) return '';
-  const maxWords = 100;
-  const words = description.split(' ');
-  return words.length > maxWords ? words.slice(0, maxWords).join(' ') + '...' : description;
-};
-
-// Cleanup
-onBeforeUnmount(() => {
-  playerRefs.value.forEach(player => player?.pause());
-});
 </script>
 
 <style scoped lang="scss">
@@ -191,7 +174,7 @@ onBeforeUnmount(() => {
   gap: 20px;
   width: 100%;
   background: $light;
-  padding: 20px;
+  padding: 20px 0;
   flex-direction: row-reverse;
 }
 
@@ -204,7 +187,7 @@ onBeforeUnmount(() => {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  min-height: 400px;
+  min-height: 200px;
 }
 
 .video-episode-card.removing {
@@ -240,6 +223,11 @@ onBeforeUnmount(() => {
 }
 
 .episode-info {
+  flex-direction: row-reverse;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 15px;
   text-align: right;
   flex-grow: 1;
@@ -259,20 +247,16 @@ onBeforeUnmount(() => {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   line-clamp: 1;
+  a {
+    text-decoration: none;
+    color: $gray-800;
+    
+    &:hover {
+      color: $gray-900;
+    }
+  }
 }
 
-.episode-desc {
-  font-size: 1em;
-  color: #666;
-  line-height: 1.5;
-  max-height: 4.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-}
 
 hr {
   border: none;
@@ -281,42 +265,9 @@ hr {
 }
 
 .other-buttons {
-  display: flex;
-  align-items: center; 
   gap: 15px;
-  position: relative;
-  bottom: 15px; 
-  left: 15px; 
 }
 
-.remove-button {
-  background-color: $third;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: $white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  position: relative;
-}
-
-.remove-button:hover::after {
-  content: 'ویدئو از صفحه حذف شود؟';
-  position: absolute;
-  top: -30px;
-  right: 50%;
-  transform: translateX(50%);
-  background-color: black;
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
-  white-space: nowrap;
-  font-size: 12px;
-  z-index: 10;
-}
  .incomplete-videos-title {
   font-size: 1.5rem;
   color: $dark;

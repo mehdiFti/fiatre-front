@@ -66,8 +66,8 @@
   import { useValidationRules } from '@/utils/validationRules';
   import { toast } from 'vue3-toastify';
   
-definePageMeta({
-  middleware: ['redirect-to-login'],
+  definePageMeta({
+  middleware: ['redirect-if-authenticated'],
 });
   useValidationRules();
   

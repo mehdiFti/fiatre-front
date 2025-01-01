@@ -66,13 +66,12 @@ defineProps({
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9), transparent);
     color: white;
     font-size: 0.9rem;
+    white-space: nowrap;
+    width: 100%;
     text-align: center;
     line-height: 1.4;
     max-height: 60px; // Allows for 2-3 lines of text
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
   }
 }

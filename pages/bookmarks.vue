@@ -90,7 +90,6 @@ const bookmarkedVideos = computed(() => {
       title: bookmark.episode.title || 'Unknown Title',
       src: `/episodes/${bookmark.episode.slug}/`,
       poster: bookmark.episode.cover ? `https://fiatre.ir${bookmark.episode.cover}` : bookmark.episode.image ? `https://fiatre.ir${bookmark.episode.image}` : '',
-      number: bookmark.episode.en_title || '',
       description: bookmark.episode.slug
     }));
     return videos;
