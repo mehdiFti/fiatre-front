@@ -24,13 +24,12 @@ const props = defineProps<{
 const emit = defineEmits(['bookmark-toggled']); 
 const isBookmarked = ref(false); 
 
-// Check if video is bookmarked when component mounts
 const checkBookmarkStatus = async () => {
 
   try {
     const { data } = await useAuthFetch(`/api/episodes/bookmarks/${props.videoId}/`);
     if (data.value) {
-      // Check if current video exists in user's bookmarks
+
       isBookmarked.value = data.value.some(
         (bookmark: any) => bookmark.episode.id.toString() === props.videoDetails.key
       );
@@ -43,8 +42,7 @@ const checkBookmarkStatus = async () => {
 const toggleBookmark = async () => {
   try {
     const episodeId = parseInt(props.videoDetails.key);
-    
-    // Use the appropriate endpoint based on the action
+
     const endpoint = !isBookmarked.value 
       ? '/api/episodes/bookmarks/submit/user/bookmark/'
       : '/api/episodes/bookmarks/delete/user/bookmark/';
@@ -72,8 +70,6 @@ const toggleBookmark = async () => {
     console.error('Failed to toggle bookmark:', error);
   }
 };
-
-// Check initial bookmark status when component mounts
 onMounted(() => {
   checkBookmarkStatus();
 });

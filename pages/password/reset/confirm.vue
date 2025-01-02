@@ -107,7 +107,6 @@ const onSubmit = handleSubmit(async (values) => {
     }
 
     if (data.value) {
-      // Store the verification code for password reset
       localStorage.setItem('verificationCode', values.code);
       userStore.setLoginData(data.value.refresh, data.value.access, data.value.user);
       toast.success('کد با موفقیت تایید شد');

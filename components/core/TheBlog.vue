@@ -1,6 +1,6 @@
 <template>
   <div class="container mb-5 mt-5">
-    <HomeSeprator class="mb-3" title="اخبار فیاتر" />
+    <HomeSeprator class="mb-3" slug="https://mag.fiatre.ir"  title="اخبار فیاتر" :isExternalLink="true" />
 
     <div class="blog__wrapper">
       <BlogItem

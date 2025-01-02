@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <main class="quiz-container">
-      <!-- Loading State -->
       <div v-if="activeGameRequest.status.value === 'pending'">
         loading game
       </div>
 
-      <!-- Active Game State -->
+    
       <div v-else-if="hasActiveGame" class="quiz-wrapper">
         <div class="timer-display">
           {{ timeLeft }}

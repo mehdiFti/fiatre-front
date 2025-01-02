@@ -1,7 +1,7 @@
 <template>
   <main class="container mb-5">
     <section class="subscription-plans">
-      <div v-if="isLoading" class="loading">Loading...</div>
+      <div v-if="isLoading" class="loading"> در حال بارگذاری...</div>
       
       <div v-else-if="error" class="error">
         Failed to load subscription plans. Please try again.

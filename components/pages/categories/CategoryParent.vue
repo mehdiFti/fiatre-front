@@ -36,10 +36,9 @@ const linkPath = computed(() => {
   return `/${props.linkType || 'categories'}/`;
 });
 
-// Define the base URL for the image
+
 const baseUrl = 'https://www.fiatre.ir';
 
-// Function to get the full image URL
 const getImageUrl = (imagePath: string) => {
   return baseUrl + imagePath;
 };

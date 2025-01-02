@@ -109,15 +109,15 @@ const episode = computed(() => {
 const getEpisodeGalleriesRequest = await useApiFetch<any>(`/api/episodes/${episode.value.slug}/images/gallery/`, {
 });
 
-console.log(getEpisodeGalleriesRequest.data.value); // Log the response to inspect it
+console.log(getEpisodeGalleriesRequest.data.value); 
 
 const galleries = computed(() => {
   if (getEpisodeGalleriesRequest.status.value === 'success') {
-    const data = getEpisodeGalleriesRequest.data.value.data; // Access the 'data' property
+    const data = getEpisodeGalleriesRequest.data.value.data; 
     if (Array.isArray(data)) {
       return data.map((gallery: any) => ({
-        url: gallery.image.startsWith('http') ? gallery.image : `https://www.fiatre.ir${gallery.image}`, // Use the full URL if already present
-        alt: `Gallery image ${gallery.id}` // Provide a default alt text
+        url: gallery.image.startsWith('http') ? gallery.image : `https://www.fiatre.ir${gallery.image}`,
+        alt: `Gallery image ${gallery.id}` 
       }));
     } else {
       return [];

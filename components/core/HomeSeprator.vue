@@ -3,8 +3,10 @@
     <h2 class="title-seprator">{{ title }}</h2>
     <hr class="home-hr">
     <NuxtLink 
-      :to="`https://mag.fiatre.ir/`" 
+      :to="isExternalLink ? undefined : `/categories/${slug}`"
+      :href="isExternalLink ? slug : undefined"
       class="gradient-button"
+      :target="isExternalLink ? '_blank' : undefined"
     >
       مشاهده همه
     </NuxtLink>
@@ -23,6 +25,10 @@ const props = defineProps({
     type: String,
     required: false,
     default: null
+  },
+  isExternalLink: {
+    type: Boolean,
+    default: false
   }
 });
 </script>

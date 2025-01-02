@@ -13,7 +13,7 @@
       
       <ExclusiveCard :posters="posters[index]" />
     </div>
-
+    
     <TheBlog />
   </div>
 </template>
@@ -73,17 +73,17 @@ const posters = computed(() => {
   return [];
 });
 
-const {width} = useWindowSize(); // Get the reactive window width
+const {width} = useWindowSize(); 
 
 const heroSections = computed(() => {
-  const isMobile = width.value < 800; // Use the reactive width value
+  const isMobile = width.value < 800; 
 
   if (getHomeRequest.status.value === 'success') {
-    console.log('Hero data:', getHomeRequest.data.value.sliders); // Log the hero data
+    console.log('Hero data:', getHomeRequest.data.value.sliders);
     return getHomeRequest.data.value.sliders.map((slider) => ({
       id: slider.id,
       name: slider.name,
-      background: isMobile ? slider.file_mobile : slider.file, // Use mobile_file if on mobile
+      background: isMobile ? slider.file_mobile : slider.file, 
       poster:  slider.banner,
       // font: slider.image,
       title: slider.name,

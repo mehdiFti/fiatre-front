@@ -5,7 +5,7 @@
       <hr />
       
       <div class="video-episode-wrapper">
-        <!-- Success State -->
+      
         <template v-if="getWatchLogsRequest.status.value === 'success'">
           <div v-if="incompleteVideos.length === 0" class="no-videos-message">
             !ویدیوی ناتمامی ندارید
@@ -132,9 +132,8 @@ const incompleteVideos = computed(() => {
   return [];
 });
 
-// Event Handlers
 const handlePlay = () => {
-  // This is now handled by VideoHeader
+
 };
 
 const handlePause = async (video: any, event: { target: { currentTime: number } }) => {

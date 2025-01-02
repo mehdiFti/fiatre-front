@@ -2,10 +2,7 @@
   <div class="container mb-5">
     <div class="login-container">
       <img class="login-image" src="/image/background.jpg" alt="login-image" />
-
       <div class="login-form-wrapper">
-
-
         <h2 class="login-title">
           ورود
         </h2>
@@ -16,7 +13,6 @@
           :validate-on-input="false"
           :validate-on-model-update="true"
           @submit="onSubmit"
-
         >
           <div class="login-form-control">
             <VeeField
@@ -165,7 +161,7 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    // width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: -1;

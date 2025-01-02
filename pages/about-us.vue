@@ -4,7 +4,7 @@
       <h2 class="about-us-heading">درباره فیاتر</h2>
       <article class="about-us">
         <div v-if="isLoading" class="debug-info">
-          Loading...
+          در حال بارگذاری...
         </div>
         <div v-else-if="!aboutUs" class="debug-info">
           No content found

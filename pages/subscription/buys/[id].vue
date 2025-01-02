@@ -26,8 +26,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Price Information -->
         <div class="info-row">
           <span class="info-label">قیمت اولیه</span>
           <span class="info-value">{{ formatNumber(subscription.price) }} تومان</span>

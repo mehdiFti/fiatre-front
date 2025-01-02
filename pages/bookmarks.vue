@@ -6,9 +6,7 @@
         <hr>
       </header>
 
-      <!-- Success State -->
       <template v-if="bookmarksRequest.status.value === 'success'">
-        <!-- Debug info -->
         <div v-if="false" class="not-text">
           <pre>{{ bookmarkedVideos }}</pre>
         </div>
