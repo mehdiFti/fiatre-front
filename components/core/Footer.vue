@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <hr class="hr-footer">
   <div class=" footer-dark">
     <footer class="footer">
         <div class="footer-row">
@@ -92,8 +93,7 @@ const copyright = computed(() => {
 <style lang="scss">
 .footer-dark {
   padding: 50px 0;
-  color: #f0f9ff;
-  background-color: #282d32;
+  color: $black;
 }
 
 .footer {
@@ -139,7 +139,7 @@ const copyright = computed(() => {
   font-size: 14px;
   margin-bottom: 0;
   display: flex;
-  gap: 20px;
+  gap: 16px;
   
   @media (max-width: 1400px) {
     display: flex;
@@ -157,13 +157,12 @@ const copyright = computed(() => {
 }
 
 .footer-list a {
-  color: inherit;
+  color: $black;
   text-decoration: none;
-  opacity: 0.6;
 }
 
 .footer-list a:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .footer-text {
@@ -179,10 +178,10 @@ const copyright = computed(() => {
   justify-content: center;
   align-items: center;
   text-align: center;
+  border: 1px solid $black;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
   margin: 0 8px;
-  color: $white;
+  color: $black;
   opacity: 0.75;
 
   &:hover {
@@ -223,5 +222,10 @@ const copyright = computed(() => {
   width: 140px;
   height: 70px;
 
+}
+
+.hr-footer {
+
+  background-color: red; 
 }
 </style>

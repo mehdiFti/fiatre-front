@@ -105,8 +105,8 @@ onMounted(async () => {
 .profile-card-wrapper {
   display: flex;
   gap: 60px;
+  margin-top: 40px;
   justify-content: center;
-  background-color: $light;
   align-items: center;
 }
 
@@ -117,6 +117,7 @@ onMounted(async () => {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   width: 400px;
   white-space: nowrap;
+  background-color: $milky;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 

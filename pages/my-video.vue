@@ -168,7 +168,7 @@ const handleVideoEnded = (key: string) => {
 .video-episode-wrapper {
   margin: 30px 0 50px 0;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
@@ -182,7 +182,7 @@ const handleVideoEnded = (key: string) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: $white;
+  background-color: $milky;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -238,7 +238,7 @@ const handleVideoEnded = (key: string) => {
 }
 
 .episode-title {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   margin-bottom: 10px;
   overflow: hidden;
   text-overflow: ellipsis;

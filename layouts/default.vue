@@ -9,19 +9,19 @@
 </template>
 
 <script setup lang="ts">
-import type {MetaObject} from '@nuxt/schema';
+import type { MetaObject } from '@nuxt/schema';
 import Header from '~/components/core/Header.vue';
 import Footer from '~/components/core/Footer.vue';
 
 const head = computed<MetaObject>(() => {
-  const bodyClass: string[] = ['peyda'];
+  const bodyClass: string[] = ['iransans'];
 
   return {
     htmlAttrs: {
       dir: 'rtl',
       lang: 'fa',
     },
-    bodyAttrs: {class: bodyClass},
+    bodyAttrs: { class: bodyClass },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

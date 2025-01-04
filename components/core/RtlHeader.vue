@@ -173,6 +173,9 @@ function toggleMailBox() {
   position: sticky;
   z-index: 10000;
   top: 0;
+  .color {
+  background-color: $light;
+}   
 }
 
 .header-container {

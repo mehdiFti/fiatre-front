@@ -1,21 +1,12 @@
 <template>
-  <main class="container mb-5">
+  <main class="container mt-5">
     <section v-for="(item, index) in faqs" :key="index" class="faq-item">
-      <header 
-        class="faq-question" 
-        @click="toggleAnswer(index)"
-        :aria-expanded="activeIndex === index"
-        :aria-controls="'faq-collapse-' + index"
-        role="button"
-      >
+      <header class="faq-question" @click="toggleAnswer(index)" :aria-expanded="activeIndex === index"
+        :aria-controls="'faq-collapse-' + index" role="button">
         <p>{{ item.question }}</p>
         <i :class="{ 'icon-chevron-up': activeIndex === index, 'icon-chevron-down': activeIndex !== index }"></i>
       </header>
-      <div 
-        :id="'faq-collapse-' + index"
-        class="collapse"
-        :class="{ 'show': activeIndex === index }"
-      >
+      <div :id="'faq-collapse-' + index" class="collapse" :class="{ 'show': activeIndex === index }">
         <article class="faq-answer">
           <p>{{ item.answer }}</p>
         </article>
@@ -103,14 +94,16 @@ const toggleAnswer = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  background-color: $white;
+  border-radius: 5px;
 
-  .container {
-    background-color: $white;
-  }
+}
 
 .faq-item {
   border-bottom: 1px solid $gray-300;
-  padding: 15px 20px;
+  padding: 25px 20px;
+
 }
 
 .faq-question {
@@ -124,7 +117,7 @@ const toggleAnswer = (index: number) => {
 
   &:hover {
     background: linear-gradient(60deg, $primary, $third);
-    background-clip: text; 
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

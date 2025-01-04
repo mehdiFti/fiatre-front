@@ -46,8 +46,8 @@ const isLoading = computed(() => pending.value);
   .terms-wrapper {
     z-index: 1000;
     margin: 0 auto;
-    padding: 20px;
-    background-color: $white;
+    padding: 20px 30px;
+    background-color: $milky;
   }
 
   .terms-heading {

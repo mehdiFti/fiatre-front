@@ -51,7 +51,7 @@
           </div>
 
           <div class="login-btn">
-            <button type="submit" class="login-submit"> تائید </button>
+            <button type="submit" class="login-submit"> تایید </button>
 
           </div>
         </VeeForm>

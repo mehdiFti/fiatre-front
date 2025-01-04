@@ -164,7 +164,7 @@ const checkMobileView = () => {
 
   .comment-content {
     flex: 1;
-    background-color: $white;
+    background-color: $milky;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -183,7 +183,7 @@ const checkMobileView = () => {
 
       .comment-metadata {
         font-size: 0.8em;
-        color: $gray-400;
+        color: $gray-500;
       }
     }
 
@@ -212,8 +212,9 @@ const checkMobileView = () => {
       textarea {
         resize: none;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid $gray-200;
         border-radius: 5px;
+        background-color: $gray-100;
         margin-bottom: 10px;
         font-size: 14px;
       }
@@ -239,6 +240,7 @@ const checkMobileView = () => {
     resize: none;
     padding: 10px;
     border: none;
+    background-color: $milky;
     border-radius: 10px;
     margin-bottom: 10px;
     font-size: 14px;
@@ -246,7 +248,7 @@ const checkMobileView = () => {
     text-align: left;
 
     &:disabled {
-      background-color: #f5f5f5;
+      background-color: $milky;
       cursor: not-allowed;
     }
   }

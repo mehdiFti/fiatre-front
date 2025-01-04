@@ -50,6 +50,7 @@ const filteredBlogItems = computed(() => {
   flex-wrap: wrap;
   align-items: center;
   gap: 20px;
+  transform: translateX(9px);
 }
 
 @media (min-width: 1025px) {
@@ -79,7 +80,7 @@ const filteredBlogItems = computed(() => {
 @media (max-width: 505px) {
   .blog__wrapper>* {
     flex: 0 0 100%;
-    
+
   }
 }
 </style>

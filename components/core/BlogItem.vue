@@ -58,7 +58,7 @@ const formattedTime = computed(() => {
 .blog_card {
   padding: 10px;
   margin-bottom: 20px;
-  background: $light;
+  background-color: $milky;
   border: 1px solid $gray-200;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
@@ -128,7 +128,7 @@ const formattedTime = computed(() => {
     text-align: left;
     font-size: 12px;
     color: $gray-500;
-    margin-top: 5px;
+    margin-top: 15px;
     font-weight: bold;
   }
 

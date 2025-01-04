@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="color">
      <RtlHeader :rtl="true"/>
   <div class="color">
     <main class="main-layout">
@@ -14,7 +14,7 @@ import type {MetaObject} from '@nuxt/schema';
 import RtlHeader from '~/components/core/RtlHeader.vue';
 
 const head = computed<MetaObject>(() => {
-  const bodyClass: string[] = ['peyda'];
+  const bodyClass: string[] = ['iransans'];
 
   return {
     htmlAttrs: {

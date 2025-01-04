@@ -21,7 +21,7 @@
   .desc-wrapper {
     border-radius: 10px;
     padding: 20px 40px;
-    background: $white;
+    background: $milky;
     direction: ltr;
   
     > .desc-static {

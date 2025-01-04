@@ -2,7 +2,7 @@
   <main class="container mb-5">
     <section class="subscription-plans">
       <div v-if="isLoading" class="loading"> در حال بارگذاری...</div>
-      
+
       <div v-else-if="error" class="error">
         Failed to load subscription plans. Please try again.
       </div>
@@ -23,7 +23,7 @@
                 <span class="original-price">{{ formatNumber(plan.originalPrice) }}</span>
                 <span class="final-price">{{ formatNumber(plan.finalPrice) }}</span>
               </div>
-              <NuxtLink :to="{ name: 'subscription-buys-id', params: { id: plan.plansRoute }}" class="select-button">
+              <NuxtLink :to="{ name: 'subscription-buys-id', params: { id: plan.plansRoute } }" class="select-button">
                 {{ plan.buttonText }}
               </NuxtLink>
             </div>
@@ -72,7 +72,7 @@ const subscriptionData = ref(null);
 const fetchSubscriptionPlans = async () => {
   isLoading.value = true;
   error.value = null;
-  
+
   try {
     const response = await useAuthFetch('/api/subcriptions/types/', {
     });
@@ -96,7 +96,7 @@ fetchSubscriptionPlans();
 // Update plans computed property
 const plans = computed(() => {
   if (!subscriptionData.value) return [];
-  
+
   return subscriptionData.value.results.map(plan => ({
     id: plan.id,
     duration: plan.name,
@@ -118,16 +118,15 @@ const formatNumber = (number: Number) => {
 </script>
 
 <style lang="scss" scoped>
-
 .title-plan {
-      font-size: 20px;
-      font-weight: bold;
-    }
-     
+  font-size: 20px;
+  font-weight: bold;
+}
+
 
 .subscription-plans {
   padding: 40px;
-  background-color: $white;
+  background-color: $milky;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,16 +136,18 @@ const formatNumber = (number: Number) => {
     flex-wrap: wrap;
     margin-bottom: 10px;
 
+
   }
 
   .plan-card {
-    background-color: $white;
+
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     width: calc(33.33% - 40px);
     margin: 20px;
     text-align: center;
     padding: 20px;
+    background-color: $white;
     transition: transform 0.3s, box-shadow 0.3s;
 
     &:hover {

@@ -2,12 +2,8 @@
   <div class="container title-statics">
     <h2 class="title-seprator">{{ title }}</h2>
     <hr class="home-hr">
-    <NuxtLink 
-      :to="isExternalLink ? undefined : `/categories/${slug}`"
-      :href="isExternalLink ? slug : undefined"
-      class="gradient-button"
-      :target="isExternalLink ? '_blank' : undefined"
-    >
+    <NuxtLink :to="isExternalLink ? undefined : `/categories/${slug}`" :href="isExternalLink ? slug : undefined"
+      class="gradient-button" :target="isExternalLink ? '_blank' : undefined">
       مشاهده همه
     </NuxtLink>
   </div>
@@ -46,15 +42,16 @@ const props = defineProps({
     margin-left: 8px;
     border: none;
     height: 0.15rem;
-    background: linear-gradient(to right, $primary, $third);
+    background: linear-gradient(to right, $black, $third);
   }
 
   .gradient-button {
     margin-left: 8px;
-    padding: 0.3rem 0.8rem; 
+    padding: 0.3rem 0.8rem;
     font-size: 14px;
     border: none;
-    background: linear-gradient(70deg, $primary , $third 100%);
+    // background: linear-gradient(70deg, $primary , $third 100%);
+    background-color: $third;
     color: $white;
     font-weight: bold;
     cursor: pointer;
@@ -71,16 +68,17 @@ const props = defineProps({
 
 .title-seprator {
   display: contents;
-  font-size: 1.2rem; 
-  margin-right: 8px; 
+  font-size: 1.2rem;
+  margin-right: 8px;
 }
+
 @media (max-width: 500px) {
   .title-statics {
     font-size: 16px;
 
     .gradient-button {
-      padding: 0.6rem 0.8rem; 
-      font-size: 14px; 
+      padding: 0.6rem 0.8rem;
+      font-size: 14px;
     }
   }
 }

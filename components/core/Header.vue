@@ -183,7 +183,7 @@ function toggleMailBox() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(244, 244, 244, 0.9);
+  background-color: $milky;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

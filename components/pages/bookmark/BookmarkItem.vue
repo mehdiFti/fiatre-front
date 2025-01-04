@@ -61,7 +61,7 @@ const props = defineProps({
 .bookmark-item {
   position: relative;
   flex: 0 0 calc(25% - 24px);
-  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+  background: $milky;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);

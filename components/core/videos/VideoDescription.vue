@@ -19,7 +19,7 @@ const props = defineProps<{
 .video-desc-wrapper {
   border-radius: 10px;
   padding: 20px 40px;
-  background: $white;
+  background: $milky;
   text-align: right;
 
   > .video-desc-static {

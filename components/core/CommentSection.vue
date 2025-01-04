@@ -107,13 +107,15 @@ const handleSubmit = () => {
     padding: 10px;
     border: none;
     border-radius: 10px;
+    background-color: $gray-100;
+    border: 1px solid $gray-200;
     margin-bottom: 10px;
     font-size: 14px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: left;
 
     &:disabled {
-      background-color: #f5f5f5;
+
       cursor: not-allowed;
     }
   }

@@ -32,7 +32,7 @@
       <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
           <nuxt-icon name="time" class="icon" />
-          مدت زمان: {{ details.durationValue }} دقیقه 
+          مدت زمان: {{ details.durationValue }} دقیقه
         </div>
       </div>
 
@@ -65,9 +65,9 @@ defineProps({
   flex-wrap: wrap;
   justify-content: space-around;
   // align-items: center;
-  background: darken($light, 10);
+  background-color: $milky;
   padding-top: 4px;
-  
+
 }
 
 .video-details {
@@ -89,37 +89,38 @@ defineProps({
   &.series-item {
 
     @media (max-width: 1200px) and (min-width: 992px) {
-    width: calc(50% - 50px);
-    padding: 0 0 0 120px;
-    // background-color: red;
+      width: calc(50% - 50px);
+      padding: 0 0 0 120px;
+      // background-color: red;
     }
 
     @media (max-width: 992px) {
-    width: calc(50% - 50px);
-    justify-content: start;;
-    padding: 0 0 0 60px;
-    // background-color: green;
+      width: calc(50% - 50px);
+      justify-content: start;
+      ;
+      padding: 0 0 0 60px;
+      // background-color: green;
     }
 
     @media (max-width: 769px) {
-    width: calc(50% - 20px);
-    padding: 0 0 0 40px;
+      width: calc(50% - 20px);
+      padding: 0 0 0 40px;
 
-    .icon {
-      font-size: 1.3rem;
+      .icon {
+        font-size: 1.3rem;
+      }
+
+      .video-detail-desc {
+        font-size: 13px;
+
+      }
+
+      @media (max-width: 408px) {
+        width: calc(100% - 10px);
+
+      }
     }
-
-    .video-detail-desc {
-      font-size: 13px;
-      
-    }
-
-    @media (max-width: 408px) {
-    width: calc(100% - 10px);
-
   }
-  }
-}
 
 
 
