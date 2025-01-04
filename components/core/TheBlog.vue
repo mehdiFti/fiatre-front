@@ -1,25 +1,18 @@
 <template>
   <div class="container mb-5 mt-5">
-    <HomeSeprator class="mb-3" slug="https://mag.fiatre.ir"  title="اخبار فیاتر" :isExternalLink="true" />
+    <HomeSeprator class="mb-3" slug="https://mag.fiatre.ir" title="اخبار فیاتر" :isExternalLink="true" />
 
     <div class="blog__wrapper">
-      <BlogItem
-        v-for="(item, index) in filteredBlogItems"
-        v-show="!isMediumScreen || !isMediumLargeScreen || index < 3"
-        :key="item.key"
-        :image-src="item.imageSrc"
-        :title="item.title"
-        :description="item.description"
-        :link="item.link"
-        :timestamp="item.timestamp"
-      />
+      <BlogItem v-for="(item, index) in filteredBlogItems" v-show="!isMediumScreen || !isMediumLargeScreen || index < 3"
+        :key="item.key" :image-src="item.imageSrc" :title="item.title" :description="item.description" :link="item.link"
+        :timestamp="item.timestamp" />
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
-import {timestamp, useMediaQuery} from '@vueuse/core';
+import { ref, computed } from 'vue';
+import { timestamp, useMediaQuery } from '@vueuse/core';
 import BlogItem from '~/components/core/BlogItem.vue';
 import HomeSeprator from './HomeSeprator.vue';
 
@@ -55,37 +48,38 @@ const filteredBlogItems = computed(() => {
 .blog__wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 
 @media (min-width: 1025px) {
-  .blog__wrapper > * {
+  .blog__wrapper>* {
     flex: 0 0 calc(25% - 20px);
   }
 }
 
 @media (max-width: 1024px) and (min-width: 980px) {
-  .blog__wrapper > * {
+  .blog__wrapper>* {
     flex: 0 0 calc(33.33% - 20px);
   }
 }
 
-@media (max-width: 979px) and (min-width: 768px) {
-  .blog__wrapper > * {
+@media (max-width: 980px) and (min-width: 768px) {
+  .blog__wrapper>* {
     flex: 0 0 calc(33.33% - 20px);
   }
 }
 
 @media (max-width: 768px) {
-  .blog__wrapper > * {
+  .blog__wrapper>* {
     flex: 0 0 calc(50% - 20px);
   }
 }
 
-@media (max-width: 503px) {
-  .blog__wrapper > * {
+@media (max-width: 505px) {
+  .blog__wrapper>* {
     flex: 0 0 100%;
+    
   }
 }
 </style>

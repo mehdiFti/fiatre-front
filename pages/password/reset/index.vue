@@ -112,7 +112,6 @@ const onSubmit = async (values: any) => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #000 url('/image/thisis.jpg') center/cover no-repeat;
   position: relative;
 
   .reset-image {
@@ -171,8 +170,8 @@ const onSubmit = async (values: any) => {
         transition: all 0.1s ease;
       }
 
-      .reset-input:focus + .reset-label,
-      .reset-input[has-value] + .reset-label {
+      .reset-input:focus+.reset-label,
+      .reset-input[has-value]+.reset-label {
         font-size: 0.75rem;
         transform: translateY(-130%);
       }

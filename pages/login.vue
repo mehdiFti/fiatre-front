@@ -6,22 +6,10 @@
         <h2 class="login-title">
           ورود
         </h2>
-        <VeeForm
-          class="login-form"
-          :validate-on-blur="true"
-          :validate-on-change="true"
-          :validate-on-input="false"
-          :validate-on-model-update="true"
-          @submit="onSubmit"
-        >
+        <VeeForm class="login-form" :validate-on-blur="true" :validate-on-change="true" :validate-on-input="false"
+          :validate-on-model-update="true" @submit="onSubmit">
           <div class="login-form-control">
-            <VeeField
-              v-model="form.phone"
-              name="phone"
-              class="login-input"
-              type="tel"
-              rules="required|phone"
-            />
+            <VeeField v-model="form.phone" name="phone" class="login-input" type="tel" rules="required|phone" />
 
             <label class="login-label">
               شماره همراه
@@ -31,27 +19,15 @@
           </div>
 
           <div class="login-form-control">
-            <VeeField
-              v-model="form.password"
-              name="password"
-              class="login-input"
-              :type="isPasswordVisible ? 'text' : 'password'"
-              rules="required|min:8|password_custom"
-            />
+            <VeeField v-model="form.password" name="password" class="login-input"
+              :type="isPasswordVisible ? 'text' : 'password'" rules="required|min:8|password_custom" />
 
             <label class="login-label">
               رمز
             </label>
 
-            <button 
-              type="button" 
-              @click="togglePasswordVisibility" 
-              class="toggle-password-visibility"
-            >
-              <nuxt-icon 
-                :name="isPasswordVisible ? 'eye-off' : 'eye'" 
-                class="icon-move-up" 
-              />
+            <button type="button" @click="togglePasswordVisibility" class="toggle-password-visibility">
+              <nuxt-icon :name="isPasswordVisible ? 'eye-off' : 'eye'" class="icon-move-up" />
             </button>
 
             <ErrorMessage name="password" as="span" class="error-message" />
@@ -74,9 +50,9 @@
 
 <script setup lang="ts">
 
-import {useValidationRules} from '@/utils/validationRules';
-import {ErrorMessage, useForm, Field as VeeField, Form as VeeForm} from 'vee-validate';
-import {ref} from 'vue';
+import { useValidationRules } from '@/utils/validationRules';
+import { ErrorMessage, useForm, Field as VeeField, Form as VeeForm } from 'vee-validate';
+import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
 definePageMeta({
@@ -85,7 +61,7 @@ definePageMeta({
 
 const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore(); 
+const userStore = useUserStore();
 
 useSeoMeta({
   title: 'ورود',
@@ -105,7 +81,7 @@ const form = ref({
   password: '',
 });
 
-const {handleSubmit} = useForm({
+const { handleSubmit } = useForm({
   initialValues: form.value,
 });
 
@@ -118,21 +94,21 @@ const togglePasswordVisibility = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
-  
+
   try {
     userStore.phone = form.value.phone;
     userStore.password = form.value.password;
     await userStore.loginPostRequest.execute();
-console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
+    console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
     if (userStore.loginPostRequest.status.value === 'success') {
-        const redirect = route.query.redirect;
-        if (redirect) {
-            await router.push(decodeURIComponent(redirect as string));
-        } else {
-          // console.log('router.push /account');
-          
-            await router.push('/');
-        }
+      const redirect = route.query.redirect;
+      if (redirect) {
+        await router.push(decodeURIComponent(redirect as string));
+      } else {
+        // console.log('router.push /account');
+
+        await router.push('/');
+      }
     } else if (userStore.loginPostRequest.error.value.statusCode === 400) {
       toast.error(userStore.loginPostRequest.error.value.data.error);
     } else {
@@ -145,11 +121,8 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
 </script>
 
 <style lang="scss">
-
-
-
 .login-container {
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,11 +130,12 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
   z-index: 100;
 
   position: relative;
+
   .login-image {
     position: absolute;
     top: 0;
     left: 0;
-    // width: 100%;
+    width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: -1;
@@ -202,8 +176,8 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
         direction: rtl;
       }
 
-      .login-input:focus + .login-label,
-      .login-input[has-value] + .login-label {
+      .login-input:focus+.login-label,
+      .login-input[has-value]+.login-label {
         font-size: 0.75rem;
         transform: translateY(-130%);
       }
@@ -219,55 +193,56 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
         transition: all 0.1s ease;
       }
     }
+
     .login-btn {
       display: flex;
       flex-direction: column;
       gap: 25px;
 
       .login-submit {
-      width: 100%;
-      padding: 16px 0;
-      font-size: 1rem;
-      background: $third;
-      color: $white;
-      font-weight: 500;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: 0.1s ease;
+        width: 100%;
+        padding: 16px 0;
+        font-size: 1rem;
+        background: $third;
+        color: $white;
+        font-weight: 500;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: 0.1s ease;
 
-      &:hover {
-        background: darken($third,10);
+        &:hover {
+          background: darken($third, 10);
+        }
       }
+
+      .login-forget {
+        width: 35%;
+        padding: 6px 0;
+        font-size: 0.7rem;
+        background: $primary;
+        color: $white;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: 0.1s ease;
+
+        &:hover {
+          background: darken($primary, 10);
+        }
+
+      }
+
     }
 
-    .login-forget {
-      width: 35%;
-      padding: 6px 0;
-      font-size: 0.7rem;
-      background: $primary;
-      color: $white;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: 0.1s ease;
-
-      &:hover {
-        background: darken($primary,10);
+    .error-message {
+      color: $danger;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
     }
-
-    }
-
   }
-
-  .error-message {
-    color: $danger;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-}
 
 }
 
@@ -295,7 +270,7 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
 
 .icon-move-up {
   display: block;
-   transform: translateX(10px) !important;
+  transform: translateX(10px) !important;
   width: 20px;
   height: 20px;
 }

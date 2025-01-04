@@ -1,13 +1,9 @@
 <template>
   <div class="blog_card">
     <div class="image-wrapper">
-      <NuxtLink :to="link" class="read-more" target="_blank"> 
-      <img
-        :src="imageSrc"
-        :alt="title"
-        class="card__image"
-      />
-      </NuxtLink> 
+      <NuxtLink :to="link" class="read-more" target="_blank">
+        <img :src="imageSrc" :alt="title" class="card__image" />
+      </NuxtLink>
     </div>
 
     <div class="right-part">
@@ -15,9 +11,9 @@
       <h3 class="blog-title">
         {{ title }}
       </h3>
-  
 
-     
+
+
       <p class="blog-description">
         {{ truncatedDescription }}
       </p>
@@ -27,17 +23,17 @@
       <div class="blog-time">
         تاریخ انتشار: <span class="reverse-date">{{ formattedTime }}</span>
       </div>
-      
 
-      
+
+
     </div>
 
   </div>
-  
+
 </template>
 
 <script setup>
-import {defineProps, computed} from 'vue';
+import { defineProps, computed } from 'vue';
 
 const props = defineProps({
   imageSrc: String,
@@ -99,7 +95,7 @@ const formattedTime = computed(() => {
   }
 
   .blog-title {
-    
+
     text-align: center;
     font-weight: bold;
     margin: 10px 0 15px 0;
@@ -108,8 +104,8 @@ const formattedTime = computed(() => {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    line-clamp: 1; 
-    line-height: 1.4rem; 
+    line-clamp: 1;
+    line-height: 1.4rem;
   }
 
   .blog-description {
@@ -118,7 +114,7 @@ const formattedTime = computed(() => {
     font-size: 13px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-      overflow: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.6;
     max-height: 7.5rem;
@@ -143,7 +139,7 @@ const formattedTime = computed(() => {
 
   @media (max-width: 504px) {
     flex-direction: row;
-    align-items: stretch; 
+    align-items: stretch;
     width: 200px;
     height: 160px;
 
@@ -154,7 +150,7 @@ const formattedTime = computed(() => {
     .image-wrapper {
       width: 50%;
       padding-top: 28.125%;
-      
+
     }
 
     .card__image {
@@ -171,7 +167,7 @@ const formattedTime = computed(() => {
       flex-direction: column;
       flex: 1;
     }
-    
+
     .blog-title {
       text-align: left;
       font-size: 0.7rem;
@@ -180,11 +176,11 @@ const formattedTime = computed(() => {
     }
 
     .blog-description {
-      font-size: 0.75rem; 
+      font-size: 0.75rem;
       padding-top: 15px;
-      margin-top: 10px;
+      margin-top: -36px;
       padding-left: 5px;
- 
+
 
     }
 
@@ -197,5 +193,4 @@ const formattedTime = computed(() => {
     }
   }
 }
-
 </style>
