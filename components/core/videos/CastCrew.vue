@@ -76,7 +76,7 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
     width: 100%;
     height: 100%;
     object-fit: cover;
- 
+    aspect-ratio: 2/3;
     transform: translateY(20px);
   }
 

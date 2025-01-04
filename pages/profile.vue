@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="profile-card-wrapper">
-    <div class="profile-card score-profile-card">
+    <div class="profile-card score-profile-card card-score">
       <div class="profile-icon">
          <img class="img-profile" src="/assets/images/score.png" alt="Score Icon" />
       </div>
@@ -32,9 +32,9 @@
         </li>
       </ul>
     </div>
-    <div class="profile-card reward-profile-card">
+    <div class="profile-card  score-profile-card card-reward ">
       <div class="profile-icon">
-        <img src="/assets/images/medal.png" alt="Medal Icon" />
+        <img class="img-profile"  src="/assets/images/medal.png" alt="Medal Icon" />
       </div>
       <ul class="list">
         <li v-for="reward in rewards" :key="reward.name">
@@ -104,14 +104,14 @@ onMounted(async () => {
 <style scoped lang="scss">
 .profile-card-wrapper {
   display: flex;
-  justify-content: space-around;
-  padding: 20px;
+  gap: 60px;
+  justify-content: center;
   background-color: $light;
   align-items: center;
-  margin: 60px 0;
 }
 
 .profile-card {
+  height: 430px;
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
@@ -121,7 +121,6 @@ onMounted(async () => {
 }
 
 .score-profile-card {
-  width: 250px;
   color: $gray-100;
 }
 
@@ -213,5 +212,17 @@ onMounted(async () => {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.card-score {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.card-reward {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 </style>

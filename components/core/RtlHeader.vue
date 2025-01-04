@@ -23,9 +23,9 @@
             </NuxtLink>
             <NuxtLink 
               v-else-if="userStore.isAuthenticated"
-              to="/account" 
+              to="/categories" 
               class="subscription-button-active">
-              صفحه اکانت
+              دسته‌بندی‌ها
             </NuxtLink>
 
             
@@ -82,11 +82,14 @@
             </transition>
           </div>
         <template v-if="!userStore.isAuthenticated">
+          <div class="no-auth">
+            <NuxtLink to="/categories" class="auth-link">دسته‌بندی‌ها</NuxtLink>
           <div class="gap-from-burger">
             <NuxtLink to="/login" class="auth-link">ورود</NuxtLink>
             <span>|</span>
             <NuxtLink to="/register" class="auth-link">ثبت نام</NuxtLink>
           </div>
+        </div>
         </template>
       </div>
     </header>
@@ -339,9 +342,7 @@ function toggleMailBox() {
     margin-left: 14px;
   }
 
-  .right-section {
-    gap: 10px;
-  }
+
 
   .wrapper-when-login {
     display: flex;
@@ -629,5 +630,41 @@ function toggleMailBox() {
     padding: 1px 3px;
   }
 }
+
+.no-auth {
+  display: flex;
+
+
+}
+
+.gap-from-burger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 450px) {
+
+.no-auth {
+  gap: 10px;
+}
+  }
+
+  @media (max-width: 370px) {
+
+.no-auth {
+  gap: 5px;
+}
+.auth-link {
+  font-size: 12px;
+}
+  }
+
+  @media (min-width: 768px) {
+
+.no-auth {
+  gap: 20px;
+  margin-right: 20px;
+}
+  }
 
 </style>

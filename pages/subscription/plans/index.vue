@@ -9,7 +9,6 @@
 
       <template v-else>
         <header>
-          <h2 class="title-plan">پلن‌های اشتراکی فیاتر</h2>
         </header>
         <div class="plans-container">
           <div class="plan-card" v-for="plan in plans" :key="plan.id">
@@ -32,7 +31,7 @@
         </div>
         <div class="subscription-info-container">
           <div class="subscription-info">
-            <p>با خرید اشتراک فیاتر به امکانات زیر دسترسی خواهید داشت:</p>
+            <h2 class="title-plan">مزایای پلن‌های اشتراکی فیاتر </h2>
             <ul>
               <li>تماشای نامحدود برترین فیلم تئاتر های روز دنیا و مجموعه های آموزشی هفت هنر با زیرنویس تخصصی فارسی.</li>
               <li>ترافیک نیم‌بها برای تمامی اپراتورها و سرویس‌دهندگان اینترنت ایران.</li>
@@ -151,7 +150,6 @@ const formatNumber = (number: Number) => {
     transition: transform 0.3s, box-shadow 0.3s;
 
     &:hover {
-      transform: translateY(-10px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 

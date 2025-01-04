@@ -66,7 +66,7 @@ defineProps({
   justify-content: space-around;
   // align-items: center;
   background: darken($light, 10);
-  padding-top: 0;
+  padding-top: 4px;
   
 }
 

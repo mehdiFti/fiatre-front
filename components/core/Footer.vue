@@ -6,7 +6,7 @@
           <div class="footer-col contact">
             <h3 class="footer-title">بهترین خودت باش</h3>
             <ul class="footer-list">
-              <li><NuxtLink to="https://t.me/fiatre">تماس با ما</NuxtLink></li>
+              <li><NuxtLink to="https://wa.me/989021616483">تماس با ما</NuxtLink></li>
               <li><NuxtLink to="/about-us">درباره ما</NuxtLink></li>
               <li><NuxtLink to="/terms">قوانین و مقررات</NuxtLink></li>
               <li><NuxtLink to="/faq">سوالات متداول</NuxtLink></li>
@@ -20,13 +20,13 @@
           <div class="footer-col social">
             <div>
               <nuxt-link class="footer-icon" to="https://instagram.com/fiatre.ir"><JJIcon icon="instagram" /></nuxt-link>
-              <nuxt-link class="footer-icon" to="https://wa.me/989123456789"><JJIcon icon="whatsapp" /></nuxt-link>
+              <nuxt-link class="footer-icon" to="https://wa.me/989021616483"><JJIcon icon="whatsapp" /></nuxt-link>
               <nuxt-link class="footer-icon" to="https://t.me/fiatre"><JJIcon icon="telegram" /></nuxt-link>
             </div>
             <div>
               
               <nuxt-link to="https://mag.fiatre.ir/">
-                <img class="mt-3" src="https://www.fiatre.ir/static/front/src/icons/fiatremag-smal.png" alt="fiatreMag"/>
+                <img class="fiatre-mag mt-4" src="https://www.fiatre.ir/static/front/src/icons/fiatremag-smal.png" alt="fiatreMag"/>
               </nuxt-link>
             </div>
           </div>
@@ -219,5 +219,9 @@ const copyright = computed(() => {
     object-fit: contain;
   }
 }
+.fiatre-mag {
+  width: 140px;
+  height: 70px;
 
+}
 </style>

@@ -15,6 +15,7 @@
               placeholder="سرچ کنید..."
               class="search-modal-input"
               spellcheck="false"
+                @keyup.enter="searchSubmit"
             />
             <button 
               class="modal-search-button" 
@@ -37,6 +38,7 @@
           placeholder="جستجو..."
           class="search-input"
           spellcheck="false"
+            @keyup.enter="searchSubmit"
         />
         <button 
           class="search-button" 
@@ -47,7 +49,7 @@
         </button>
       </div>
       <!-- Add search icon for mobile -->
-      <button class="search-icon-button" @click="toggleSearchModal">
+      <button class="search-icon-button" @click="toggleSearchModalOpen">
         <NuxtIcon name="search" />
       </button>
     </div>
@@ -70,6 +72,7 @@ const { width } = useWindowSize();
 const searchSubmit = () => {
   if (searchInput.value) {
     router.push(`/search?q=${searchInput.value}`);
+    searchInput.value = '' 
     if (isSearchModalOpen.value) {
       toggleSearchModal();
     }
@@ -77,7 +80,7 @@ const searchSubmit = () => {
 };
 
 function toggleSearchModal() {
-  isSearchModalOpen.value = !isSearchModalOpen.value;
+  isSearchModalOpen.value =false;
 }
 
 watch(width, (newWidth) => {
@@ -85,6 +88,15 @@ watch(width, (newWidth) => {
     isSearchModalOpen.value = false;
   }
 });
+
+const toggleSearchModalOpen = () => {
+  isSearchModalOpen.value = true
+  // Focus input when modal opens
+  nextTick(() => {
+    document.querySelector('.search-input')?.focus()
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>

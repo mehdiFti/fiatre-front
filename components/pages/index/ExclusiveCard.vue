@@ -41,7 +41,7 @@ const props = defineProps<{
     border-radius: 5px;
     overflow: hidden;
     transition: opacity 0.3s ease;
-    aspect-ratio: 16/9;
+    aspect-ratio: 12/6;
     background-color: #f0f0f0;
 
     .exclusive-card-image {

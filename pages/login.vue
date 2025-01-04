@@ -129,9 +129,9 @@ console.log(userStore.loginPostRequest.status.value, userStore.loginPostRequest)
         if (redirect) {
             await router.push(decodeURIComponent(redirect as string));
         } else {
-          console.log('router.push /account');
+          // console.log('router.push /account');
           
-            await router.push('/account');
+            await router.push('/');
         }
     } else if (userStore.loginPostRequest.error.value.statusCode === 400) {
       toast.error(userStore.loginPostRequest.error.value.data.error);

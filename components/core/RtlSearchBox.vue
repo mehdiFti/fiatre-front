@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -71,7 +71,7 @@ const router = useRouter()
 const { width } = useWindowSize()
 
 const isSearchModalOpen = ref(false)
-const searchQuery = ref(route.query.q || '')
+const searchQuery = ref('')
 
 const isMobile = computed(() => width.value <= 768)
 
@@ -90,12 +90,15 @@ const closeModal = () => {
 
 const handleSubmit = () => {
   if (searchQuery.value) {
+    searchQuery.value = '' 
     router.push(`/search?q=${searchQuery.value}`)
+
     if (isSearchModalOpen.value) {
       closeModal()
     }
   }
 }
+
 
 // Close modal on desktop view
 watch(width, (newWidth) => {

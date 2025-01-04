@@ -163,10 +163,12 @@ onMounted(() => {
   };
 
   removeElement('media-pip-button');
+  removeElement('media-menu-button');
   removeGoogleCastButton();
 
   const observer = new MutationObserver(() => {
     removeElement('media-pip-button');
+    removeElement('media-menu-button');
     removeGoogleCastButton();
   });
   observer.observe(document.body, { childList: true, subtree: true });
@@ -247,7 +249,7 @@ const posterFit = computed(() => {
 
 .other-buttons-sm {
   display: none; 
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: row-reverse;
   gap: 10px;

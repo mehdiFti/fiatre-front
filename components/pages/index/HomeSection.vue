@@ -68,6 +68,7 @@ const displayedCards = computed(() => {
   gap: 380px;
   width: 100%;
   min-height: 300px; 
+  border-radius: 5px;
 }
 
 .card-section {

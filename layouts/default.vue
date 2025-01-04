@@ -1,6 +1,6 @@
 <template>
   <div class="color">
-    <Header class="mb-5" />
+    <Header />
     <main class="main-layout">
       <slot />
     </main>

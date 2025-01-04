@@ -1,7 +1,18 @@
 <template>
   <ClientOnly>
-    <button @click="toggleBookmark" :class="{ 'bookmark-button--bookmarked': isBookmarked }" class="bookmark-button">
-      <nuxt-icon :name="isBookmarked ? 'like' : 'unlike'" :class="isBookmarked ? 'icon-bookmarked' : 'icon-unbookmarked'" />
+    <button 
+      @click="handleClick" 
+      :class="{ 
+        'bookmark-button--bookmarked': isBookmarked,
+        'bookmark-button--disabled': isDisabled 
+      }" 
+      class="bookmark-button"
+      :disabled="isDisabled"
+    >
+      <nuxt-icon 
+        name="like" 
+        :class="isBookmarked ? 'icon-bookmarked' : 'icon-unbookmarked'" 
+      />
     </button>
   </ClientOnly>
 </template>
@@ -23,6 +34,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['bookmark-toggled']); 
 const isBookmarked = ref(false); 
+const isDisabled = ref(false);
 
 const checkBookmarkStatus = async () => {
 
@@ -70,6 +82,20 @@ const toggleBookmark = async () => {
     console.error('Failed to toggle bookmark:', error);
   }
 };
+
+// Add cooldown handler
+const handleClick = async () => {
+  if (isDisabled.value) return;
+  
+  await toggleBookmark();
+  
+  // Set cooldown
+  isDisabled.value = true;
+  setTimeout(() => {
+    isDisabled.value = false;
+  }, 5000); // 5 seconds cooldown
+};
+
 onMounted(() => {
   checkBookmarkStatus();
 });
@@ -95,6 +121,28 @@ onMounted(() => {
 .bookmark-button:focus,
 .bookmark-button:hover {
   outline: none;
+}
+
+.bookmark-button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon-bookmarked {
+  padding: 2px 6px;
+  color: $third;
+  transition: color 0.1s ease;
+  border: 2px solid $third; 
+  border-radius: 6px;
+  
+  /* Add active styles */
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 </style>
 

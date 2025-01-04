@@ -28,9 +28,6 @@
       <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
       </div>
       
-
-
-    
     <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
   
     <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" /> 
