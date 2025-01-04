@@ -5,12 +5,8 @@
       <div v-if="series.length > 0">
         <RtlImageHeader :imageHeader="imageHeader" />
         <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
-        <VideoSeries 
-          v-if="userStore.user?.is_subscription_active"
-          class="mb-5" 
-          :episodes="series" 
-          :onPause="handleVideoPause"
-        />
+      <VideoSeries v-if="userStore.user?.is_subscription_active" class="mb-5" :episodes="series"
+        :onPause="handleVideoPause" />
         </div>
       <!-- For single episode -->
       <div v-else>

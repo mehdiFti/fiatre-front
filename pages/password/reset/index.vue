@@ -17,6 +17,13 @@
             <label class="reset-label">شماره همراه</label>
             <ErrorMessage name="phone" as="span" class="error-message" />
           </div>
+
+          <div class="reset-form-control">
+            <VeeField name="email" class="reset-input" type="email" rules="email" />
+            <label class="reset-label">ایمیل</label>
+            <ErrorMessage name="email" as="span" class="error-message" />
+          </div>
+
           <button type="submit" class="reset-submit">ارسال کد فعال سازی</button>
         </VeeForm>
       </div>
