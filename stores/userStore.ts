@@ -1,13 +1,13 @@
-import {defineStore} from 'pinia';
-import {ref} from 'vue';
-import type {RouteLocationRaw} from 'vue-router';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import type { RouteLocationRaw } from 'vue-router';
 
 export const useUserStore = defineStore('user', () => {
   const phone = ref('');
   const password = ref('');
 
   const user = ref(null);
-const isProfileFetched = ref(false)
+  const isProfileFetched = ref(false)
   const refreshToken = useCookie('refresh-token');
   const accessToken = useCookie('access-token');
 
@@ -40,7 +40,11 @@ const isProfileFetched = ref(false)
       fullpath = useRoute().fullPath;
     }
 
-    await navigateTo({name: 'login', query: {redirect: encodeURIComponent(fullpath)}});
+    await navigateTo({
+      name: 'login', query: {
+        // redirect: encodeURIComponent(fullpath)
+      }
+    });
   };
 
 
@@ -91,8 +95,8 @@ const isProfileFetched = ref(false)
   });
 
   watch(loginPostRequest.data, (newValue) => {
-    console.log('loginPostRequest',newValue);
-    
+    console.log('loginPostRequest', newValue);
+
     if (newValue) {
       refreshToken.value = newValue.refresh;
       accessToken.value = newValue.access;

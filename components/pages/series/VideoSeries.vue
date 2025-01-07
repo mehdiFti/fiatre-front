@@ -3,7 +3,7 @@
     <div class="container">
       <div class="video-episode-wrapper">
         <div
-          v-for="episode in episodesToShow"
+          v-for="episode in displayedEpisodes"
           :key="episode.key"
           class="video-episode-card"
         >
@@ -34,48 +34,13 @@
         </div>
       </div>
       <div class="show-button-container">
-        <button v-if="episodes.length > 4 && !showMore" @click.prevent="toggleShowMore" class="show-more-btn">
-          نمایش تمامی قسمت‌ها 
+        <button
+          v-if="props.episodes.length > 4"
+          @click.prevent="toggleShowMore"
+          class="show-more-btn"
+        >
+          {{ showMore ? "نمایش کمتر" : "نمایش تمامی قسمت‌ها" }}
         </button>
-      </div>
-      <div v-if="showMore">
-        <div class="video-episode-wrapper-rest">
-          <div
-            v-for="episode in episodes.slice(4)"
-            :key="episode.key"
-            class="video-episode-card"
-          >
-            <VideoHeader 
-              :movie="{
-                key: episode.key,
-                title: episode.title,
-                video: episode.src,
-                cover: episode.poster,
-                description: episode.description
-              }"
-              :videoUrl="episode.src"
-              :isInsideVideoSeries="true"
-              :onPause="onPause"
-              :startTime="getStartTime(episode.key)"
-            />
-            <div class="episode-info">
-              <h4 class="episode-title">
-                <span class="episode-number">{{ episode.number }} -</span> {{ episode.title }}
-              </h4>
-              <hr>
-              <div class="episode-desc" v-html="sanitizeAndTruncateDescription(episode.description)"></div>
-              <div class="other-buttons">
-                <DownloadButton :videoUrl="episode.src"/>
-                <BookmarkButton :videoId="episode.key" :videoDetails="episode" @bookmark-toggled="handleBookmarkToggled" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="show-button-container">
-          <button @click.prevent="toggleShowMore" class="show-less-btn">
-            نمایش کمتر
-          </button>
-        </div>
       </div>
     </div>
   </ClientOnly>
@@ -118,7 +83,10 @@ const toggleShowMore = () => {
   showMore.value = !showMore.value;
 };
 
-const episodesToShow = computed(() => {
+const displayedEpisodes = computed(() => {
+  if (showMore.value) {
+    return props.episodes; // Show all episodes when "show more" is toggled
+  }
   if (screenWidth.value >= 421 && screenWidth.value <= 1024) {
     return props.episodes.slice(0, 4);
   } else {
@@ -187,8 +155,8 @@ const onPause = (currentTime: number) => {
 }
 
 .episode-info {
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   text-align: right;
   flex-grow: 1;
@@ -203,7 +171,7 @@ const onPause = (currentTime: number) => {
 .episode-title {
   direction: rtl;
   display: flex;
-  align-items: center; 
+  align-items: center;
   font-size: 1rem;
   margin-bottom: 10px;
   overflow: hidden;
@@ -304,6 +272,7 @@ hr {
 }
 
 @media screen and (max-width: 768px) {
+
   .show-more-btn,
   .show-less-btn {
     width: 40%;
@@ -311,12 +280,14 @@ hr {
 }
 
 @media screen and (max-width: 489px) {
+
   .show-more-btn,
   .show-less-btn {
     width: 50%;
     white-space: nowrap;
-    font-size: 0.8rem;  
+    font-size: 0.8rem;
   }
+
   .show-less-btn {
     margin-bottom: 40px
   }

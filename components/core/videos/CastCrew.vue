@@ -5,20 +5,16 @@
         <div v-for="crew in crews" :key="crew.id">
           <div class="card-container">
             <NuxtLink :to="crew.link">
-              <img
-                class="crew-card"
-                :src="crew.src || defaultImage"
-                alt="Crew image"
-                :style="{'pointer-events': crew.src ? 'auto' : 'none' }"
-              />
+              <img class="crew-card" :src="crew.src || defaultImage" alt="Crew image"
+                :style="{ 'pointer-events': crew.src ? 'auto' : 'none' }" />
             </NuxtLink>
           </div>
 
           <div class="crew-name">
             {{ crew.title }} <!-- Displaying the title -->
             <div class="crew-specialty">
-            {{ crew.specialty }} <!-- Displaying the title -->
-          </div>
+              {{ crew.specialty }} <!-- Displaying the title -->
+            </div>
           </div>
 
 
@@ -95,20 +91,19 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
 
 @media (max-width: 768px) {
   .crew-flex .card-container {
-    width: 100px; 
+    width: 100px;
     height: 100px;
   }
 }
 
 @media (max-width: 480px) {
   .crew-flex .card-container {
-    width: 100px; 
+    width: 100px;
     height: 100px;
   }
 
   .crew-flex .card-container .crew-card {
     width: 100px;
-    height: 100px; 
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container title-statics">
     <h2 class="title-seprator">{{ title }}</h2>
-    <hr class="home-hr">
+    <hr class="homes-hr">
     <NuxtLink :to="isExternalLink ? undefined : `/categories/${slug}`" :href="isExternalLink ? slug : undefined"
       class="gradient-button" :target="isExternalLink ? '_blank' : undefined">
       مشاهده همه
@@ -37,12 +37,14 @@ const props = defineProps({
   font-weight: bold;
   color: $dark;
 
-  .home-hr {
+  .homes-hr {
     flex-grow: 1;
     margin-left: 8px;
     border: none;
-    height: 0.15rem;
-    background: linear-gradient(to right, $black, $third);
+    height: 0.05rem;
+    // background: linear-gradient(to right, $black, $third);
+    background-color: #fff;
+    opacity: 1 !important;
   }
 
   .gradient-button {
@@ -68,6 +70,7 @@ const props = defineProps({
 
 .title-seprator {
   display: contents;
+  color: $black;
   font-size: 1.2rem;
   margin-right: 8px;
 }
@@ -91,6 +94,38 @@ const props = defineProps({
       padding: 0.6rem 0.7rem;
       font-size: 8px;
     }
+  }
+}
+
+
+@media (max-width: 450px) {
+  .title-statics {
+    font-size: 10px;
+
+    .gradient-button {
+      padding: 0.6rem 0.7rem;
+      font-size: 8px;
+    }
+  }
+
+  .title-seprator {
+    font-size: 12px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .title-statics {
+    font-size: 12px;
+
+    .gradient-button {
+      padding: 0.6rem 0.7rem;
+      font-size: 10px;
+    }
+  }
+
+  .title-seprator {
+    font-size: 14px;
   }
 }
 </style>

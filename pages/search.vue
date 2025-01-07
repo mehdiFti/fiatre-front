@@ -3,9 +3,8 @@
         <ClientOnly>
             <div v-if="getSearchedEpisodes.status.value === 'success'" class="container search-results">
                 <div v-if="getSearchedEpisodes.data.value?.results?.length" class="container cards-grid">
-                    <div v-for="episode in getSearchedEpisodes.data.value?.results" 
-                         :key="episode.id" 
-                         class="search-card">
+                    <div v-for="episode in getSearchedEpisodes.data.value?.results" :key="episode.id"
+                        class="search-card">
                         <NuxtLink :to="`/episodes/${episode.slug}`" class="card-link">
                             <div class="image-wrapper">
                                 <img :src="episode.image" :alt="episode.title" class="card-image" />
@@ -13,7 +12,8 @@
                                     <h3 class="card-title">{{ episode.title }}</h3>
                                     <div class="card-details">
                                         <span v-if="episode.time" class="duration">{{ episode.time }} دقیقه</span>
-                                        <span v-if="episode.construction_year" class="year">{{ episode.construction_year }}</span>
+                                        <span v-if="episode.construction_year" class="year">{{ episode.construction_year
+                                            }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@ watch(
     transition: transform 0.3s ease;
 
     &:hover {
-        transform: translateY(-5px);    
+        transform: translateY(-5px);
 
     }
 }
@@ -119,12 +119,10 @@ watch(
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.9) 0%,
-        rgba(0, 0, 0, 0.7) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.7) 50%,
+            transparent 100%);
     padding: 20px 10px 10px;
     opacity: 0.9;
     transition: opacity 0.3s ease;
@@ -152,14 +150,16 @@ watch(
     font-size: 0.8rem;
     color: #cccccc;
 
-    .duration, .year {
+    .duration,
+    .year {
         background: rgba(0, 0, 0, 0.5);
         padding: 2px 8px;
         border-radius: 12px;
     }
 }
 
-.loading, .error {
+.loading,
+.error {
     padding: 20px;
     text-align: center;
 }
@@ -199,7 +199,7 @@ watch(
     .card-title {
         font-size: 0.8rem;
         -webkit-line-clamp: 1;
-        margin-bottom: 5px;
+        margin-bottom: -6px;
     }
 
     .card-details {
@@ -208,4 +208,3 @@ watch(
     }
 }
 </style>
-

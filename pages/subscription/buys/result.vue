@@ -1,6 +1,7 @@
 <template>
   <main class="container mb-5">
     <div class="result-card">
+      <!-- Conditional rendering based on payment status -->
       <div v-if="status === 'NOK'" class="plan-header error-header">
         <h2>خطا در پرداخت</h2>
       </div>
@@ -9,26 +10,20 @@
       </div>
 
       <div class="plan-body">
-        <div class="info-row">
-          <!-- <span class="info-label">نوع اشتراک:</span>
-          <span class="info-value">{{ subscriptionType }}</span> -->
-        </div>
-        <div class="info-row">
-          <!-- <span class="info-label">مبلغ:</span>
-          <span class="info-value">{{ amount }}</span> -->
-        </div>
-
+        <!-- Transaction Reference ID -->
         <div v-if="status === 'OK'" class="info-row">
           <span class="info-label">کد رهگیری:</span>
           <span class="info-value">{{ refID }}</span>
         </div>
 
+        <!-- Error Message for Failed Transactions -->
         <p v-if="status === 'NOK'" class="warning-message">
           در صورت کسر وجه از حساب تا ۷۲ ساعت تامل نموده
           <br />
           و در صورت رفع نشدن مشکل با پشتیبانی تماس حاصل فرمایید.
         </p>
 
+        <!-- Redirect to Homepage -->
         <NuxtLink to="/" class="select-button">
           صفحه اصلی
         </NuxtLink>
@@ -38,18 +33,13 @@
 </template>
 
 <script setup>
-
-
+import { useRoute } from '#app';
 
 const route = useRoute();
 
-
-const status = route.query.Status || route.query.status; 
-const refID = route.query.refID; 
-
-// Example values for subscription type and amount (can be dynamic)
-// const subscriptionType = 'ماهانه';
-// const amount = '۵۰٬۰۰۰ تومان';
+// Extract query parameters
+const status = route.query.Status || '';
+const refID = route.query.refID || '';
 </script>
 
 <style lang="scss" scoped>
@@ -71,8 +61,6 @@ const refID = route.query.refID;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
 
-
-
   .error-header {
     background-color: $third;
     color: $white;
@@ -83,7 +71,7 @@ const refID = route.query.refID;
   }
 
   .success-header {
-    background-color: $primary; 
+    background-color: $primary;
     color: $white;
     border-radius: 15px 15px 0 0;
     padding: 20px;
@@ -97,7 +85,7 @@ const refID = route.query.refID;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      
+
       .info-label {
         color: $gray-500;
         font-size: 1.4rem;

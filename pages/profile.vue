@@ -1,50 +1,50 @@
 <template>
   <div class="container">
     <div class="profile-card-wrapper">
-    <div class="profile-card score-profile-card card-score">
-      <div class="profile-icon">
-         <img class="img-profile" src="/assets/images/score.png" alt="Score Icon" />
+      <div class="profile-card score-profile-card card-score">
+        <div class="profile-icons">
+          <img class="img-profile" src="/assets/images/score.png" alt="Score Icon" />
+        </div>
+        <ul class="list">
+          <li>
+            <Nuxt-icon name="correct" />
+            <span>پاسخ‌های صحیح :</span>
+            <span class="answers">
+              <div v-if="isLoading" class="loader"></div>
+              <template v-else>{{ correctAnswers }}</template>
+            </span>
+          </li>
+          <li>
+            <Nuxt-icon name="wrong" />
+            <span>پاسخ‌های اشتباه :</span>
+            <span class="answers">
+              <div v-if="isLoading" class="loader"></div>
+              <template v-else>{{ wrongAnswers }}</template>
+            </span>
+          </li>
+          <li>
+            <Nuxt-icon name="stars" />
+            <span>امتیاز کسب شده :</span>
+            <span class="answers">
+              <div v-if="isLoading" class="loader"></div>
+              <template v-else>{{ totalPoints }}</template>
+            </span>
+          </li>
+        </ul>
       </div>
-      <ul class="list">
-        <li>
-          <Nuxt-icon name="correct"/>
-          <span>پاسخ‌های صحیح :</span>
-          <span class="answers">
-            <div v-if="isLoading" class="loader"></div>
-            <template v-else>{{ correctAnswers }}</template>
-          </span>
-        </li>
-        <li>
-          <Nuxt-icon name="wrong"/>
-          <span>پاسخ‌های اشتباه :</span>
-          <span class="answers">
-            <div v-if="isLoading" class="loader"></div>
-            <template v-else>{{ wrongAnswers }}</template>
-          </span>
-        </li>
-        <li>
-          <Nuxt-icon name="stars"/>
-          <span>امتیاز کسب شده :</span>
-          <span class="answers">
-            <div v-if="isLoading" class="loader"></div>
-            <template v-else>{{ totalPoints }}</template>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <div class="profile-card  score-profile-card card-reward ">
-      <div class="profile-icon">
-        <img class="img-profile"  src="/assets/images/medal.png" alt="Medal Icon" />
+      <div class="profile-card  score-profile-card card-reward ">
+        <div class="profile-icons">
+          <img class="img-profile" src="/assets/images/medal.png" alt="Medal Icon" />
+        </div>
+        <ul class="list">
+          <li v-for="reward in rewards" :key="reward.name">
+            <span>{{ reward.name }}</span>
+            <span class="scroe-style">{{ reward.points }} امتیاز</span>
+          </li>
+        </ul>
       </div>
-      <ul class="list">
-        <li v-for="reward in rewards" :key="reward.name">
-          <span>{{ reward.name }}</span>
-          <span class="scroe-style">{{ reward.points }} امتیاز</span>
-        </li>
-      </ul>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -108,6 +108,9 @@ onMounted(async () => {
   margin-top: 40px;
   justify-content: center;
   align-items: center;
+  position: relative;
+  transform: none;
+  flex-wrap: wrap;
 }
 
 .profile-card {
@@ -119,6 +122,7 @@ onMounted(async () => {
   white-space: nowrap;
   background-color: $milky;
   transition: transform 0.3s, box-shadow 0.3s;
+
 }
 
 .score-profile-card {
@@ -133,7 +137,7 @@ onMounted(async () => {
   color: $third;
 }
 
-.profile-icon {
+.profile-icons {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
@@ -210,6 +214,7 @@ onMounted(async () => {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

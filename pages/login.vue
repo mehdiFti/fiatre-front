@@ -27,7 +27,7 @@
             </label>
 
             <button type="button" @click="togglePasswordVisibility" class="toggle-password-visibility">
-              <nuxt-icon :name="isPasswordVisible ? 'eye-off' : 'eye'" class="icon-move-up" />
+              <nuxt-icon :name="isPasswordVisible ? 'eye-off' : 'eye'" class="icon-moves-up" />
             </button>
 
             <ErrorMessage name="password" as="span" class="error-message" />
@@ -268,7 +268,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 
-.icon-move-up {
+.icon-moves-up {
   display: block;
   transform: translateX(10px) !important;
   width: 20px;

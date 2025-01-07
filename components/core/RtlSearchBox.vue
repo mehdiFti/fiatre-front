@@ -210,7 +210,7 @@ watch(width, (newWidth) => {
 
 .search-button {
   position: absolute;
-  right: 160px;
+  right: 178px;
   top: 50%;
   transform: translateY(-50%);
   background: none;

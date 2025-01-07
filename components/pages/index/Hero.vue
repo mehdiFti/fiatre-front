@@ -2,57 +2,38 @@
   <div class="md-5">
 
 
-  <ClientOnly>
-  <div class="container movie-hero-container">
-    <Swiper
-      class="custom-swiper"
-      :slides-per-view="1"
-      loop
-      :autoplay="{
-        disableOnInteraction:true,
-        pauseOnMouseEnter:true,
-        delay:3000,
-      }"
-      :modules="modules"
-      follow-finger
-      :navigation="true"
-      ref="swiperRef"
-    >
-      <SwiperSlide
-        v-for="image in imagesHero"
-        :key="image.id"
-      >
-        <div class="wrapper-image-hero">
-          <img
-            class="hero-background-img"
-            :src="`https://www.fiatre.ir${image.background}`"
-          />
-          <div class="internal-hero">
-            <img
-              class="hero-poster-img"
-              :src="`https://www.fiatre.ir${image.poster}`"
-              :alt="`${image.alt} poster`"
-              v-if="image.poster"
-            />
-            <div class="hero-text">
-              <h3 class="hero-title">{{ image.title }}</h3>
-              <p class="hero-description"  v-html="image.text"/>
-              <!-- {{ image.text }} -->
-              <div class="button-container">
-                <NuxtLink :to="image.links" class="hero-btn-paly">
-                  <nuxt-icon class="hero-plays" name="play"></nuxt-icon> 
-                  پخش آنلاین
-                </NuxtLink>
+    <ClientOnly>
+      <div class="container movie-hero-container">
+        <Swiper class="custom-swiper" :slides-per-view="1" loop :autoplay="{
+          disableOnInteraction: true,
+          pauseOnMouseEnter: true,
+          delay: 5000,
+        }" :modules="modules" follow-finger :navigation="true" ref="swiperRef">
+          <SwiperSlide v-for="image in imagesHero" :key="image.id">
+            <div class="wrapper-image-hero">
+              <img class="hero-background-img" :src="`https://www.fiatre.ir${image.background}`" />
+              <div class="internal-hero">
+                <img class="hero-poster-img" :src="`https://www.fiatre.ir${image.poster}`" :alt="`${image.alt} poster`"
+                  v-if="image.poster" />
+                <div class="hero-text">
+                  <h3 class="hero-title">{{ image.title }}</h3>
+                  <p class="hero-description" v-html="image.text" />
+                  <!-- {{ image.text }} -->
+                  <div class="button-container">
+                    <NuxtLink :to="image.links" class="hero-btn-paly">
+                      <nuxt-icon class="hero-plays" name="play"></nuxt-icon>
+                      پخش آنلاین
+                    </NuxtLink>
+                  </div>
+                </div>
+
               </div>
             </div>
-    
-          </div>
-        </div>
-      </SwiperSlide>
-    </Swiper>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+    </ClientOnly>
   </div>
-  </ClientOnly>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -84,7 +65,7 @@ const swiperRef = ref(null);
 
 const toggleAutoplay = (value: boolean) => {
   console.log(swiperRef.value.autoplay);
-  
+
   if (swiperRef.value) {
     // if (value) {
     //   swiperRef.value.resume();
@@ -117,11 +98,11 @@ const stripHtml = (html: string) => {
     .hero-background-img {
       width: 100%;
       height: auto;
-      aspect-ratio: 16/9; 
+      aspect-ratio: 16/9;
       object-fit: cover;
 
       @media (max-width: 1024px) {
-        aspect-ratio: 16/12; 
+        aspect-ratio: 16/12;
       }
 
       @media (max-width: 760px) {
@@ -140,8 +121,8 @@ const stripHtml = (html: string) => {
       padding: 2%;
 
       @media (max-width: 1024px) {
-        padding: 4%; 
-        gap: 5%; 
+        padding: 4%;
+        gap: 5%;
       }
 
       @media (max-width: 760px) {
@@ -158,9 +139,9 @@ const stripHtml = (html: string) => {
         line-clamp: 2;
 
         .hero-title {
-          
+
           color: $white;
-          display:flex;
+          display: flex;
           font-size: 1.5rem;
           font-weight: bold;
           padding-bottom: 10px;
@@ -184,10 +165,10 @@ const stripHtml = (html: string) => {
           align-items: flex-start;
           padding-top: 1%;
           overflow: hidden;
-          display: -webkit-box; 
-          -webkit-box-orient: vertical; 
-          -webkit-line-clamp: 4; 
-          line-clamp: 4; 
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4;
+          line-clamp: 4;
         }
 
         @media (min-width: 770px) {
@@ -197,11 +178,11 @@ const stripHtml = (html: string) => {
         }
 
         @media (max-width: 400px) {
-          display: -webkit-box; 
-          -webkit-box-orient: vertical; 
-          -webkit-line-clamp: 3; 
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
           overflow: hidden;
-          text-overflow: ellipsis; 
+          text-overflow: ellipsis;
         }
       }
 
@@ -211,7 +192,7 @@ const stripHtml = (html: string) => {
         width: 150px;
 
         @media (max-width: 1024px) {
-          width: 15%; 
+          width: 15%;
         }
 
         @media (max-width: 770px) {
@@ -245,28 +226,28 @@ const stripHtml = (html: string) => {
         }
 
         @media (max-width: 760px) {
-          padding: 6px 12px; 
-          font-size: 0.8rem; 
+          padding: 6px 12px;
+          font-size: 0.8rem;
         }
 
         .hero-plays {
           @media (max-width: 1024px) {
-            font-size: 0.8rem; 
+            font-size: 0.8rem;
           }
 
           @media (max-width: 760px) {
-            font-size: 0.7rem; 
+            font-size: 0.7rem;
           }
         }
 
         @media (max-width: 391px) {
           padding: 4px 6px;
-          font-size: 0.7rem; 
+          font-size: 0.7rem;
         }
 
         .hero-plays {
           @media (max-width: 391px) {
-            font-size: 0.6rem; 
+            font-size: 0.6rem;
           }
         }
       }
@@ -281,7 +262,7 @@ const stripHtml = (html: string) => {
 
         @media (min-width: 1025px) {
           padding: 4px 12px;
-          font-size: 0.8rem; 
+          font-size: 0.8rem;
         }
       }
 
@@ -309,16 +290,16 @@ const stripHtml = (html: string) => {
     .swiper-button-next,
     .swiper-button-prev {
       transform: scaleX(-1) scale(1.1);
-      color: $dark; 
+      color: $dark;
       border-radius: 50%;
       height: 30px;
       width: 30px;
-      background: rgba(255, 255, 255, 0.4);  
+      background: rgba(255, 255, 255, 0.4);
       transform: rotate(360deg);
 
       &:hover {
         transform: scale(1.2);
-        background: rgba(255, 255, 255, 0.6); 
+        background: rgba(255, 255, 255, 0.6);
       }
     }
 
@@ -346,7 +327,7 @@ const stripHtml = (html: string) => {
 
 @media (max-width: 400px) {
   .hero-description {
-    font-size: 1.6vh; 
+    font-size: 1.6vh;
   }
 }
 </style>

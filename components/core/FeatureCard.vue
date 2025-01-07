@@ -88,7 +88,7 @@ defineProps({
 @media (max-width: 480px) {
   .movie-card {
     .movie-card-title {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       padding: 4px;
       max-height: 50px;
     }

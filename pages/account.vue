@@ -1,93 +1,53 @@
 <template>
-  <main  v-if="profileRequest.status.value === 'success'" class="container mb-5">
+  <main v-if="profileRequest.status.value === 'success'" class="container mb-5">
     <section class="profile-container">
       <img class="profile-image" src="/image/background.jpg" alt="پروفایل کاربر">
       <div class="profile-form-wrapper">
-          <h2 class="profile-title">ویرایش پروفایل</h2>
+        <h2 class="profile-title">ویرایش پروفایل</h2>
         <VeeForm :initialValues="form" @submit="handleSubmit" class="profile-form">
           <div class="avatar-subs">
-            <Avatar 
-              ref="avatarRef"
-              :profile-avatar="profileData?.avatar" 
-              @avatar-change="handleAvatarChange"
-            />
-            <SubscriptionDuration/>
+            <Avatar ref="avatarRef" :key="avatarImage" :profile-avatar="avatarImage"
+              @avatar-change="handleAvatarChange" />
+            <SubscriptionDuration />
           </div>
           <div class="profile-form-control">
             <VeeField name="name" rules="required|alpha_custom" v-slot="{ field, errors }">
-              <input
-                id="name"
-                v-bind="field"
-                v-model="form.name"
-                :disabled="!isEditing"
-                type="text"
-                :class="[`dir-${getDirection(form.name)}`]"
-                class="profile-input"
-                :has-value="!!form.name"
-                @input="handleInputChange"
-              />
+              <input id="name" v-bind="field" v-model="form.name" :disabled="!isEditing" type="text"
+                :class="[`dir-${getDirection(form.name)}`]" class="profile-input" :has-value="!!form.name"
+                @input="handleInputChange" />
               <label for="name" class="profile-label">نام:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
           </div>
           <div class="profile-form-control">
             <VeeField name="lastname" rules="required|alpha_custom" v-slot="{ field, errors }">
-              <input
-                id="lastname"
-                v-bind="field"
-                v-model="form.lastname"
-                :disabled="!isEditing"
-                type="text"
-                class="profile-input"
-                :class="[`dir-${getDirection(form.lastname)}`]"
-                :has-value="!!form.lastname"
-                @input="handleInputChange"
-              />
+              <input id="lastname" v-bind="field" v-model="form.lastname" :disabled="!isEditing" type="text"
+                class="profile-input" :class="[`dir-${getDirection(form.lastname)}`]" :has-value="!!form.lastname"
+                @input="handleInputChange" />
               <label for="lastname" class="profile-label">نام خانوادگی:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
           </div>
           <div class="profile-form-control">
             <VeeField name="email" rules="required|email" v-slot="{ field, errors }">
-              <input
-                id="email"
-                v-bind="field"
-                v-model="form.email"
-                :disabled="!isEditing"
-                type="email"
-                class="profile-input"
-                @input="handleInputChange"
-              />
+              <input id="email" v-bind="field" v-model="form.email" :disabled="!isEditing" type="email"
+                class="profile-input" @input="handleInputChange" />
               <label for="email" class="profile-label">ایمیل:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
           </div>
           <div class="profile-form-control">
             <VeeField name="phone" rules="required|phone" v-slot="{ field, errors }">
-              <input
-                id="phone"
-                v-bind="field"
-                v-model="form.phone"
-                :disabled="!isEditing"
-                type="text"
-                class="profile-input"
-                @input="handleInputChange"
-              />
+              <input id="phone" v-bind="field" v-model="form.phone" :disabled="!isEditing" type="text"
+                class="profile-input" @input="handleInputChange" />
               <label for="phone" class="profile-label">شماره تماس:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
           </div>
           <div class="profile-form-control">
             <VeeField name="password" :rules="passwordRules" v-slot="{ field, errors }">
-              <input
-                id="password"
-                v-bind="field"
-                v-model="form.password"
-                :disabled="!isEditing"
-                :type="isPasswordVisible ? 'text' : 'password'" 
-                class="profile-input"
-                @input="handleInputChange"
-              />
+              <input id="password" v-bind="field" v-model="form.password" :disabled="!isEditing"
+                :type="isPasswordVisible ? 'text' : 'password'" class="profile-input" @input="handleInputChange" />
               <label for="password" class="profile-label"> تغییر رمز:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
               <button type="button" @click="togglePasswordVisibility" class="toggle-password-visibility">
@@ -120,7 +80,7 @@ import { Form as VeeForm, Field as VeeField, useForm } from 'vee-validate';
 import Avatar from '~/components/core/Avatar.vue';
 import { useValidationRules } from '~/utils/validationRules';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
-import { useRouter, useRoute  } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 definePageMeta({
@@ -178,6 +138,8 @@ const togglePasswordVisibility = () => {
   isPasswordVisible.value = !isPasswordVisible.value;
 };
 
+const avatarImage = computed(() => form.value.avatar || profileData.value?.avatar)
+
 const router = useRouter();
 
 const handleLogout = () => {
@@ -185,17 +147,17 @@ const handleLogout = () => {
 };
 
 interface IProfile {
-avatar:string;
-bookmarks_count:number;
-email:string;
-first_name:string;
-games_score:number;
-id:number;
-is_subscription_active:boolean;
-is_watching:boolean;
-last_name:string;
-likes_count:number;
-phone:string;
+  avatar: string;
+  bookmarks_count: number;
+  email: string;
+  first_name: string;
+  games_score: number;
+  id: number;
+  is_subscription_active: boolean;
+  is_watching: boolean;
+  last_name: string;
+  likes_count: number;
+  phone: string;
 }
 const profileRequest = await useAuthFetch<IProfile>('api/auth/profile');
 
@@ -238,7 +200,7 @@ const computedProfileBodyRequest = computed(() => {
 
 // Function to handle the PATCH request
 const updateProfile = async () => {
-  try {    
+  try {
     const response = await useAuthFetch('/api/auth/profile/', {
       method: 'PATCH',
       body: computedProfileBodyRequest.value,
@@ -278,12 +240,9 @@ const handleAvatarChange = async (file: File) => {
     formData.append('avatar', file);
 
     const response = await useAuthFetch('/api/auth/profile/', {
-      method: 'PATCH',
+      method: 'PUT',
       body: formData,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }
-    });
+    }, true, true);
 
     if (response.status.value === 'success' && response.data.value?.avatar) {
       form.value.avatar = response.data.value.avatar;
@@ -301,7 +260,7 @@ const handleAvatarChange = async (file: File) => {
 
 <style lang="scss">
 .profile-container {
-    position: relative;
+  position: relative;
   z-index: 1000;
   display: flex;
   padding: 40px 0;
@@ -357,7 +316,7 @@ const handleAvatarChange = async (file: File) => {
         transition: background-color 0.3s ease;
 
         &:not(:disabled) {
-          background-color: $gray-300; 
+          background-color: $gray-300;
           font-style: italic;
           color: $white;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -365,8 +324,8 @@ const handleAvatarChange = async (file: File) => {
 
       }
 
-      .profile-input:focus + .profile-label,
-      .profile-input[has-value] + .profile-label {
+      .profile-input:focus+.profile-label,
+      .profile-input[has-value]+.profile-label {
         font-size: 0.75rem;
         transform: translateY(-130%);
       }
@@ -380,23 +339,23 @@ const handleAvatarChange = async (file: File) => {
         pointer-events: none;
         color: $dark;
         transition: all 0.1s ease;
-        
+
       }
 
       .toggle-password-visibility {
-      position: absolute;
-      left: 45px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      color: #8c8c8c;
+        position: absolute;
+        left: 45px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #8c8c8c;
 
-      &:hover {
-        color: $dark;
-  }
+        &:hover {
+          color: $dark;
+        }
       }
     }
 
@@ -415,9 +374,10 @@ const handleAvatarChange = async (file: File) => {
       transition: 0.1s ease;
 
       &:hover {
-        background: darken($primary,10);
+        background: darken($primary, 10);
       }
     }
+
     .profile-submit-exit {
       width: 100%;
       padding: 16px 0;
@@ -433,7 +393,7 @@ const handleAvatarChange = async (file: File) => {
       transition: 0.1s ease;
 
       &:hover {
-        background: darken($third,10);
+        background: darken($third, 10);
       }
     }
   }
@@ -500,10 +460,9 @@ const handleAvatarChange = async (file: File) => {
     }
   }
 }
- .icon-move-up { 
-  padding-left: 30px;
 
- }
+
+
 .profile-icon {
   width: 100px;
   height: 100px;
@@ -513,5 +472,10 @@ const handleAvatarChange = async (file: File) => {
   justify-content: center;
   background-color: $white;
   cursor: pointer;
+}
+
+.icon-move-up {
+  padding-left: 33px;
+
 }
 </style>
