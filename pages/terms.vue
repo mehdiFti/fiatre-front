@@ -1,7 +1,7 @@
 <template>
     <main class="container mb-5">
   <article class="terms-wrapper">
-    <h1 class="terms-heading">قوانین و مقررات</h1>
+    <h2 class="terms-heading">قوانین و مقررات</h2>
     <div v-if="isLoading" class="debug-info">
       Loading terms...
     </div>
@@ -52,16 +52,16 @@ const isLoading = computed(() => pending.value);
 
   .terms-heading {
     font-size: 24px;
-    margin-bottom: 20px;
     text-align: left;
     color: $third;
+    font-weight: bold;
   }
 
   .terms {
     font-size: 16px;
     line-height: 2.2;
     text-align: justify;
-    color: $dark;
+    color: $black;
   }
 
   .loading-state,
@@ -69,7 +69,7 @@ const isLoading = computed(() => pending.value);
   .empty-state {
     text-align: center;
     padding: 2rem;
-    color: $dark;
+    color: $black;
   }
 
   .error-state {
@@ -81,7 +81,7 @@ const isLoading = computed(() => pending.value);
     font-size: 16px;
     line-height: 2.2;
     text-align: justify;
-    color: $dark;
+    color: $black;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-5 mt-5">
+  <div class="container mb-5">
     <HomeSeprator class="mb-3" slug="https://mag.fiatre.ir" title="اخبار فیاتر" :isExternalLink="true" />
 
     <div class="blog__wrapper">
@@ -80,7 +80,8 @@ const filteredBlogItems = computed(() => {
 @media (max-width: 505px) {
   .blog__wrapper>* {
     flex: 0 0 100%;
-
+    max-width: 500px !important;
+    transform: translateX(-9px) !important;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <main v-if="profileRequest.status.value === 'success'" class="container mb-5">
+  <main v-if="profileRequest.status.value === 'success'" class="container">
     <section class="profile-container">
       <img class="profile-image" src="/image/background.jpg" alt="پروفایل کاربر">
       <div class="profile-form-wrapper">
@@ -61,7 +61,7 @@
           <button v-else type="submit" :disabled="!canSubmit" class="profile-submit">
             اعمال تغییرات
           </button>
-          <button @click="handleLogout" class="profile-submit-exit">
+          <button @click="handleLogout" class=" profile-submit  profile-submit-exit">
             خارج شدن از حساب
           </button>
         </VeeForm>
@@ -263,7 +263,6 @@ const handleAvatarChange = async (file: File) => {
   position: relative;
   z-index: 1000;
   display: flex;
-  padding: 40px 0;
   justify-content: center;
   align-items: center;
 
@@ -283,24 +282,28 @@ const handleAvatarChange = async (file: File) => {
 .profile-form-wrapper {
   width: 100%;
   max-width: 450px;
-  padding: 40px;
+  margin-top: 10px;
+  padding: 0px 20px;
   background: rgba(0, 0, 0, 0.85);
   border-radius: 8px;
   text-align: center;
   overflow: hidden;
-
+  padding: 0px 20px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  
   .profile-title {
     color: $white;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
   }
 
   .profile-form {
-    margin: 25px 0 65px;
 
     .profile-form-control {
-      height: 50px;
+      height: 40px;
       position: relative;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
 
       .profile-input {
         height: 100%;
@@ -310,8 +313,8 @@ const handleAvatarChange = async (file: File) => {
         outline: none;
         border-radius: 4px;
         color: $dark;
-        font-size: 1rem;
-        padding: 0 20px;
+        font-size: 0.9rem;
+        padding: 0 15px;
         direction: rtl;
         transition: background-color 0.3s ease;
 
@@ -326,8 +329,8 @@ const handleAvatarChange = async (file: File) => {
 
       .profile-input:focus+.profile-label,
       .profile-input[has-value]+.profile-label {
-        font-size: 0.75rem;
-        transform: translateY(-130%);
+        font-size: 0.8rem;
+        transform: translateY(-90%);
       }
 
       .profile-label {
@@ -335,7 +338,7 @@ const handleAvatarChange = async (file: File) => {
         left: 20px;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 1rem;
+        font-size: 0.9rem;
         pointer-events: none;
         color: $dark;
         transition: all 0.1s ease;
@@ -361,7 +364,7 @@ const handleAvatarChange = async (file: File) => {
 
     .profile-submit {
       width: 100%;
-      padding: 16px 0;
+      padding: 10px 0;
       font-size: 1rem;
       background: $primary;
       color: $white;
@@ -369,7 +372,7 @@ const handleAvatarChange = async (file: File) => {
       border-radius: 4px;
       border: none;
       outline: none;
-      margin: 25px 0 10px;
+      margin: 10px 0 0;
       cursor: pointer;
       transition: 0.1s ease;
 
@@ -379,28 +382,16 @@ const handleAvatarChange = async (file: File) => {
     }
 
     .profile-submit-exit {
-      width: 100%;
-      padding: 16px 0;
-      font-size: 1rem;
-      background: $third;
-      color: $white;
-      font-weight: 500;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      margin: 25px 0 10px;
-      cursor: pointer;
-      transition: 0.1s ease;
-
+      background: $third !important;
       &:hover {
-        background: darken($third, 10);
+        background: darken($third, 10) !important;
       }
     }
   }
 
   .error-message {
     color: $danger;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     margin-top: 0.25rem;
   }
 }
@@ -414,7 +405,7 @@ const handleAvatarChange = async (file: File) => {
     }
 
     .profile-form-control {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 
       .profile-input {
         font-size: 0.875rem;
@@ -428,7 +419,47 @@ const handleAvatarChange = async (file: File) => {
 
     .profile-submit {
       padding: 12px 0;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
+      height: 40px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .profile-form-wrapper {
+    .profile-title {
+      font-size: 1.1rem;
+    }
+
+    .profile-form {
+      .profile-form-control {
+        height: 35px;
+        margin-bottom: 15px;
+
+        .profile-input {
+          font-size: 0.8rem;
+          padding: 0 12px;
+        }
+
+        .profile-label {
+          font-size: 0.8rem;
+        }
+
+        .error-message {
+          font-size: 0.7rem;
+        }
+
+        .profile-input:focus + .profile-label,
+        .profile-input[has-value] + .profile-label {
+          font-size: 0.6rem;
+        }
+      }
+
+      .profile-submit {
+        padding: 10px 0;
+        font-size: 0.8rem;
+        height: 35px;
+      }
     }
   }
 }
@@ -457,6 +488,37 @@ const handleAvatarChange = async (file: File) => {
     .profile-submit {
       padding: 10px 0;
       font-size: 0.75rem;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .profile-form-wrapper {
+    .profile-title {
+      font-size: 1rem;
+    }
+
+    .profile-form {
+      .profile-form-control {
+        height: 32px;
+        margin-bottom: 12px;
+
+        .profile-input,
+        .profile-label {
+          font-size: 0.75rem;
+        }
+
+        .profile-input:focus + .profile-label,
+        .profile-input[has-value] + .profile-label {
+          font-size: 0.5rem;
+        }
+      }
+
+      .profile-submit {
+        padding: 8px 0;
+        font-size: 0.75rem;
+        height: 32px;
+      }
     }
   }
 }

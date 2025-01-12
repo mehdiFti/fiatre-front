@@ -38,7 +38,7 @@
               {{ isLoading ? 'لطفا منتظر بمانید' : 'ورود به فیاتر' }}
             </button>
 
-            <NuxtLink to="/password/reset" class="login-forget">
+            <NuxtLink to="/password/reset" class=" login-submit login-forget">
               بازیابی رمز عبور
             </NuxtLink>
           </div>
@@ -146,14 +146,15 @@ const onSubmit = handleSubmit(async (values) => {
 .login-form-wrapper {
   width: 100%;
   max-width: 450px;
-  padding: 40px;
+  margin-top: 20px;
+  padding: 0px 20px;
   background: rgba(0, 0, 0, 0.75);
   border-radius: 8px;
   text-align: center;
 
   .login-title {
     color: $white;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .login-form {
@@ -218,21 +219,10 @@ const onSubmit = handleSubmit(async (values) => {
       }
 
       .login-forget {
-        width: 35%;
-        padding: 6px 0;
-        font-size: 0.7rem;
-        background: $primary;
-        color: $white;
-        border-radius: 4px;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        transition: 0.1s ease;
-
+        background: $primary !important;
         &:hover {
-          background: darken($primary, 10);
+          background: darken($primary, 10) !important;
         }
-
       }
 
     }

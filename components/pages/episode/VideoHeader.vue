@@ -229,9 +229,9 @@ const posterFit = computed(() => {
   --video-border-radius: 2px;
 }
 
-.player[data-view-type='video'] {
-  aspect-ratio: 16 / 9;
-}
+// .player[data-view-type='video'] {
+//   aspect-ratio: 5/2 !important;
+// }
 
 .src-buttons {
   display: flex;
@@ -358,6 +358,10 @@ media-controls[data-visible] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+[data-media-player][data-layout='video'] {
+  background-color: var(--video-bg, none) !important; 
 }
 
 </style>

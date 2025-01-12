@@ -30,7 +30,6 @@ defineProps({
 .movie-card {
   display: flex;
   flex-direction: column;
-  position: relative;
   transition: transform 0.25s ease-in-out;
   border-radius: 8px;
   overflow: hidden;
@@ -40,32 +39,23 @@ defineProps({
   }
 
   .movie-card-image-container {
-    position: relative;
     width: 100%;
-    padding-top: 150%; // 2:3 aspect ratio for movie posters
     overflow: hidden;
   }
 
   .movie-card-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 8px 8px 0  0 ;
   }
 
   .movie-card-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 8px;
+    padding: 2px 2px;
     margin: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9), transparent);
-    color: white;
-    font-size: 0.9rem;
+    background:$milky ;
+    color: $black;
+    font-size: 0.8rem;
     white-space: nowrap;
     width: 100%;
     text-align: center;
@@ -79,8 +69,7 @@ defineProps({
 @media (max-width: 768px) {
   .movie-card {
     .movie-card-title {
-      font-size: 0.8rem;
-      padding: 6px;
+      font-size: 0.7rem;
     }
   }
 }
@@ -88,10 +77,10 @@ defineProps({
 @media (max-width: 480px) {
   .movie-card {
     .movie-card-title {
-      font-size: 0.7rem;
-      padding: 4px;
+      font-size: 0.685rem;
       max-height: 50px;
     }
   }
 }
+
 </style>

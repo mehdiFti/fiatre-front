@@ -1,5 +1,5 @@
 <template>
-  <div class="md-5">
+  <div class="md-1">
 
 
     <ClientOnly>
@@ -7,7 +7,7 @@
         <Swiper class="custom-swiper" :slides-per-view="1" loop :autoplay="{
           disableOnInteraction: true,
           pauseOnMouseEnter: true,
-          delay: 5000,
+          delay: 5000000,
         }" :modules="modules" follow-finger :navigation="true" ref="swiperRef">
           <SwiperSlide v-for="image in imagesHero" :key="image.id">
             <div class="wrapper-image-hero">
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import ButtonPreview from '~/components/core/ButtonPreview.vue';
+// import ButtonPreview from '~/components/core/ButtonPreview.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { defineProps } from 'vue';
@@ -74,15 +74,6 @@ const toggleAutoplay = (value: boolean) => {
     // }
   }
 }
-
-const stripHtml = (html: string) => {
-  if (!html) return '';
-  // Create a temporary div element
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  // Return just the text content
-  return temp.textContent || temp.innerText || '';
-};
 </script>
 
 <style lang="scss">
@@ -98,12 +89,9 @@ const stripHtml = (html: string) => {
     .hero-background-img {
       width: 100%;
       height: auto;
-      aspect-ratio: 16/9;
-      object-fit: cover;
+      aspect-ratio: 18/9;
+      // object-fit: cover;
 
-      @media (max-width: 1024px) {
-        aspect-ratio: 16/12;
-      }
 
       @media (max-width: 760px) {
         aspect-ratio: 3/4;
@@ -116,7 +104,6 @@ const stripHtml = (html: string) => {
       gap: 3%;
       position: absolute;
       bottom: 0%;
-
       background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
       padding: 2%;
 
@@ -125,9 +112,6 @@ const stripHtml = (html: string) => {
         gap: 5%;
       }
 
-      @media (max-width: 760px) {
-        gap: 7%;
-      }
 
       .hero-text {
         width: 100%;
@@ -142,25 +126,31 @@ const stripHtml = (html: string) => {
 
           color: $white;
           display: flex;
-          font-size: 1.5rem;
+          font-size: 1.1rem;
           font-weight: bold;
           padding-bottom: 10px;
 
           @media (max-width: 1024px) {
-            font-size: 1.2rem;
+            font-size: 1rem;
           }
 
           @media (max-width: 760px) {
-            font-size: 1rem;
+            font-size: 0.9rem;
           }
 
           @media (max-width: 400px) {
             font-size: 0.8rem;
           }
         }
+        @media (max-width: 460px) {
+     .hero-background-img {
+      height: 565px;
+    }
+}
 
         .hero-description {
           display: flex;
+          font-size: 14px;
           margin-bottom: 10px;
           align-items: flex-start;
           padding-top: 1%;
@@ -173,7 +163,7 @@ const stripHtml = (html: string) => {
 
         @media (min-width: 770px) {
           .hero-description {
-            width: 70%;
+            width: 80%;
           }
         }
 
@@ -189,14 +179,14 @@ const stripHtml = (html: string) => {
       .hero-poster-img {
         border-radius: 5px;
         aspect-ratio: 2/3;
-        width: 150px;
+        width: 120px;
 
         @media (max-width: 1024px) {
           width: 15%;
         }
 
         @media (max-width: 770px) {
-          width: 25%;
+          width: 22%;
           max-width: 50%;
         }
 
@@ -330,4 +320,77 @@ const stripHtml = (html: string) => {
     font-size: 1.6vh;
   }
 }
+
+
+@media (max-width: 769px) and ( max-width: 700px) {
+  .hero-poster-img {
+    width: 20% ;
+    
+  }
+
+  .hero-background-img {
+    aspect-ratio: 10/10 ;
+  }
+
+
+
+  .movie-hero-container, .wrapper-image-hero, .internal-hero {
+         padding: 0;
+         gap: 1%; 
+  
+    }
+
+    .hero-tite {
+      font-size: 0.9rem !important;
+    }
+}
+
+
+
+@media (max-width: 1199px) and ( min-width: 768px) {
+  .hero-poster-img {
+    width: 120px !important;
+    
+  }
+}
+
+
+@media (max-width: 992px) and ( min-width: 768px) {
+  .hero-background-img {
+   aspect-ratio: 12/9 !important;
+    
+  }
+}
+
+@media (max-width: 768px) and ( min-width: 600px) {
+  .hero-background-img {
+   aspect-ratio: 2/2 !important;
+    
+  }
+}
+@media (max-width: 600px) and ( min-width: 500px) {
+  .hero-background-img {
+   aspect-ratio: 2/2 !important;
+    
+    .hero-poster-img {
+      width: 25%;
+    }
+  }
+}
+@media (max-width: 500px) and ( min-width: 400px) {
+  .hero-background-img {
+   aspect-ratio: 2/2 !important;
+   height: 526px !important;
+  }
+}
+@media (max-width: 400px) and ( min-width: 300px) {
+  .hero-background-img {
+   aspect-ratio: 2/2 !important;
+   height: 526px !important;
+  }
+  .hero-poster-img {
+      width: 28% !important;
+    }
+}
+
 </style>

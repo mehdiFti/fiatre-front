@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
     <div class="container">
-      <h2 class="incomplete-videos-title">ویدئوهای ناتمام من</h2>
+      <h2 class="incomplete-videos-title">تماشای ادامه ویدیو</h2>
       <hr />
       
       <div class="video-episode-wrapper">
@@ -54,7 +54,7 @@
           در حال بارگذاری...
         </main>
         <main v-else class="error-message">
-          خطا در بارگذاری ویدئوها
+          خطا در بارگذاری ویدیوها
         </main>
       </div>
     </div>
@@ -74,11 +74,11 @@ import { onBeforeUnmount, ref, computed } from 'vue';
 
 // SEO Meta
 useSeoMeta({
-  title: 'ویدئوهای من',
-  description: 'صفحه ویدئوهای من در سایت FIATRE برای مشاهده ویدئوهای ذخیره شده و ادامه تماشا.',
-  keywords: 'ویدئوهای من, تماشا, ذخیره شده, سایت FIATRE',
-  ogTitle: 'ویدئوهای من',
-  ogDescription: 'صفحه ویدئوهای من در سایت FIATRE برای مشاهده ویدئوهای ذخیره شده و ادامه تماشا.',
+  title: 'ویدیوهای من',
+  description: 'صفحه ویدیوهای من در سایت FIATRE برای مشاهده ویدیوهای ذخیره شده و ادامه تماشا.',
+  keywords: 'ویدیوهای من, تماشا, ذخیره شده, سایت FIATRE',
+  ogTitle: 'ویدیوهای من',
+  ogDescription: 'صفحه ویدیوهای من در سایت FIATRE برای مشاهده ویدیوهای ذخیره شده و ادامه تماشا.',
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/my-video',
   ogImage: 'https://fiatre.ir/og-image.jpg',
@@ -166,14 +166,13 @@ const handleVideoEnded = (key: string) => {
 
 <style scoped lang="scss">
 .video-episode-wrapper {
-  margin: 30px 0 50px 0;
+  margin: 0px 0 50px 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
   background: $light;
-  padding: 20px 0;
   flex-direction: row-reverse;
 }
 
@@ -240,6 +239,7 @@ const handleVideoEnded = (key: string) => {
 .episode-title {
   font-size: 0.9rem;
   margin-bottom: 10px;
+  direction: rtl;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -269,10 +269,12 @@ hr {
 
  .incomplete-videos-title {
   font-size: 1.5rem;
-  color: $dark;
+  color: $black;
+  font-weight: bold;
   text-align: right; 
   margin: 20px 0;
 }
+
 @media (max-width: 1024px) {
   .video-episode-card {
     flex: 0 0 calc(50% - 20px);

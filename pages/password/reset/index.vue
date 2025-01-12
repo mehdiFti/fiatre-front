@@ -12,7 +12,7 @@
               name="phone"
               class="reset-input"
               type="tel"
-              rules="required|phone"
+              rules="phone"
             />
             <label class="reset-label">شماره همراه</label>
             <ErrorMessage name="phone" as="span" class="error-message" />
@@ -136,7 +136,7 @@ const onSubmit = async (values: any) => {
 
   .reset-title {
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .reset-form {

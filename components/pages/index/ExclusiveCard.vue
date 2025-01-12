@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5 mt-5 container exclusive-cards-container">
+  <div class="mb-5 container exclusive-cards-container">
     <NuxtLink
       v-for="card in posters"
       :key="card.id"

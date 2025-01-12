@@ -50,9 +50,9 @@ import BookmarkItem from '~/components/pages/bookmark/BookmarkItem.vue';
 // SEO Meta
 useSeoMeta({
   title: 'علاقه‌مندی‌ها',
-  description: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدئوهای ذخیره شده.',
+  description: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدیوهای ذخیره شده.',
   ogTitle: 'علاقه‌مندی‌ها',
-  ogDescription: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدئوهای ذخیره شده.',
+  ogDescription: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدیوهای ذخیره شده.',
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/bookmarks',
   ogImage: 'https://fiatre.ir/og-image.jpg',
@@ -124,10 +124,11 @@ const emit = defineEmits(['bookmark-removed']);
   }
 
   .my-fav-h2 {
-    margin-top: 30px;
-    font-size: 1.5rem;
-    color: $dark;
-  }
+  font-size: 1.5rem;
+  color: $black;
+  font-weight: bold;
+   margin: 20px 0;
+}
 
   .video-list > * {
     max-width: calc(25% - 20px);

@@ -30,11 +30,6 @@
                       <NuxtIcon name="pen" /> ویرایش حساب کاربری
                     </NuxtLink>
                   </li>
-                  <!-- <li>
-                    <NuxtLink to="/categories" class="link-black" @click="toggleMenu">
-                      <NuxtIcon name="category" /> دسته‌بندی‌ها
-                    </NuxtLink>
-                  </li> -->
                   <li>
                     <NuxtLink to="/bookmarks" class="link-black" @click="toggleMenu">
                       <NuxtIcon name="stars" /> علاقه مندی‌ها
@@ -42,7 +37,7 @@
                   </li>
                   <li>
                     <NuxtLink to="/my-video" class="link-black" @click="toggleMenu">
-                      <NuxtIcon name="camera-movie" /> ادامه ویدئوها
+                      <NuxtIcon name="camera-movie" /> ادامه ویدیوها
                     </NuxtLink>
                   </li>
                   <li>
@@ -56,7 +51,7 @@
                     </div>
                     <MailBox :showMailBox="showMailBox" @close="showMailBox = false" />
                   </li>
-                  <li>
+                  <li v-if="userStore.isAuthenticated && userStore.user?.is_subscription_active">
                     <div class="timer-subs" @click="toggleMenu">
                       <NuxtIcon name="timer" />زمان باقی مانده از اشتراک:
                     </div>
@@ -65,6 +60,11 @@
                       :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration"
                       :slug="userStore.user?.subscription_slug" />
 
+                  </li>
+                  <li v-if="userStore.isAuthenticated && !userStore.user?.is_subscription_active">
+                    <NuxtLink  to="/categories" class="link-black" @click="toggleMenu">
+                      <NuxtIcon name="category" /> دسته‌بندی‌ها
+                    </NuxtLink>
                   </li>
                 </ul>
                 <button class="logout-button" @click="logout">خروج از حساب کاربری</button>

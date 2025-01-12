@@ -1,5 +1,9 @@
 <template>
-  <main class="container mt-5">
+  <main class="container" > 
+    <article class="faq-wrapper ">
+    <h2 class="faq-heading">
+      سوالات متداول
+    </h2>
     <section v-for="(item, index) in faqs" :key="index" class="faq-item">
       <header class="faq-question" @click="toggleAnswer(index)" :aria-expanded="activeIndex === index"
         :aria-controls="'faq-collapse-' + index" role="button">
@@ -12,7 +16,9 @@
         </article>
       </div>
     </section>
+  </article>
   </main>
+  
 </template>
 
 <script setup lang="ts">
@@ -94,9 +100,20 @@ const toggleAnswer = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  background-color: $white;
-  border-radius: 5px;
+
+.faq-wrapper {
+    z-index: 1000;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background-color: $milky;
+  }
+
+
+.faq-heading {
+  font-size: 24px;
+    color: $third;
+    padding: 20px 10px;
+    font-weight: bold;
 
 }
 
@@ -112,11 +129,11 @@ const toggleAnswer = (index: number) => {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  color: $gray-500;
+  color: $black;
   transition: color 0.1s ease;
 
   &:hover {
-    background: linear-gradient(60deg, $primary, $third);
+    background: $primary;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

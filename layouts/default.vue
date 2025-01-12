@@ -37,7 +37,7 @@ useHead(head);
 @import "/assets/scss/common/app";
 @import "/assets/scss/layout/default";
 
-.main-layout {
-  min-height: 100dvh;
-}
+// .main-layout {
+//   min-height: 100dvh;
+// }
 </style>

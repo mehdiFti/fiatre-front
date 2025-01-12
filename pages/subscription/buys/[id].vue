@@ -19,15 +19,15 @@
             </div>
           </div>
         </div>
-        <div class="info-row">
-          <span class="info-label">قیمت اولیه</span>
-          <span class="info-value">{{ formatNumber(subscription.price) }} تومان</span>
-        </div>
+        <!-- <div class="info-row"> -->
+          <!-- <span class="info-label">قیمت اولیه</span>
+          <span class="info-value">{{ formatNumber(subscription.price) }} تومان</span> -->
+        <!-- </div> -->
 
-        <div class="info-row">
-          <span class="info-label">قیمت با تخفیف عمومی</span>
-          <span class="info-value">{{ formatNumber(subscription.discount_price) }} تومان</span>
-        </div>
+        <!-- <div class="info-row"> -->
+          <!-- <span class="info-label">قیمت با تخفیف عمومی</span>
+          <span class="info-value">{{ formatNumber(subscription.discount_price) }} تومان</span> -->
+        <!-- </div> -->
 
         <div class="info-row final-price">
           <span class="info-label">قیمت نهایی</span>
@@ -202,10 +202,6 @@ const proceedToPayment = async () => {
           background-color: #e8f4ff;
           border: 1px solid #0066cc;
 
-          .info-value.highlight {
-            color: #0066cc;
-            font-size: 1.1rem;
-          }
         }
 
         .info-label {

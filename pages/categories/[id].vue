@@ -8,7 +8,8 @@
         </ul>
     </div> -->
     <!-- {{ categories }} -->
-  <CategoryParent :status="getCategoriesRequest.status.value" :categories="categories" linkType="episodes" class="mb-5" />
+  <h3 class="cat-title"> {{ items.name }} کیر </h3>
+  <CategoryParent :status="getCategoriesRequest.status.value" :categories="categories" linkType="episodes" />
 </template>
 
 <script setup lang="ts">
@@ -53,6 +54,13 @@ const items = ref<{ id: number; name: string }[]>([]);
 // });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.cat-title {
+  font-size: 1.5rem ;
+  color: $black ;
+  font-weight: bold;
+  margin: 20px 0px;
+
+}
 
 </style>

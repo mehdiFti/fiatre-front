@@ -14,7 +14,7 @@
                 <input
                   v-model.trim="searchQuery"
                   type="text"
-                  placeholder="جستجو کنید..."
+                  placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
                   class="modal-search-input"
                   spellcheck="false"
                 />
@@ -112,12 +112,12 @@ watch(width, (newWidth) => {
 .search-modal {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
 }
 
 .modal-content {
@@ -261,6 +261,8 @@ watch(width, (newWidth) => {
     .input-wrapper {
       
       position: relative;
+
+
     }
 
     .search-button {
@@ -306,6 +308,10 @@ watch(width, (newWidth) => {
   }
 }
 
+.input-wrapper input::placeholder {
+        font-size: 0.75rem; 
+      
+}
 // .modal-search-button {
 //   color: red !important;
   

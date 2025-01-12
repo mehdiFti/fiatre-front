@@ -12,7 +12,7 @@
             <input
               v-model.trim="searchInput"
               type="text"
-              placeholder="سرچ کنید..."
+              placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
               class="search-modal-input"
               spellcheck="false"
                 @keyup.enter="searchSubmit"
@@ -134,7 +134,8 @@ const toggleSearchModalOpen = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -336,5 +337,9 @@ const toggleSearchModalOpen = () => {
   .search-icon-button {
     display: block;
   }
+}
+.input-wrapper input::placeholder {
+        font-size: 0.75rem; 
+      
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <main class="container mb-5">
+  <main class="container">
     <section class="register-container" dir="rtl">
       <img class="register-image" src="/image/background.jpg" alt=""/>
       <div class="register-form-wrapper">
@@ -93,7 +93,7 @@
               <span class="terms-text">
                 <NuxtLink to="/terms" target="_blank" style="color: #fe0100;">شرایط و قوانین فیاتر</NuxtLink> را می‌پذیرم و بیشتر از 15 سال سن دارم.
               </span>
-              <label for="terms" class="register-label" />
+              <label for="terms" class="register-label"></label>
             </VeeField>
           </div>
           <button type="submit" class="register-submit">ثبت نام</button>
@@ -233,27 +233,30 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   .register-form-wrapper {
+    margin-bottom: 10px ;
+    margin-top: 10px;
     width: 100%;
     max-width: 450px;
-    margin: 40px 0;
-    padding: 40px;
+    padding: 0px 20px;
     background: rgba(0, 0, 0, 0.75);
     border-radius: 8px;
     text-align: center;
     position: relative;
 
     .register-title {
+      display:flex;
+      justify-content: center;
+      align-items: center;
       color: $white;
-      font-size: 2rem;
+      font-size: 1.3rem;
     }
 
     .register-form {
-      margin: 25px 0 65px;
 
       .register-form-control {
-        height: 50px;
+        height: 45px;
         position: relative;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
 
         .register-input {
           height: 100%;
@@ -262,14 +265,14 @@ const onSubmit = handleSubmit(async (values) => {
           outline: none;
           border-radius: 4px;
           color: $dark;
-          font-size: 1rem;
+          font-size: 0.8rem;
           padding: 0 20px;
           direction: rtl;
 
           &:focus + .register-label,
           &[has-value] + .register-label {
-            font-size: 0.75rem;
-            transform: translateY(-130%);
+            font-size: 0.7rem;
+            transform: translateY(-100%);
           }
         }
 
@@ -278,7 +281,7 @@ const onSubmit = handleSubmit(async (values) => {
           left: 20px;
           top: 50%;
           transform: translateY(-50%);
-          font-size: 1rem;
+          font-size: 0.9rem;
           pointer-events: none;
           color: $gray-500;
           transition: all 0.1s ease;
@@ -287,15 +290,15 @@ const onSubmit = handleSubmit(async (values) => {
 
         .error-message {
           color: $danger;
-          font-size: 0.875rem;
+          font-size: 0.8rem;
           margin-top: 0.25rem;
         }
       }
 
       .register-submit {
         width: 100%;
-        padding: 16px 0;
-        font-size: 1rem;
+        padding: 14px 0;
+        font-size: 0.9rem;
         background: $third;
         color: $white;
         font-weight: 500;
@@ -304,6 +307,7 @@ const onSubmit = handleSubmit(async (values) => {
         outline: none;
         cursor: pointer;
         transition: 0.1s ease;
+        margin-bottom: 10px;
 
         &:hover {
           background: darken($third, 10);
@@ -319,10 +323,68 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 
-@media (max-width: 455px) {
-  .terms-text {
-    font-size: 0.875rem;
-    text-align: center;
+// Add responsive styles for mobile devices
+@media (max-width: 500px) {
+
+  .register-form-wrapper {
+    max-width: 80% !important;  // Reduce the max-width for better fit
+ // Reduce padding inside the form
+
+    .register-title {
+      font-size: 1.1rem !important; // Slightly smaller title
+      margin-left: 10%;
+      white-space: nowrap !important;
+    }
+
+    .register-form {
+      .register-form-control {
+        height: 35px !important; // Reduce input height
+        margin-bottom: 25px !important; // Reduce margin between inputs
+        
+        .register-input {
+          font-size: 0.8rem !important; // Smaller font size for input text
+          padding: 0 15px !important; // Reduce padding inside inputs
+
+          &:focus + .register-label,
+          &[has-value] + .register-label {
+            font-size: 0.6rem !important; // Smaller font for focused/filled labels
+            transform: translateY(-100%);
+          }
+        }
+
+        .register-label {
+          font-size: 0.8rem !important; // Smaller label font size
+        }
+
+        .error-message {
+          font-size: 0.6rem !important;
+          padding-bottom: 5px !important;
+        }
+      }
+
+      .register-submit {
+        padding: 12px 0 !important; // Reduce button height
+        margin-bottom: 10px;
+        font-size: 0.8rem !important; // Smaller font size for button text
+      }
+    }
+
+    .terms-text {
+      font-size: 0.7rem !important; // Smaller font size for terms text
+      line-height: 1.25 !important; // Adjust line spacing for readability
+    }
+  }
+}
+@media (max-width: 360px) {
+  .register-form-wrapper {
+    .register-title {
+      font-size: 0.9rem;
+    }
+
+    .register-form-control {
+      height: 35px;
+      margin-bottom: 15px;
+    }
   }
 }
 </style>

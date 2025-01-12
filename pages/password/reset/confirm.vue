@@ -151,7 +151,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   .confirm-title {
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .confirm-form {

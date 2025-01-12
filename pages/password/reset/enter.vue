@@ -207,7 +207,7 @@ const onSubmit = handleSubmit(async () => {
 
   .login-title {
     color: $white;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .login-form {
@@ -243,7 +243,7 @@ const onSubmit = handleSubmit(async () => {
         transform: translateY(-50%);
         font-size: 1rem;
         pointer-events: none;
-        color: #8c8c8c;
+        color: $milky;
         transition: all 0.1s ease;
       }
     }

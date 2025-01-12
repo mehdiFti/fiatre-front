@@ -213,7 +213,7 @@ const copyright = computed(() => {
   flex-wrap: wrap;
 
   .cert-logo {
-    width: 100px;
+    width: 70px;
     aspect-ratio: 1;
     object-fit: contain;
   }

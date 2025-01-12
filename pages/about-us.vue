@@ -47,23 +47,25 @@ const isLoading = computed(() => pending.value);
 
 <style scoped lang="scss">
 .about-container {
-  margin: 40px auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 20px 60px;
   background-color: $milky;
   border-radius: 5px;
 
   .about-us-heading {
     font-size: 24px;
-    margin-bottom: 20px;
-    text-align: left;
+    text-align: left;           
     color: $third;
+    font-weight: bold;
+    margin-bottom: 20px;        
+    padding-left: 0px !important;  
   }
 
   .about-us {
     font-size: 16px;
     line-height: 2.2;
     text-align: justify;
-    color: $dark;
+    color: $black;
   }
 }
 </style>

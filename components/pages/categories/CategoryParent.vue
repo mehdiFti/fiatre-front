@@ -38,7 +38,7 @@ const getImageUrl = (imagePath: string) => {
 <style lang="scss" scoped>
 .category-wrapper {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   padding: 0 10px;
 }
@@ -58,7 +58,7 @@ const getImageUrl = (imagePath: string) => {
 
 @media (max-width: 426px) {
   .category-wrapper {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 }
