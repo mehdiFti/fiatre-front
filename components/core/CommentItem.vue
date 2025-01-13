@@ -183,7 +183,7 @@ const checkMobileView = () => {
 
       .comment-metadata {
         font-size: 0.8em;
-        color: $gray-500;
+        color: $gray;
       }
     }
 
@@ -228,7 +228,6 @@ const checkMobileView = () => {
 }
 
 .comment-wrapper {
-  padding: 40px 10px 10px;
 
   >.comment-form {
     display: flex;

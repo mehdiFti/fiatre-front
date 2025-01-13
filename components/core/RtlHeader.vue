@@ -1,7 +1,6 @@
 <template>
   <div class="container" dir="rtl">
     <header class="header-container">
-      <hr class="header-hr" />
       <div class="left-section">
         <NuxtLink to="/" class="logo">
           <NuxtImg src="https://www.fiatre.ir/static/front/src/icons/logo.png" alt="Logo" class="logo-img" />
@@ -59,14 +58,13 @@
                     </NuxtLink>
                   </li>
                   <li v-if="userStore.isAuthenticated && userStore.user?.is_subscription_active">
-                  <div class="timer-subs" @click="toggleMenu">
-                    <NuxtIcon name="timer" />زمان باقی مانده از اشتراک:
-                  </div>
-                  <SubscriptionDuration
-                    :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration"
-                    :slug="userStore.user?.subscription_slug" 
-                  />
-                </li>
+                    <div class="timer-subs" @click="toggleMenu">
+                      <NuxtIcon name="timer" />زمان باقی مانده از اشتراک:
+                    </div>
+                    <SubscriptionDuration
+                      :subscriptionExpiration="userStore.user?.subscription?.subscription_expiration"
+                      :slug="userStore.user?.subscription_slug" />
+                  </li>
                 </ul>
                 <button class="logout-button" @click="logout">خروج از حساب کاربری</button>
               </div>
@@ -185,26 +183,16 @@ function toggleMailBox() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(244, 244, 244, 0.9);
+  background-color: $milky;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-hr {
-  position: absolute;
-  top: -16px;
-  left: 0;
-  width: 100%;
-  border: 0;
-  height: 5px;
-  background: linear-gradient(to right, $primary, $third);
-  z-index: 999;
-}
 
 .right-section {
   transform: translateX(20px);
 }
- 
+
 
 
 .left-section,
@@ -262,6 +250,7 @@ function toggleMailBox() {
   white-space: nowrap;
   font-weight: bold;
   padding: 8px 10px;
+  margin-left: 3px;
   font-size: 0.875rem;
   border: none;
   border-radius: 5px;
@@ -269,14 +258,6 @@ function toggleMailBox() {
   transition: background-color 0.3s, box-shadow 0.3s;
   // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-@media (min-width: 1000px) {
-  .subscription-button-active {
-    padding: 8px 9px !important;
-  }
-}
-
-;
 
 // .subscription-button-active:hover {
 //   background-color: darken($primary, 10%);
@@ -317,10 +298,14 @@ function toggleMailBox() {
 
 .burger-icon::before {
   top: -10px;
+  right: 0;
+
 }
 
 .burger-icon::after {
   top: 10px;
+  right: 0;
+
 }
 
 .burger-icon.open {
@@ -347,24 +332,7 @@ function toggleMailBox() {
   }
 }
 
-@media (max-width: 992px) {
-  .wrapper-when-login {
-    gap: 10px;
-  }
 
-
-  .burger-menu {
-    margin-left: 14px;
-  }
-
-
-
-  .wrapper-when-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
 
 .wrapper-when-login {
   display: flex;
@@ -387,8 +355,9 @@ function toggleMailBox() {
 
 .modal-burger {
   position: absolute;
-  top: 100%;
-  transform: translateX(-18px) !important;
+  // top: 100%;
+  top: 60px;
+  transform: translateX(-25px) !important;
   background: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border-radius: 0 0 15px 15px;
@@ -523,51 +492,6 @@ function toggleMailBox() {
   color: $primary;
 }
 
-.modal-burger {
-  transform: translateX(-26px) !important;
-  top: 60px
-}
-
-@media (max-width: 992px) {
-  .modal-burger {
-    transform: translateX(-16px) !important;
-  }
-}
-
-@media (max-width: 490px) {
-  .modal-burger {
-    transform: translateX(-41px) !important;
-
-  }
-
-  .subscription-button-deactive {
-    padding: 4px 4px !important;
-  }
-
-}
-
-@media (max-width: 390px) {
-  .modal-burger {
-    transform: translateX(-41px) !important;
-    // top:60px;
-  }
-}
-
-@media (max-width: 370px) {
-  .modal-burger {
-    transform: translateX(-56px) !important;
-    // top:60px;
-  }
-
-  .subscription-button-active {
-    transform: translateX(-5px);
-  }
-
-
-}
-
-
-
 .category-link {
   margin-left: 15px;
   margin-top: 5px;
@@ -583,17 +507,31 @@ function toggleMailBox() {
   color: $primary;
 }
 
-@media (max-width: 490px) {
+@media (max-width: 490px) and (min-width: 391px) {
 
+  .modal-burger {
+    transform: translateX(-51px) !important;
+    top: 67px;
+
+  }
+
+  .subscription-button-deactive {
+    padding: 4px 4px !important;
+  }
 
   .logo-img {
     height: 30px;
 
   }
 
+  .subscription-button-active {
+    margin: 0 1px;
+    padding: 2px;
+    font-size: 0.8rem;
+  }
 
   .nav-link,
-  .subscription-button-active,
+
   .subscription-button-deactive,
   .category-link {
     margin: 0 2px;
@@ -620,7 +558,127 @@ function toggleMailBox() {
   }
 }
 
+
+.no-auth {
+  display: flex;
+}
+
+
+.no-animation {
+  transition: none !important;
+  transform: none !important;
+}
+
+.gap-from-burger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+@media (min-width: 1000px) {
+  .subscription-button-active {
+    padding: 8px 9px !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .subscription-button-active {
+    margin-right: 2px;
+  }
+
+}
+
+@media (max-width: 490px) and (min-width: 391px) {
+  .subscription-button-active {
+    margin-right: 3px !important;
+  }
+
+}
+
+
+
+@media (max-width: 992px) and (min-width: 490px) {
+  .wrapper-when-login {
+    gap: 10px;
+  }
+
+  .modal-burger {
+    transform: translateX(-13px) !important;
+  }
+
+  .burger-menu {
+    margin-left: 14px;
+  }
+
+  .wrapper-when-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 769px) and (min-width: 489px) {
+  .modal-burger {
+    top: 67px !important;
+  }
+}
+
+
+@media (min-width: 768px) {
+
+  .no-auth {
+    gap: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .no-auth {
+    gap: 10px;
+  }
+
+  .auth-link {
+    font-size: 12px;
+  }
+}
+
+
+@media (max-width: 391px) and (min-width: 370px) {
+  .modal-burger {
+    transform: translateX(-26px) !important;
+    top: 68px !important;
+  }
+}
+
+
 @media (max-width: 370px) {
+
+
+  .no-auth {
+    gap: 5px;
+  }
+
+  .auth-link {
+    font-size: 12px;
+  }
+
+  .subscription-button-deactive {
+    padding: 4px 3px !important;
+  }
+
+
+  .modal-burger {
+    transform: translateX(-66px) !important;
+    // top:60px;
+  }
+
+  .subscription-button-active {
+    transform: translateX(-5px);
+  }
+
 
   .header-container {
     padding: 10px 20px;
@@ -630,8 +688,19 @@ function toggleMailBox() {
     height: 30px;
   }
 
+
+  .subscription-button-active {
+
+    margin: 0 0px;
+    padding: 0;
+    font-size: 0.75rem;
+
+
+  }
+
+
   .nav-link,
-  .subscription-button-active,
+
   .subscription-button-deactive,
   .category-link {
     margin: 0 1px;
@@ -658,54 +727,12 @@ function toggleMailBox() {
   }
 }
 
-.no-auth {
-  display: flex;
+.container[dir="rtl"] {
+  text-align: right !important;
 
-
-}
-
-.gap-from-burger {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@media (max-width: 450px) {
-
-  .no-auth {
-    gap: 10px;
+  * {
+    // Force RTL text alignment for all children
+    text-align: right !important;
   }
-
-  .auth-link {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 370px) {
-
-  .no-auth {
-    gap: 5px;
-  }
-
-  .auth-link {
-    font-size: 12px;
-  }
-
-  .subscription-button-deactive {
-    padding: 4px 3px !important;
-  }
-}
-
-@media (min-width: 768px) {
-
-  .no-auth {
-    gap: 20px;
-    margin-right: 20px;
-  }
-}
-
-.no-animation {
-  transition: none !important;
-  transform: none !important;
 }
 </style>

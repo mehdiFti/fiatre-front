@@ -2,24 +2,15 @@
   <ClientOnly>
     <div class="container">
       <div class="video-episode-wrapper">
-        <div
-          v-for="episode in displayedEpisodes"
-          :key="episode.key"
-          class="video-episode-card"
-        >
-          <VideoHeader 
-            :movie="{
-              key: episode.key,
-              title: episode.title,
-              video: episode.src,
-              cover: episode.poster,
-              description: episode.description
-            }"
-            :videoUrl="episode.src"
-            :isInsideVideoSeries="true"
-            :onPause="onPause"
-            :startTime="getStartTime(episode.key)"
-          />
+        <div v-for="episode in displayedEpisodes" :key="episode.key" class="video-episode-card">
+          <Player :movie="{
+            key: episode.key,
+            title: episode.title,
+            video: episode.src,
+            cover: episode.poster,
+            description: episode.description
+          }" :videoUrl="episode.src" :isInsideVideoSeries="true" :onPause="onPause"
+            :startTime="getStartTime(episode.key)" />
           <div class="episode-info">
             <h4 class="episode-title">
               <span class="episode-number">{{ episode.number }}</span> - {{ episode.title }}
@@ -28,17 +19,13 @@
             <div class="episode-desc" v-html="sanitizeAndTruncateDescription(episode.description)"></div>
           </div>
           <div class="other-buttons">
-            <DownloadButton :videoUrl="episode.src"/>
+            <DownloadButton :videoUrl="episode.src" />
             <BookmarkButton :videoId="episode.key" :videoDetails="episode" @bookmark-toggled="handleBookmarkToggled" />
           </div>
         </div>
       </div>
       <div class="show-button-container">
-        <button
-          v-if="props.episodes.length > 4"
-          @click.prevent="toggleShowMore"
-          class="show-more-btn"
-        >
+        <button v-if="props.episodes.length > 4" @click.prevent="toggleShowMore" class="show-more-btn">
           {{ showMore ? "نمایش کمتر" : "نمایش تمامی قسمت‌ها" }}
         </button>
       </div>
@@ -50,7 +37,7 @@
 import { ref, computed } from 'vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
-import VideoHeader from '~/components/pages/episode/VideoHeader.vue';
+import Player from '~/components/core/Player.vue';
 
 const props = defineProps<{
   episodes: Episode[];
@@ -87,10 +74,12 @@ const displayedEpisodes = computed(() => {
   if (showMore.value) {
     return props.episodes; // Show all episodes when "show more" is toggled
   }
-  if (screenWidth.value >= 421 && screenWidth.value <= 1024) {
-    return props.episodes.slice(0, 4);
-  } else {
+  if (screenWidth.value > 991) {
     return props.episodes.slice(0, 3);
+  } else if (screenWidth.value > 360) {
+    return props.episodes.slice(0, 2);
+  } else {
+    return props.episodes.slice(0, 1);
   }
 });
 
@@ -120,6 +109,7 @@ const onPause = (currentTime: number) => {
 
 <style scoped lang="scss">
 .video-episode-wrapper {
+  margin-left: -2% !important;
   margin-top: 30px;
   display: flex;
   justify-content: flex-start;
@@ -127,7 +117,7 @@ const onPause = (currentTime: number) => {
   gap: 20px;
   width: 100%;
   background: $light;
-  padding: 20px;
+  padding: 20px 0px;
   flex-direction: row-reverse;
 }
 
@@ -157,7 +147,7 @@ const onPause = (currentTime: number) => {
 .episode-info {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 0px 15px;
   text-align: right;
   flex-grow: 1;
 }
@@ -186,7 +176,7 @@ const onPause = (currentTime: number) => {
 .episode-desc {
   direction: rtl;
   font-size: 0.9rem;
-  color: $gray-500;
+  color: $gray;
   line-height: 1.5;
   max-height: 4.5em;
   overflow: hidden;
@@ -214,7 +204,6 @@ hr {
   background-color: $primary;
   color: $white;
   border: none;
-  margin-bottom: 40px;
   border-radius: 0 0 5px 5px;
   cursor: pointer;
   font-size: 1rem;
@@ -235,35 +224,72 @@ hr {
   left: 15px;
 }
 
-@media screen and (max-width: 1024px) {
+// Desktop and large tablets (3 videos per row)
+@media screen and (min-width: 992px) {
+  .video-episode-card {
+    flex: 0 0 calc(33.33% - 20px);
+    height: 440px;
+  }
+}
+
+// Tablets and large phones (2 videos per row)
+@media screen and (max-width: 991px) and (min-width: 360px) {
   .video-episode-card {
     flex: 0 0 calc(50% - 20px);
-    height: 420px;
-    padding-bottom: 480px;
+    height: 400px;
   }
-}
 
-@media screen and (max-width: 767px) and (min-width: 421px) {
-  .video-episode-card {
-    flex: 0 0 calc(100% - 20px);
-    height: 420px;
-  }
-}
-
-@media screen and (max-width: 420px) {
-  .video-episode-card {
-    flex: 0 0 calc(100% - 20px);
-    height: 340px;
-  }
-}
-
-@media screen and (max-width: 480px) {
   .episode-desc {
     max-height: 3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.85rem;
+  }
+
+  .episode-title {
+    font-size: 0.95rem;
+  }
+
+  .other-buttons {
+    bottom: 10px;
+    left: 10px;
+    gap: 10px;
+  }
+
+  .show-more-btn,
+  .show-less-btn {
+    width: 40%;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .video-episode-card {
+    flex: 0 0 calc(100% - 20px);
+    height: 360px;
+  }
+
+  .episode-desc {
+    max-height: 2.5rem;
     font-size: 0.8rem;
   }
+
+  .episode-title {
+    font-size: 0.9rem;
+    max-height: 3.5rem;
+  }
+
+  .other-buttons {
+    bottom: 8px;
+    left: 8px;
+    gap: 8px;
+  }
+
+  .show-more-btn,
+  .show-less-btn {
+    width: 50%;
+    font-size: 0.8rem;
+  }
+
+
 }
 
 .show-button-container {

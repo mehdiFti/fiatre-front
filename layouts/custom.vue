@@ -1,6 +1,6 @@
 <template>
   <div class="color">
-     <RtlHeader :rtl="true"/>
+     <RtlHeader/>
   <div class="color">
     <main class="main-layout">
       <slot />

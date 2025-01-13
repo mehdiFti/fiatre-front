@@ -2,42 +2,36 @@
   <main class="container">
     <div class="subscription-card">
       <div class="subscription-header">
-        <h2>انتخاب اشتراک</h2>
+        <h2>خرید اشتراک</h2>
       </div>
       <div class="subscription-body">
         <!-- Discount Code Section -->
         <div class="info-row">
           <div class="discount-container">
-            <label for="discount-code" class="info-label">کد تخفیف</label>
             <div class="input-group">
               <input type="text" id="discount-code" v-model="discountCode" placeholder="کد تخفیف خود را وارد کنید"
                 :disabled="discountRequest.status.value === 'success' || discountRequest.status.value === 'pending'" />
-              <button class="apply-button dis" @click="applyDiscount"
+              <button class="apply-button" @click="applyDiscount"
                 :disabled="discountRequest.status.value === 'success' || discountRequest.status.value === 'pending'">
                 اعمال
               </button>
             </div>
           </div>
         </div>
-        <!-- <div class="info-row"> -->
-          <!-- <span class="info-label">قیمت اولیه</span>
-          <span class="info-value">{{ formatNumber(subscription.price) }} تومان</span> -->
-        <!-- </div> -->
+        <div class="info-row">
+          <span class="info-label">نوع اشتراک:</span>
+          <span class="info-value">{{ (subscription.name) }}</span>
+        </div>
 
         <!-- <div class="info-row"> -->
-          <!-- <span class="info-label">قیمت با تخفیف عمومی</span>
+        <!-- <span class="info-label">قیمت با تخفیف عمومی</span>
           <span class="info-value">{{ formatNumber(subscription.discount_price) }} تومان</span> -->
         <!-- </div> -->
 
         <div class="info-row final-price">
-          <span class="info-label">قیمت نهایی</span>
+          <span class="info-label">مبلغ:</span>
           <span class="info-value highlight">{{ formatNumber(finalPrice) }} تومان</span>
         </div>
-
-        <p class="warning-message">
-          لطفا قبل از پرداخت اطلاعات خود را بررسی کنید.
-        </p>
-
         <button class="payment-button" @click="proceedToPayment">
           پرداخت
         </button>
@@ -53,7 +47,7 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: 'تایید اشتراک',
+  title: 'خریداشتراک | فیاتر',
   description: 'صفحه تایید اشتراک در سایت فیاتر برای انتخاب و خرید اشتراک.',
   keywords: 'تایید اشتراک, خرید اشتراک, سایت فیاتر',
   ogTitle: 'تایید اشتراک',
@@ -160,26 +154,27 @@ const proceedToPayment = async () => {
     align-items: center;
     justify-content: center;
     padding: 0.75rem;
-    background-color: #f5f5f5;
+    background-color: $white;
   }
 
   .subscription-card {
     margin-top: 30px;
     width: 100%;
     max-width: 400px;
-    background: white;
+    background: $white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     .subscription-header {
-      background-color: #0066cc;
+      background-color: $milky;
       text-align: center;
       color: white;
       padding: 0.75rem;
 
       h2 {
         margin: 0;
+        color: $black;
         font-size: 1.2rem;
         font-weight: 600;
       }
@@ -193,24 +188,23 @@ const proceedToPayment = async () => {
         justify-content: space-between;
         align-items: center;
         padding: 0.75rem;
-        background-color: #f8f8f8;
+        background-color: $milky;
         border-radius: 6px;
         margin-bottom: 0.75rem;
         font-size: 0.9rem;
 
         &.final-price {
-          background-color: #e8f4ff;
-          border: 1px solid #0066cc;
+          background-color: $milky;
 
         }
 
         .info-label {
-          color: #666;
+          color: $gray;
           font-weight: 500;
         }
 
         .info-value {
-          color: #333;
+          color: $black;
           font-weight: 600;
         }
       }
@@ -220,21 +214,20 @@ const proceedToPayment = async () => {
 
         .input-group {
           display: flex;
-          gap: 0.4rem;
           margin-top: 0.4rem;
 
           input {
             flex: 1;
             padding: 0.6rem;
-            border: 1px solid #ddd;
+            border: 1px solid $white;
             border-radius: 6px;
             font-size: 0.85rem;
           }
 
           .apply-button {
             padding: 0.6rem 1.2rem;
-            background-color: #0066cc;
-            color: white;
+            background-color: $third;
+            color: $white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -242,26 +235,18 @@ const proceedToPayment = async () => {
             font-size: 0.85rem;
 
             &:hover {
-              background-color: darken(#0066cc, 10%);
+              background-color: darken($third, 10%);
             }
           }
         }
-      }
-
-      .warning-message {
-        text-align: center;
-        color: #666;
-        line-height: 1.8;
-        margin: 1.5rem 0;
-        font-size: 0.85rem;
       }
 
       .payment-button {
         display: block;
         width: 100%;
         padding: 0.75rem;
-        background-color: #0066cc;
-        color: white;
+        background-color: $primary;
+        color: $white;
         text-align: center;
         border: none;
         border-radius: 6px;
@@ -271,7 +256,7 @@ const proceedToPayment = async () => {
         font-size: 0.9rem;
 
         &:hover {
-          background-color: darken(#0066cc, 10%);
+          background-color: darken($primary, 10%);
         }
       }
     }
@@ -286,17 +271,16 @@ const proceedToPayment = async () => {
 
         .info-row {
           padding: 0.6rem;
-          flex-direction: column;
           align-items: flex-start;
-          gap: 0.4rem;
         }
 
         .discount-container {
           .input-group {
-            flex-direction: column;
 
             .apply-button {
-              width: 100%;
+              width: auto;
+              font-size: 12px;
+              padding: 0.6rem 0.4rem !important;
             }
           }
         }

@@ -11,13 +11,20 @@ onMounted(() => {
 
   // Extract query parameters
   const authority = route.query.Authority || '';
-  const status = route.query.Status || '';
+  const status = route.query.Status || route.query.status || '';
   const refID = route.query.refID || '';
 
-  // Redirect to the result page with query parameters
+  // Normalize the status to uppercase for consistent comparison
+  const normalizedStatus = status.toUpperCase();
+
+  // Redirect to the result page with normalized parameters
   navigateTo({
     path: '/subscription/buys/result',
-    query: { Authority: authority, Status: status, refID: refID },
+    query: { 
+      Authority: authority, 
+      Status: normalizedStatus, 
+      refID: refID 
+    },
   });
 });
 </script>

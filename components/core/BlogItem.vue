@@ -110,7 +110,7 @@ const formattedTime = computed(() => {
 
   .blog-description {
     padding-top: 15px;
-    color: $gray-500;
+    color: $gray;
     font-size: 13px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -127,7 +127,7 @@ const formattedTime = computed(() => {
   .blog-time {
     text-align: left;
     font-size: 12px;
-    color: $gray-500;
+    color: $gray;
     margin-top: 15px;
     font-weight: bold;
   }

@@ -46,7 +46,7 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
 
 <style lang="scss">
 .crew-wrapper {
-  padding: 40px 10px 10px;
+  // padding: 40px 10px 10px;
   background: $light;
 }
 
@@ -83,6 +83,7 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
   }
 
   .crew-name {
+    font-size: 16px;
     text-align: center;
     margin-top: 14px;
     font-weight: bold;
@@ -93,6 +94,16 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
   .crew-flex .card-container {
     width: 100px;
     height: 100px;
+  }
+
+  .crew-name {
+    font-size: 12px !important;
+  }
+
+  .crew-specialty {
+    font-size: 12px !important;
+    font-weight: 500;
+
   }
 }
 
@@ -105,18 +116,32 @@ const defaultImage = 'https://uxwing.com/wp-content/themes/uxwing/download/peopl
   .crew-flex .card-container .crew-card {
     width: 100px;
   }
+
+  .crew-name {
+    font-size: 0.65rem !important;
+    font-weight: 500;
+
+  }
+
+  .crew-specialty {
+    font-size: 0.65rem !important;
+    font-weight: 500;
+
+  }
+
+
 }
 
 
 .crew-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 4px;
 }
 
 .crew-specialty {
   font-size: 0.9rem;
-  color: #666666;
+  color: $gray;
   margin-top: 0;
 }
 </style>

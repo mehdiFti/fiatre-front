@@ -94,7 +94,6 @@ const handleSubmit = () => {
 
 <style lang="scss">
 .comment-wrapper {
-  padding: 40px 10px 10px;
 
   >.comment-form {
     display: flex;

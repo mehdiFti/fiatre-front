@@ -56,7 +56,7 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: 'پروفایل کاربری',
+  title: 'پروفایل کاربری | فیاتر',
   description: 'صفحه پروفایل کاربری در سایت FIATRE برای مشاهده امتیازات و جوایز کسب شده.',
   keywords: 'پروفایل, کاربری, امتیازات, جوایز, FIATRE',
   ogTitle: 'پروفایل کاربری',
@@ -174,6 +174,7 @@ onMounted(async () => {
   .profile-card-wrapper {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 10px;
   }
 
   .profile-card {
@@ -186,6 +187,7 @@ onMounted(async () => {
   .profile-card-wrapper {
     flex-direction: column;
     align-items: center;
+    gap: 0px;
   }
 
   .profile-card {

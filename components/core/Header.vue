@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <header class="header-container">
-      <hr class="header-hr" />
       <div class="left-section">
         <NuxtLink to="/" class="logo">
           <NuxtImg src="https://www.fiatre.ir/static/front/src/icons/logo.png" alt="Logo" class="logo-img" />
@@ -13,7 +12,7 @@
         <div class="wrapper-when-login">
           <NuxtLink v-if="userStore.isAuthenticated && !userStore.user?.is_subscription_active" to="/subscription/plans"
             class="subscription-button-deactive">
-            خریداشتراک
+            خرید اشتراک
           </NuxtLink>
           <NuxtLink v-else-if="userStore.isAuthenticated" to="/categories" class="subscription-button-active">
             دسته‌بندی‌ها
@@ -62,7 +61,7 @@
 
                   </li>
                   <li v-if="userStore.isAuthenticated && !userStore.user?.is_subscription_active">
-                    <NuxtLink  to="/categories" class="link-black" @click="toggleMenu">
+                    <NuxtLink to="/categories" class="link-black" @click="toggleMenu">
                       <NuxtIcon name="category" /> دسته‌بندی‌ها
                     </NuxtLink>
                   </li>
@@ -187,16 +186,6 @@ function toggleMailBox() {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-hr {
-  position: absolute;
-  top: -16px;
-  left: 0;
-  width: 100%;
-  border: 0;
-  height: 5px;
-  background: linear-gradient(to right, $primary, $third);
-  z-index: 999;
-}
 
 .left-section,
 .right-section {
@@ -252,7 +241,7 @@ function toggleMailBox() {
   color: $black !important;
   white-space: nowrap;
   font-weight: bold;
-  padding: 8px 10px;
+  padding: 8px 11px;
   font-size: 0.875rem;
   border: none;
   border-radius: 5px;
@@ -328,24 +317,6 @@ function toggleMailBox() {
   }
 }
 
-@media (max-width: 992px) {
-  .wrapper-when-login {
-    gap: 10px;
-  }
-
-
-  .burger-menu {
-    margin-left: 14px;
-  }
-
-
-
-  .wrapper-when-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
 
 .wrapper-when-login {
   display: flex;
@@ -369,7 +340,7 @@ function toggleMailBox() {
 .modal-burger {
   position: absolute;
   top: 100%;
-  transform: translateX(-16px) !important;
+  transform: translateX(-15px) !important;
   background: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border-radius: 0 0 15px 15px;
@@ -496,34 +467,10 @@ function toggleMailBox() {
 }
 
 
-@media (max-width: 992px) {
-  .modal-burger {
-    transform: translateX(-9px) !important;
-  }
-}
 
-@media (max-width: 490px) {
-  .modal-burger {
-    transform: translateX(-34px) !important;
-  }
 
-  .subscription-button-deactive {
-    padding: 4px 4px !important;
-  }
-}
 
-@media (max-width: 390px) {
-  .modal-burger {
-    transform: translateX(-34px) !important;
-    // top:60px;
-  }
-}
 
-@media (max-width: 370px) {
-  .modal-burger {
-    transform: translateX(-50px) !important;
-  }
-}
 
 .category-link {
   margin-left: 15px;
@@ -540,6 +487,65 @@ function toggleMailBox() {
   color: $primary;
 }
 
+
+
+
+
+.no-auth {
+  display: flex;
+}
+
+
+.no-animation {
+  transition: none !important;
+  transform: none !important;
+}
+
+.gap-from-burger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+@media (max-width: 390px) {
+  .modal-burger {
+    transform: translateX(-34px) !important;
+    // top:60px;
+  }
+}
+
+
+
+
+
+@media (max-width: 991px) {
+  // .burger-menu {
+  //   margin-left: 14px;
+  // }
+
+  .wrapper-when-login {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-burger {
+    transform: translateX(-15px) !important;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+
+  .no-auth {
+    gap: 20px;
+    margin-right: 20px;
+  }
+}
+
 @media (max-width: 490px) {
 
 
@@ -547,12 +553,17 @@ function toggleMailBox() {
     height: 30px;
   }
 
+  .subscription-button-active {
+    margin: 0 2px;
+    padding: 2px;
+    font-size: 0.8rem;
+  }
 
   .nav-link,
-  .subscription-button-active,
+
   .subscription-button-deactive,
   .category-link {
-    margin: 0 2px;
+    margin: 0 1px;
     padding: 2px;
     font-size: 0.8rem;
   }
@@ -574,9 +585,45 @@ function toggleMailBox() {
   .burger-menu {
     padding: 1px 4px;
   }
+
+  .modal-burger {
+    transform: translateX(-41px) !important;
+  }
+
+  .subscription-button-deactive {
+    padding: 4px 4px !important;
+  }
 }
 
+
+@media (max-width: 450px) {
+
+  .no-auth {
+    gap: 10px;
+  }
+
+  .auth-link {
+    font-size: 12px;
+  }
+}
+
+
 @media (max-width: 370px) {
+  .modal-burger {
+    transform: translateX(-57px) !important;
+  }
+
+  .no-auth {
+    gap: 5px;
+  }
+
+  .auth-link {
+    font-size: 12px;
+  }
+
+  .subscription-button-deactive {
+    padding: 4px 2px !important;
+  }
 
   .header-container {
     padding: 10px 20px;
@@ -586,11 +633,17 @@ function toggleMailBox() {
     height: 30px;
   }
 
+  .subscription-button-active {
+    margin: 0 0px;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+
   .nav-link,
-  .subscription-button-active,
+
   .subscription-button-deactive,
   .category-link {
-    margin: 0 1px;
+    margin: 0 0px;
     padding: 0;
     font-size: 0.75rem;
   }
@@ -614,56 +667,6 @@ function toggleMailBox() {
   .burger-menu {
     padding: 1px 3px;
   }
-}
 
-.no-auth {
-  display: flex;
-
-
-}
-
-.gap-from-burger {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@media (max-width: 450px) {
-
-  .no-auth {
-    gap: 10px;
-  }
-
-  .auth-link {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 370px) {
-
-  .no-auth {
-    gap: 5px;
-  }
-
-  .auth-link {
-    font-size: 12px;
-  }
-
-  .subscription-button-deactive {
-    padding: 4px 2px !important;
-  }
-}
-
-@media (min-width: 768px) {
-
-  .no-auth {
-    gap: 20px;
-    margin-right: 20px;
-  }
-}
-
-.no-animation {
-  transition: none !important;
-  transform: none !important;
 }
 </style>

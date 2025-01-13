@@ -90,8 +90,9 @@ const closeModal = () => {
 
 const handleSubmit = () => {
   if (searchQuery.value) {
-    searchQuery.value = '' 
-    router.push(`/search?q=${searchQuery.value}`)
+    const query = searchQuery.value
+    router.push(`/search?q=${query}`)
+    searchQuery.value = ''
 
     if (isSearchModalOpen.value) {
       closeModal()
@@ -129,6 +130,20 @@ watch(width, (newWidth) => {
   border-radius: 16px;
   padding: 25px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  @media screen and (min-width: 1600px) {
+    max-width: 600px; // Slightly wider for larger screens
+  }
+  
+  @media screen and (max-width: 768px) {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  @media screen and (max-width: 390px) {
+    width: 98%;
+    padding: 12px;
+  }
 
   .search-button {
     position: absolute;
@@ -206,7 +221,22 @@ watch(width, (newWidth) => {
       outline: none;
       border-color: $gray-400;
     }
-  }
+
+    @media screen and (min-width: 1600px) {
+      padding: 14px 45px 14px -1px;
+      font-size: 1.1rem;
+    }
+    
+    @media screen and (max-width: 768px) {
+      padding: 10px 40px 10px 15px;
+      font-size: 0.95rem;
+    }
+    
+    @media screen and (max-width: 390px) {
+      padding: 8px 35px 8px 12px;
+      font-size: 0.9rem;
+    }
+}
 
 .search-button {
   position: absolute;
@@ -309,8 +339,15 @@ watch(width, (newWidth) => {
 }
 
 .input-wrapper input::placeholder {
-        font-size: 0.75rem; 
-      
+  font-size: 0.75rem;
+  
+  @media screen and (min-width: 1600px) {
+    font-size: 0.85rem;
+  }
+  
+  @media screen and (max-width: 390px) {
+    font-size: 0.7rem;
+  }
 }
 // .modal-search-button {
 //   color: red !important;

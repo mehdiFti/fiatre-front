@@ -133,7 +133,8 @@ onMounted(() => {
   .warn-close {
     font-size: 0.7rem;
     margin: 0 5px;
-    width: auto;
+    width: 90px;
+    height: 28px
   }
 }
 

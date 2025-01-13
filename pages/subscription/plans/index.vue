@@ -14,14 +14,16 @@
           <div class="plan-card" v-for="plan in plans" :key="plan.id">
             <img class="plan-image" :src="plan.imageUrl" :alt="plan.duration" />
             <div class="plan-header">
+              <p>{{ plan.downloadCapability }} <span> {{ plan.downloadCapabilityReply }} </span> </p>
               <h2>{{ plan.duration }}</h2>
-              <p>{{ plan.downloadCapability }}</p>
             </div>
             <div class="plan-body">
               <div class="plan-price">
-                <span class="discount-circle">{{ plan.discount }}</span>
-                <span class="original-price">{{ formatNumber(plan.originalPrice) }}</span>
-                <span class="final-price">{{ formatNumber(plan.finalPrice) }}</span>
+                <div class="disc-origi">
+                  <span class="discount-circle">{{ plan.discount }}</span>
+                  <span class="original-price">{{ formatNumber(plan.originalPrice) }} تومان</span>
+                </div>
+                <span class="final-price">قیمت: {{ formatNumber(plan.finalPrice) }} تومان</span>
               </div>
               <NuxtLink :to="{ name: 'subscription-buys-id', params: { id: plan.plansRoute } }" class="select-button">
                 {{ plan.buttonText }}
@@ -29,8 +31,8 @@
             </div>
           </div>
         </div>
-        <div class="subscription-info-container">
-          <div class="subscription-info">
+        <div class="subscription-info-container container">
+          <div class="subscription-info container">
             <h2 class="title-plan">مزایای پلن‌های اشتراکی فیاتر </h2>
             <ul>
               <li>تماشای نامحدود برترین فیلم تئاتر های روز دنیا و مجموعه های آموزشی هفت هنر با زیرنویس تخصصی فارسی.</li>
@@ -50,7 +52,7 @@ import { computed, ref, watchEffect } from 'vue';
 console.log('Starting API call...');
 
 useSeoMeta({
-  title: 'پلن‌های اشتراکی',
+  title: ' طرح‌های اشتراکی | فیاتر',
   description: 'صفحه پلن‌های اشتراکی در سایت فیاتر برای مشاهده و خرید اشتراک.',
   keywords: 'پلن‌های اشتراکی, خرید اشتراک, سایت فیاتر',
   ogTitle: 'پلن‌های اشتراکی',
@@ -101,7 +103,8 @@ const plans = computed(() => {
     id: plan.id,
     duration: plan.name,
     plansRoute: plan.slug,
-    downloadCapability: 'قابلیت دانلود: دارد',
+    downloadCapability: 'قابلیت دانلود: ',
+    downloadCapabilityReply: 'دارد',
     originalPrice: plan.price,
     discount: `${((plan.price - plan.discount_price) / plan.price * 100).toFixed(0)}%-`,
     finalPrice: plan.discount_price,
@@ -118,150 +121,271 @@ const formatNumber = (number: Number) => {
 </script>
 
 <style lang="scss" scoped>
+.disc-origi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.plans-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
 .title-plan {
   font-size: 20px;
   font-weight: bold;
 }
 
-
 .subscription-plans {
-  padding: 40px;
-  background-color: $milky;
+  background-color: $light;
+}
+
+.plan-card {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: calc(33.33% - 40px);
+  margin: 10px;
+  text-align: center;
+  padding: 20px 0px;
+  background-color: $white;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.plan-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.plan-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.plan-header h2 {
+  font-size: 1.2rem;
+  color: $black;
+}
+
+.plan-header p {
+  font-size: 1rem;
+  color: $black;
+  font-weight: 500
+}
+
+.plan-header span {
+  font-sizr: 1rem;
+  color: $primary;
+  font-weight: 500
+}
+
+.plan-price {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.discount-circle {
+  background-color: $third;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  height: 34px;
+  padding: 2px 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.original-price {
+  font-size: 0.9rem;
+  text-decoration: line-through;
+  color: $gray;
+}
+
+.final-price {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.select-button {
+  display: inline-block;
+  background-color: #065FD4;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.select-button:hover {
+  background-color: darken(#065FD4, 10%);
+}
+
+@media (min-width: 992px) {
+  .select-button {
+    padding: 10px 60px;
+    font-size: 1.2rem;
+  }
+
+  .final-price {
+    margin-top: 10px;
+    font-size: 1rem
+  }
+
+  .plan-header p {
+    margin: 20px 0px;
+  }
+
+  .plan-header h2 {
+    margin: 30px 0px;
+  }
+
+  .plan-image {
+    margin: 30px 0;
+  }
+
+}
+
+
+@media (max-width: 992px) and (min-width: 768px) {
+  .plan-card {
+    width: calc(33.33% - 20px);
+
+  }
+
+  .plan-header h2 {
+    font-size: 1.2rem !important;
+    margin-bottom: 15px
+  }
 
   .plans-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-
-
+    justify-content: flex-start;
   }
 
+  .plan-header p {
+    margin: 20px 0px;
+  }
+
+  .select-button {
+    margin-top: 20px;
+  }
+
+  .plan-image {
+    margin: 10px 0px 20px 0px;
+  }
+
+  .final-price {
+    font-size: 1rem;
+  }
+
+}
+
+@media (max-width: 768px) and (min-width: 450px) {
   .plan-card {
+    width: calc(50% - 20px);
 
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: calc(33.33% - 40px);
-    margin: 20px;
+  }
+
+  .plan-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .plans-container {
+    justify-content: flex-start;
+
+  }
+
+}
+
+@media (max-width: 450px) {
+  .plan-card {
+    width: calc(50% - 20px);
+  }
+
+  .plans-container {
+    justify-content: flex-start;
+
+  }
+
+  .plan-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .select-button {
+    padding: 10px 20px;
+  }
+
+  .title-plan {
+    white-space: nowrap;
     text-align: center;
-    padding: 20px;
-    background-color: $white;
-    transition: transform 0.3s, box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-
-
-    .plan-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-
-    .plan-header {
-      margin-bottom: 20px;
-
-      h2 {
-        font-size: 1.6rem;
-        color: $gray-500;
-      }
-
-      p {
-        font-size: 1rem;
-        color: $gray-400;
-      }
-    }
-
-    .plan-body {
-      .plan-price {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-
-        .discount-circle {
-          background-color: $warning;
-          color: #fff;
-          border-radius: 50%;
-          padding: 8px;
-          font-size: 0.9rem;
-          width: 50px;
-          height: 50px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .original-price {
-          margin-top: 20px;
-          text-decoration: line-through;
-          color: $gray-400;
-        }
-
-        .final-price {
-          font-size: 1.4rem;
-          color: #333;
-          font-weight: bold;
-        }
-      }
-
-      .select-button {
-        display: inline-block;
-        background-color: $primary;
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-
-        &:hover {
-          background-color: darken($primary, 10%);
-        }
-      }
-    }
-
-    @media (max-width: 992px) {
-      width: calc(50% - 40px);
-    }
-
-    @media (max-width: 600px) {
-      width: calc(100% - 40px);
-    }
+    font-size: 14px
   }
 
-  .subscription-info-container {
-    width: 100%;
+  .plan-image {
+    width: 120px;
   }
 
-  .subscription-info {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    text-align: left;
+}
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    ul {
-      list-style: disc;
-      padding-left: 20px;
-
-      li {
-        font-size: 1rem;
-        margin: 10px 0;
-        color: #555;
-      }
-    }
+@media (max-width: 400px) {
+  .plan-header h2 {
+    font-size: 14px
   }
+
+  .final-price {
+    margin-top: 10px;
+    font-size: 0.9rem
+  }
+
+  .discount-circle {
+    width: 30px;
+    height: 20px;
+  }
+
+}
+
+@media (max-width: 368px) {
+  .plan-card {
+    width: calc(100% - 20px);
+  }
+}
+
+
+.subscription-info-container {
+  width: 100%;
+}
+
+.subscription-info {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: left;
+}
+
+.subscription-info p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.subscription-info ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.subscription-info ul li {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #555;
 }
 </style>

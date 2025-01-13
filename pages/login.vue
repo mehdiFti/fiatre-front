@@ -64,7 +64,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 useSeoMeta({
-  title: 'ورود',
+  title: "ورود | فیاتر",
   description: 'صفحه ورود به سایت برای دسترسی به حساب کاربری و مشاهده محتوای شخصی.',
   keywords: 'ورود, سایت, کاربر, رمز عبور',
   ogTitle: 'ورود',
@@ -122,13 +122,11 @@ const onSubmit = handleSubmit(async (values) => {
 
 <style lang="scss">
 .login-container {
-
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   z-index: 100;
-
   position: relative;
 
   .login-image {
@@ -151,6 +149,14 @@ const onSubmit = handleSubmit(async (values) => {
   background: rgba(0, 0, 0, 0.75);
   border-radius: 8px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    margin-top: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
   .login-title {
     color: $white;
@@ -224,7 +230,6 @@ const onSubmit = handleSubmit(async (values) => {
           background: darken($primary, 10) !important;
         }
       }
-
     }
 
     .error-message {
@@ -233,7 +238,6 @@ const onSubmit = handleSubmit(async (values) => {
       margin-top: 0.25rem;
     }
   }
-
 }
 
 .toggle-password-visibility {

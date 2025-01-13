@@ -69,10 +69,11 @@ const searchInput = ref(route.query.q || '');
 
 const { width } = useWindowSize();
 
-const searchSubmit = () => {
+const searchSubmit = async () => {
   if (searchInput.value) {
-    router.push(`/search?q=${searchInput.value}`);
-    searchInput.value = '' 
+    const searchQuery = searchInput.value;
+    await router.push(`/search?q=${searchQuery}`);
+    searchInput.value = '';
     if (isSearchModalOpen.value) {
       toggleSearchModal();
     }
@@ -80,7 +81,8 @@ const searchSubmit = () => {
 };
 
 function toggleSearchModal() {
-  isSearchModalOpen.value =false;
+  isSearchModalOpen.value = false;
+  searchInput.value = '';
 }
 
 watch(width, (newWidth) => {
@@ -90,10 +92,11 @@ watch(width, (newWidth) => {
 });
 
 const toggleSearchModalOpen = () => {
-  isSearchModalOpen.value = true
+  isSearchModalOpen.value = true;
+  searchInput.value = '';
   // Focus input when modal opens
   nextTick(() => {
-    document.querySelector('.search-input')?.focus()
+    document.querySelector('.search-modal-input')?.focus()
   })
 }
 
@@ -284,7 +287,7 @@ const toggleSearchModalOpen = () => {
 
 .search-button {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   background: none;

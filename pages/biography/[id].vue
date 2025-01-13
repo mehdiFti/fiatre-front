@@ -1,16 +1,16 @@
 <template>
   <div>
-    <ImageHeader :imageHeader="imageHeader" />
+    <ImageHeader :imageHeader="imageHeader" :class="{ 'mb-5': !quote.text }" />
 
-    <Quote v-if="quote.length > 0" :quote="quote" />
+    <Quote v-if="quote.text" :quote="quote" />
 
-    <TheSeparator class="ps-4" title="توضیحات" />
+    <TheSeparator class="ps-4" title="توضیحات" :class="{ 'mt-4': quote.text }" />
 
-    <Description class="mb-5" :bDescription="bio" />
+    <Description class="mb-3" :bDescription="bio" />
 
     <TheSeparator class="ps-4" title="عناوین مرتبط" />
 
-    <TheSlider class="mb-5"  :cardsSlider="RelatedArtists" />
+    <TheSlider class="mb-5" :cardsSlider="RelatedArtists" />
 
   </div>
 </template>
@@ -69,8 +69,30 @@ const bio = computed(() => ({
   // secondaryTitle: biography.value?.secondaryTitle || '',
 }));
 
+const title = computed(() => ` بیوگرافی ${biography.value?.name || ''} | فیاتر`);
+const description = computed(() => biography.value?.desc || 'بیوگرافی هنرمند در فیاتر');
+const keywords = 'بیوگرافی, هنرمند, فیلم, سینما';
+
+useSeoMeta({
+  title: title.value,
+  description: description.value,
+  keywords: keywords,
+  // Open Graph
+  ogTitle: title.value,
+  ogDescription: description.value,
+  ogType: 'website',
+  ogUrl: `https://fiatre.ir/biography/${route.params.id}`,
+  ogImage: biography.value?.image || 'https://fiatre.ir/og-image-biography.jpg',
+  // Twitter Card
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value,
+  twitterDescription: description.value,
+  twitterImage: biography.value?.image || 'https://fiatre.ir/og-image-biography.jpg',
+  // Robots
+  robots: 'index, follow',
+});
+
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

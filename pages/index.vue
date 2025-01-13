@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'صفحه اصلی',
+  title: ' صفحه اصلی | فیاتر',
   description: 'صفحه اصلی سایت برای مشاهده ویدیوها و مقالات جدید.',
   keywords: 'صفحه اصلی, ویدیوها, مقالات, سایت',
   ogTitle: 'صفحه اصلی',

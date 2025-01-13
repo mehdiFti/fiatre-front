@@ -1,6 +1,7 @@
 // Color system
 $enable-dark-mode: false;
 $white: #fff;
+$gray: #575757;
 $gray-100: #EDEDED;
 $gray-200: #D6D6D6;
 $gray-300: #B9B9B9;
@@ -26,10 +27,10 @@ $min-contrast-ratio: 4.5;
 // Customize the light and dark text colors for use in our color contrast function.
 $color-contrast-dark: $black;
 $color-contrast-light: $white;
-$primary: #2975df;
+$primary: #4969e4;
 $secondary: #9E9A86;
-$third: #f03131;
-$milky: #E4E4E4; 
+$third: #FE0000;
+$milky: #E4E4E4;
 $success: #0FA961;
 $info: #0DCAF0;
 $warning: #FFC107;
@@ -47,4 +48,5 @@ $theme-colors: (
         "light": $light,
         "dark": $dark
 );
-$colors: ();
+$colors: (
+);

@@ -110,7 +110,7 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: 'ثبت نام',
+  title: "ثبت نام | فیاتر",
   description: 'صفحه ثبت نام در سایت FIATRE برای دسترسی به خدمات و محتوای ویژه.',
   keywords: 'ثبت نام, FIATRE, عضویت, خدمات ویژه, محتوای ویژه',
   ogTitle: 'ثبت نام',
@@ -283,7 +283,7 @@ const onSubmit = handleSubmit(async (values) => {
           transform: translateY(-50%);
           font-size: 0.9rem;
           pointer-events: none;
-          color: $gray-500;
+          color: $gray;
           transition: all 0.1s ease;
           display: flex;
         }

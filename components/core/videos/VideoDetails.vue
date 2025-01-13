@@ -3,7 +3,7 @@
     <div class="video-details-wrapper" :class="{ 'is-series': isSeries }">
       <div v-if="!isSeries" class="video-details">
         <div class="video-detail-desc">
-          <nuxt-icon name="daily-calendar" class="icon" />
+          <nuxt-icon name="daily-calendar" class="icon first" />
           سال انتشار: {{ details.releaseValue }}
         </div>
       </div>
@@ -17,7 +17,7 @@
 
       <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
-          <nuxt-icon name="category" class="icon" />
+          <nuxt-icon name="category" class="icon first" />
           دسته بندی: {{ details.categoryValue }}
         </div>
       </div>
@@ -31,7 +31,7 @@
 
       <div class="video-details" :class="{ 'series-item': isSeries }">
         <div class="video-detail-desc">
-          <nuxt-icon name="time" class="icon" />
+          <nuxt-icon name="time" class="icon first" />
           مدت زمان: {{ details.durationValue }} دقیقه
         </div>
       </div>
@@ -79,7 +79,11 @@ defineProps({
 
   @include media-breakpoint-down(lg) {
     width: calc(100%/3);
-    padding-left: 40px;
+
+    [dir="rtl"] & {
+      padding-right: 40px;
+      padding-left: 0;
+    }
   }
 
   @include media-breakpoint-down(md) {
@@ -164,8 +168,9 @@ defineProps({
 
 .video-detail-desc {
   direction: ltr !important;
-  font-size: 16px;
+  font-size: 14px;
   color: $dark;
+  white-space: wrap;
   overflow: hidden;
   text-align: left;
 }

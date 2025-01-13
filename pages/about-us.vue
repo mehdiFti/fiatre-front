@@ -18,10 +18,10 @@
 <script setup lang="ts">
 
 useSeoMeta({
-  title: 'درباره ما',
+  title: 'درباره فیاتر',
   description: 'صفحه درباره ما در سایت فیاتر برای معرفی سرویس پخش آنلاین و اهداف آن.',
   keywords: 'درباره ما, فیاتر, سرویس پخش آنلاین, آموزش هنر, سرگرمی',
-  ogTitle: 'درباره ما',
+  ogTitle: 'درباره فیاتر',
   ogDescription: 'صفحه درباره ما در سایت فیاتر برای معرفی سرویس پخش آنلاین و اهداف آن.',
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/about-us',
@@ -36,7 +36,7 @@ const { data: settings, pending } = await useApiFetch('/api/settings/', {
 });
 
 const aboutUs = computed(() => {
-  const aboutUsItem = settings.value?.results?.find(item => item?.key === 'terms_text');
+  const aboutUsItem = settings.value?.results?.find(item => item?.key === 'about_text');
   return aboutUsItem?.value || '';
 });
 

@@ -1,37 +1,29 @@
 <template>
   <div class="container">
-    <h3  class="cat-title"> دسته‌بندی‌ها </h3>
+    <h3 class="cat-title"> دسته‌بندی‌ها </h3>
     <hr>
-  <div v-if="getCategoriesRequest.status.value === 'error'">{{ getCategoriesRequest.error.value }}</div>
-  <div class="categories-container" v-else>
-    <LoadingScreen v-if="getCategoriesRequest.status.value === 'loading'" />
-    <div v-else class="categories-grid">
-      <NuxtLink 
-        v-for="category in categories" 
-        :key="category.id"
-        :to="`/categories/${category.slug}`"
-        class="category-card"
-      >
-        <div class="card-content">
-          <img 
-            :src="`https://fiatre.ir/${category.image}`" 
-            :alt="category.name"
-            class="category-image"
-          />
-          <p class="category-name">{{ category.name }}</p>
-        </div>
-      </NuxtLink>
+    <div v-if="getCategoriesRequest.status.value === 'error'">{{ getCategoriesRequest.error.value }}</div>
+    <div class="categories-container" v-else>
+      <LoadingScreen v-if="getCategoriesRequest.status.value === 'loading'" />
+      <div v-else class="categories-grid">
+        <NuxtLink v-for="category in categories" :key="category.id" :to="`/categories/${category.slug}`"
+          class="category-card">
+          <div class="card-content">
+            <img :src="`https://fiatre.ir/${category.image}`" :alt="category.name" class="category-image" />
+            <p class="category-name">{{ category.name }}</p>
+          </div>
+        </NuxtLink>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'دسته بندی فیلم ها',
+  title: 'دسته بندی فیلم‌ها | فیاتر',
   description: 'مروری بر دسته بندی فیلم ها و اطلاعات مربوط به هر دسته.',
   keywords: 'فیلم, دسته بندی, سینما',
-  ogTitle: 'دسته بندی فیلم ها',
+  ogTitle: 'فیاتر - دسته بندی فیلم‌ها',
   ogDescription: 'مروری بر دسته بندی فیلم ها و اطلاعات مربوط به هر دسته.',
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/category',
@@ -54,11 +46,10 @@ const categories = computed(() => {
   return []
 })
 </script>
-  
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
 .cat-title {
-  font-size: 1.5rem ;
+  font-size: 1.5rem;
   color: $black ;
   font-weight: bold;
   margin: 20px 0px;
@@ -67,62 +58,80 @@ const categories = computed(() => {
 
 
 // .categories-container {
-  // padding: 50px 0 0 20px ;
+// padding: 50px 0 0 20px ;
 // }
 
 .categories-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Ensures spacing between cards */
-  gap: 20px; /* Adds spacing between rows */
+  justify-content: flex-start;
+  /* Ensures spacing between cards */
+  gap: 20px;
+  /* Adds spacing between rows */
 }
 
 .category-card {
-  flex: 1 1 calc(33.33% - 20px); /* Default: 3 cards per row */
-  max-width: calc(33.33% - 20px); /* Prevents cards from exceeding row width */
-  box-sizing: border-box; /* Ensures padding doesn't break the layout */
+  flex: 1 1 calc(25% - 20px);
+  /* Default: 3 cards per row */
+  max-width: calc(25% - 20px);
+  /* Prevents cards from exceeding row width */
+  box-sizing: border-box;
+  /* Ensures padding doesn't break the layout */
 }
 
 @media (max-width: 992px) {
   .category-card {
-    flex: 1 1 calc(50% - 20px); /* 2 cards per row */
-    max-width: calc(50% - 20px); /* Prevents cards from exceeding row width */
+    flex: 1 1 calc(33.33% - 20px);
+    /* 2 cards per row */
+    max-width: calc(33.33% - 20px);
+    /* Prevents cards from exceeding row width */
   }
+
   .category-image {
-     height: 175px !important;
+    height: 175px !important;
 
-}
-
-@media (max-width: 768px) {
-  .category-card {
-    flex: 1 1 calc(50% - 20px); /* 2 cards per row */
-    max-width: calc(50% - 20px); /* Prevents cards from exceeding row width */
   }
-  .category-image {
-     height: 110px !important;
 
+  @media (max-width: 768px) {
+    .category-card {
+      flex: 1 1 calc(50% - 20px);
+      /* 2 cards per row */
+      max-width: calc(50% - 20px);
+      /* Prevents cards from exceeding row width */
+    }
+
+    .category-image {
+      height: 110px !important;
+
+    }
+  }
 }
-}
-}
+
 @media (max-width: 577px) {
   .category-card {
-    flex: 1 1 calc(50% - 20px); /* 2 cards per row */
-    max-width: calc(50% - 20px); /* Prevents cards from exceeding row width */
+    flex: 1 1 calc(50% - 20px);
+    /* 2 cards per row */
+    max-width: calc(50% - 20px);
+    /* Prevents cards from exceeding row width */
   }
 
   @media (max-width: 577px) {
-  .category-card {
-    flex: 1 1 calc(50% - 20px); /* 2 cards per row */
-    max-width: calc(50% - 20px); /* Prevents cards from exceeding row width */
-  }
-  .category-name {
+    .category-card {
+      flex: 1 1 calc(50% - 20px);
+      /* 2 cards per row */
+      max-width: calc(50% - 20px);
+      /* Prevents cards from exceeding row width */
+    }
 
-    font-size: 0.8rem !important;
-  }
-  .category-image {
-     height: 100px !important;
+    .category-name {
 
-}
+      font-size: 0.8rem !important;
+    }
+
+    .category-image {
+      height: 100px !important;
+
+    }
 
   }
 
@@ -134,8 +143,8 @@ const categories = computed(() => {
   color: $black;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 .category-image {
@@ -155,6 +164,4 @@ const categories = computed(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-
 </style>

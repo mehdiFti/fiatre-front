@@ -5,7 +5,7 @@
       <div v-if="series.length > 0">
         <RtlImageHeader :imageHeader="imageHeader" />
         <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
-      <VideoSeries v-if="userStore.user?.is_subscription_active" class="mb-5" :episodes="series"
+      <VideoSeries v-if="userStore.user?.is_subscription_active"  :episodes="series"
         :onPause="handleVideoPause" />
         </div>
       <!-- For single episode -->
@@ -21,24 +21,24 @@
           v-else
           :imageHeader="imageHeader" 
         />
-      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
+      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0"  />
       </div>
       
-    <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class="mt-5" />
+    <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl"  class='mt-4'/>
   
     <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" /> 
 
     <TheSeparator title="توضیحات" dir="rtl" class="mt-5" />
     
-    <VideoDescription :vDescription="vDescription" dir="ltr" />
+    <VideoDescription :vDescription="vDescription" dir="ltr" class='mb-3' />
 
     <TheSeparator v-if="artists.length > 0"  title="عوامل و بازیگران" dir="rtl" />  
 
-    <CastCrew v-if="artists.length > 0"  :crews="artists" class="mb-5"/>
+    <CastCrew v-if="artists.length > 0"  :crews="artists" class="mb-3"/>
     
     <TheSeparator v-if="cardSlider.length > 0" title="عناوین مشابه" dir="rtl" />
     
-    <TheSlider class="mb-5" :cardsSlider="cardSlider" />
+    <TheSlider class="mb-3" :cardsSlider="cardSlider" />
 
     
     <CommentSection 
@@ -335,7 +335,35 @@ const handleVideoPause = async (currentTime: number) => {
   }
 };
 
+const title = computed(() => `${episode.value?.title || ''} | فیاتر`);
+const description = computed(() => episode.value?.description || 'تماشای فیلم و سریال در فیاتر');
+const keywords = computed(() => {
+  const baseKeywords = 'فیلم, سریال, تماشای آنلاین';
+  const genreKeywords = episode.value?.genre || '';
+  return `${baseKeywords}, ${genreKeywords}`;
+});
+
+// Add SEO meta tags
+useSeoMeta({
+    title: title.value,
+    description: description.value,
+    keywords: keywords.value,
+    // Open Graph
+    ogTitle: title.value,
+    ogDescription: description.value,
+    ogType: 'video.movie',
+    ogUrl: `https://fiatre.ir/episodes/${route.params.id}`,
+    ogImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
+    // Twitter Card
+    twitterCard: 'summary_large_image',
+    twitterTitle: title.value,
+    twitterDescription: description.value,
+    twitterImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
+    // Robots
+    robots: 'index, follow',
+});
 </script>
+
 
 <style scoped>
 

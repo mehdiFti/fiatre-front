@@ -34,12 +34,43 @@
 
 <script setup>
 import { useRoute } from '#app';
+import { useSeoMeta } from '#imports';
+import { computed } from 'vue';
 
 const route = useRoute();
 
 // Extract query parameters
 const status = route.query.Status || '';
 const refID = route.query.refID || '';
+
+// Add these computed properties after route declaration
+const title = computed(() => status === 'OK' ? 'پرداخت موفق | فیاتر' : 'پرداخت ناموفق | فیاتر');
+const description = computed(() => {
+  return status === 'OK'
+    ? 'پرداخت شما با موفقیت انجام شد. به فیاتر خوش آمدید.'
+    : 'متاسفانه پرداخت شما با مشکل مواجه شد. لطفا مجددا تلاش کنید.';
+});
+const keywords = 'پرداخت, اشتراک, خرید اشتراک, فیاتر';
+
+useSeoMeta({
+  title: title.value,
+  description: description.value,
+  keywords: keywords,
+  // Open Graph
+  ogTitle: title.value,
+  ogDescription: description.value,
+  ogType: 'website',
+  ogUrl: 'https://fiatre.ir/subscription/buys/result',
+  ogImage: 'https://fiatre.ir/og-image.jpg',
+  // Twitter Card
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value,
+  twitterDescription: description.value,
+  twitterImage: 'https://fiatre.ir/og-image.jpg',
+  // Robots - Consider not indexing this page
+  robots: 'noindex, nofollow', // Changed to prevent indexing of payment result pages
+});
+
 </script>
 
 <style lang="scss" scoped>

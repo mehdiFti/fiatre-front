@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container">
         <div class="gallery">
             <div class="gallery-grid">
                 <div v-for="(image, index) in props.images" :key="index" class="gallery-item" @click="enlargeImage(image)">

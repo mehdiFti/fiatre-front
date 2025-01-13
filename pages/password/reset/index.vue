@@ -134,6 +134,16 @@ const onSubmit = async (values: any) => {
   border-radius: 8px;
   text-align: center;
 
+  // Add media query for smaller devices
+  @media (max-width: 768px) {
+    margin: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+  }
+
   .reset-title {
     color: #fff;
     font-size: 1.5rem;

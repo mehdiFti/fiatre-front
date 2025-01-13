@@ -171,6 +171,20 @@ const onSubmit = handleSubmit(async () => {
     toast.error('خطا در ارتباط با سرور. لطفا دوباره تلاش کنید.');
   }
 });
+
+useSeoMeta({
+  title: 'بازیابی رمز عبور',
+  description: 'صفحه بازیابی رمز عبور برای کاربران.',
+  keywords: 'بازیابی, رمز عبور, امنیت',
+  ogTitle: 'بازیابی رمز عبور',
+  ogDescription: 'صفحه بازیابی رمز عبور برای کاربران.',
+  ogType: 'website',
+  ogUrl: 'https://fiatre.ir/password/reset',
+  ogImage: 'https://fiatre.ir/og-image.jpg',
+  robots: 'index, follow',
+});
+
+
 </script>
 
 <style lang="scss">
@@ -183,8 +197,8 @@ const onSubmit = handleSubmit(async () => {
   align-items: center;
   height: 100vh;
   z-index: 100;
-
   position: relative;
+
   .login-image {
     position: absolute;
     top: 0;
@@ -204,6 +218,16 @@ const onSubmit = handleSubmit(async () => {
   background: rgba(0, 0, 0, 0.75);
   border-radius: 8px;
   text-align: center;
+
+  // Add media query for smaller devices
+  @media (max-width: 768px) {
+    margin: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+  }
 
   .login-title {
     color: $white;

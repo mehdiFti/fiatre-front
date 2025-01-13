@@ -5,7 +5,7 @@
         loading game
       </div>
 
-    
+
       <div v-else-if="hasActiveGame" class="quiz-wrapper">
         <div class="timer-display">
           {{ timeLeft }}
@@ -18,28 +18,17 @@
         </transition>
 
         <div class="choices-display">
-          <button
-            v-for="choice in activeGame.choices"
-            :key="choice.id"
-            class="quiz-button"
-            :class="{
-              'wrong': opportunityEnded && selectedChoiceId === choice.id && !choice.is_answer,
-              'correct': opportunityEnded && choice.is_answer,
-            }"
-            :disabled="isChoicesDisabled"
-            @click="selectAnswer(choice.id)"
-          >
+          <button v-for="choice in activeGame.choices" :key="choice.id" class="quiz-button" :class="{
+            'wrong': opportunityEnded && selectedChoiceId === choice.id && !choice.is_answer,
+            'correct': opportunityEnded && choice.is_answer,
+          }" :disabled="isChoicesDisabled" @click="selectAnswer(choice.id)">
             {{ choice.text }}
           </button>
         </div>
 
         <div class="score-display">
-          <button
-            class="profile-btn"
-            style="display: none;"
-            :disabled="!opportunityEnded || activeGameRequest.status.value === 'pending'"
-            @click="getNextQuestion"
-          >
+          <button class="profile-btn" style="display: none;"
+            :disabled="!opportunityEnded || activeGameRequest.status.value === 'pending'" @click="getNextQuestion">
             سوال بعدی
           </button>
         </div>
@@ -62,7 +51,7 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: 'بازی کوییز',
+  title: ' بازی کوییز | فیاتر',
   description: 'صفحه بازی کوییز برای تست دانش شما در مورد فیلم‌ها و سریال‌ها.',
   keywords: 'بازی, کوییز, فیلم, سریال, تست دانش',
   ogTitle: 'بازی کوییز',
@@ -73,7 +62,7 @@ useSeoMeta({
   robots: 'index, follow',
 });
 
-const DEFAULT_TIME_LEFT = 10;
+const DEFAULT_TIME_LEFT = 15;
 
 const selectedChoiceId = ref<number | undefined>(undefined);
 const opportunityEnded = ref(false);
@@ -146,6 +135,10 @@ const selectAnswer = async (choiceId: number) => {
   opportunityEnded.value = true;
 
   await answerGameRequest.execute();
+
+  // Add 1 second delay before moving to next question
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   await getNextQuestion();
 };
 
@@ -167,172 +160,195 @@ onBeforeUnmount(() => {
 
 </script>
 
-  <style scoped lang="scss">
-  .quiz-container {
+<style scoped lang="scss">
+.quiz-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px;
+
+  .quiz-wrapper {
+    border-radius: 10px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 40px;
-
-    .quiz-wrapper {
-      border-radius: 10px;
-      display: flex;
-      width: 400px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: linear-gradient(135deg, $dark, $gray-300);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .score-display {
-      font-size: 24px;
-      background-color: $primary;
-      color: $white;
-      border-radius: 5px;
-      width: 100%;
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .timer-display {
-      font-size: 20px;
-      background-color: $third;
-      border-radius: 50px;
-      color: $white;
-      width: 50px;
-      height: 50px;
-      animation: pulse 1s infinite;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .question-display {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-
-      .quiz-image {
-        width: 360px;
-        height: 220px;
-        object-fit: cover;
-        margin-bottom: 10px;
-        border-radius: 5px;
-      }
-
-      .quiz-text {
-        font-size: 18px;
-        text-align: center;
-        max-width: 300px;
-      }
-    }
-
-    .choices-display {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-
-      .quiz-button {
-        padding: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        border: 1px solid $gray-400;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        text-align: center;
-        width: 100%;
-        height: 50px;
-        white-space: nowrap;
-
-        &.correct {
-          background-color: green;
-          color: white;
-        }
-
-        &.wrong {
-          background-color: red;
-          color: $white;
-        }
-      }
-    }
-  }
-
-  .result-container {
-    display: flex;
+    width: 400px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 40px;
+    padding: 20px;
+    background: linear-gradient(135deg, $dark, $gray-300);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
 
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
+  .score-display {
+    font-size: 24px;
+    background-color: $primary;
+    color: $white;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .timer-display {
+    font-size: 20px;
+    background-color: $third;
+    border-radius: 50px;
+    color: $white;
+    width: 50px;
+    height: 50px;
+    animation: pulse 1s infinite;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .question-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .quiz-image {
+      width: 360px;
+      height: 220px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 5px;
     }
 
-    p {
-      font-size: 20px;
-      margin-bottom: 20px;
+    .quiz-text {
+      font-size: 18px;
+      text-align: center;
+      max-width: 300px;
     }
+  }
 
-    button {
-      padding: 10px 20px;
+  .choices-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+
+    .quiz-button {
+      padding: 10px;
       font-size: 16px;
       cursor: pointer;
-      border: none;
+      border: 1px solid $gray-400;
       border-radius: 5px;
-      background-color: $primary;
-      color: $white;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      text-align: center;
+      width: 100%;
+      height: 50px;
+      white-space: nowrap;
 
-      &:hover {
-        background-color: darken($primary, 10);
+      &.correct {
+        background-color: $primary;
+        color: white;
+      }
+
+      &.wrong {
+        background-color: $third;
+        color: $white;
       }
     }
   }
+}
 
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-    100% {
-      transform: scale(1);
-    }
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
+  p {
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
-  .profile-btn {
-    display: none;
-    padding: 10px 20px;
+
+
+
+}
+
+
+@media (max-width: 768px) {
+
+  .result-container h2 {
+    white-space: nowrap !important;
+  }
+
+  .result-container p {
     font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: $primary;
-    color: $white;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+    margin: 20px auto;
     text-align: center;
-
-    &:hover {
-      background-color: darken($primary, 10%);
-      transform: scale(1.05);
-    }
   }
-  </style>
 
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: $primary;
+  color: $white;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary, 10);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.profile-btn {
+  display: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: $primary;
+  color: $white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+    transform: scale(1.05);
+  }
+}
+</style>

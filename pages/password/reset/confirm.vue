@@ -149,6 +149,16 @@ const onSubmit = handleSubmit(async (values) => {
   border-radius: 8px;
   text-align: center;
 
+  // Add media query for smaller devices
+  @media (max-width: 768px) {
+    margin: 0; // Remove any margin
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px; // Reduce padding on mobile
+  }
+
   .confirm-title {
     color: #fff;
     font-size: 1.5rem;

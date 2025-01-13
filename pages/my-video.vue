@@ -3,37 +3,28 @@
     <div class="container">
       <h2 class="incomplete-videos-title">تماشای ادامه ویدیو</h2>
       <hr />
-      
+
       <div class="video-episode-wrapper">
-      
+
         <template v-if="getWatchLogsRequest.status.value === 'success'">
           <div v-if="incompleteVideos.length === 0" class="no-videos-message">
             !ویدیوی ناتمامی ندارید
           </div>
-          
-          <div
-            v-for="video in incompleteVideos"
-            :key="video.key"
-            :class="{'video-episode-card': true, 'removing': video.removing}"
-          >
-            <VideoHeader
-              :movie="{
-                key: video.key,
-                title: video.title,
-                video: video.src,
-                cover: video.poster,
-                image: video.poster,
-                number: '',
-                description: video.description,
-                slug: video.slug
-              }"
-              no-container
-              :videoUrl="video.src"
-              :startTime="video.second"
-              :isInsideVideoSeries="true"
-              :onPause="(currentTime) => handlePause(video, { target: { currentTime } })"
-            />
-            
+
+          <div v-for="video in incompleteVideos" :key="video.key"
+            :class="{ 'video-episode-card': true, 'removing': video.removing }">
+            <Player :movie="{
+              key: video.key,
+              title: video.title,
+              video: video.src,
+              cover: video.poster,
+              image: video.poster,
+              number: '',
+              description: video.description,
+              slug: video.slug
+            }" no-container :videoUrl="video.src" :startTime="video.second" :isInsideVideoSeries="true"
+              :onPause="(currentTime) => handlePause(video, { target: { currentTime } })" />
+
             <div class="episode-info">
               <div class="episode-title">
                 <NuxtLink :to="`/episodes/${video.slug}`" target="_blank">
@@ -41,11 +32,11 @@
                 </NuxtLink>
               </div>
               <div class="other-buttons">
-                <DownloadButton :videoUrl="video.src" />
+                <!-- <DownloadButton :videoUrl="video.src" /> -->
               </div>
             </div>
-            </div>
-            
+          </div>
+
 
         </template>
 
@@ -59,7 +50,7 @@
       </div>
     </div>
   </ClientOnly>
-  <Footer dir="rtl"/>
+  <Footer dir="rtl" />
 </template>
 
 <script setup lang="ts">
@@ -74,7 +65,7 @@ import { onBeforeUnmount, ref, computed } from 'vue';
 
 // SEO Meta
 useSeoMeta({
-  title: 'ویدیوهای من',
+  title: ' ویدیوهای من | فیاتر',
   description: 'صفحه ویدیوهای من در سایت FIATRE برای مشاهده ویدیوهای ذخیره شده و ادامه تماشا.',
   keywords: 'ویدیوهای من, تماشا, ذخیره شده, سایت FIATRE',
   ogTitle: 'ویدیوهای من',
@@ -86,9 +77,8 @@ useSeoMeta({
 });
 
 import Footer from '~/components/core/Footer.vue';
-import DownloadButton from '~/components/core/DownloadButton.vue';
-import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
-import VideoHeader from '~/components/pages/episode/VideoHeader.vue';
+// import DownloadButton from '~/components/core/DownloadButton.vue';
+import Player from '~/components/core/Player.vue';
 
 // Types
 interface WatchLogResponse {
@@ -108,8 +98,8 @@ interface WatchLogResponse {
 }
 
 // API Call
-const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/',{
-  query:{ 
+const getWatchLogsRequest = await useAuthFetch<WatchLogResponse>('/api/episodes/watch-logs/', {
+  query: {
     limit: 100,
     ordering: "-created_at"
   }
@@ -246,10 +236,11 @@ const handleVideoEnded = (key: string) => {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   line-clamp: 1;
+
   a {
     text-decoration: none;
     color: $gray-800;
-    
+
     &:hover {
       color: $gray-900;
     }
@@ -267,15 +258,15 @@ hr {
   gap: 15px;
 }
 
- .incomplete-videos-title {
+.incomplete-videos-title {
   font-size: 1.5rem;
   color: $black;
   font-weight: bold;
-  text-align: right; 
+  text-align: right;
   margin: 20px 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
   .video-episode-card {
     flex: 0 0 calc(50% - 20px);
   }
@@ -283,13 +274,13 @@ hr {
 
 @media (max-width: 768px) and (min-width: 421px) {
   .video-episode-card {
-    flex: 0 0 calc(100% - 20px); 
+    flex: 0 0 calc(50% - 20px);
   }
 }
 
 @media (max-width: 420px) {
   .video-episode-card {
-    flex: 0 0 calc(100% - 20px); 
+    flex: 0 0 calc(100% - 20px);
   }
 }
 
@@ -298,6 +289,10 @@ hr {
     max-height: 3em;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .video-episode-wrapper {
+    justify-content: center;
   }
 }
 

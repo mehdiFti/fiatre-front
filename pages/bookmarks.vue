@@ -10,19 +10,11 @@
         <div v-if="false" class="not-text">
           <pre>{{ bookmarkedVideos }}</pre>
         </div>
-        
+
         <div class="video-list">
-          <BookmarkItem
-            v-for="video in bookmarkedVideos"
-            :key="video.key"
-            :src="video.poster"
-            :name="video.title"
-            :number="video.number"
-            :episode="video"
-            :description="video.description"
-            :isInBookmarksPage="true"
-            @remove-bookmark="removeBookmark"
-          />
+          <BookmarkItem v-for="video in bookmarkedVideos" :key="video.key" :src="video.poster" :name="video.title"
+            :number="video.number" :episode="video" :description="video.description" :isInBookmarksPage="true"
+            @remove-bookmark="removeBookmark" />
         </div>
       </template>
 
@@ -48,15 +40,27 @@ import BookmarkItem from '~/components/pages/bookmark/BookmarkItem.vue';
 // });
 
 // SEO Meta
+const title = computed(() => 'علاقه‌مندی‌های من | فیاتر');
+const description = 'مشاهده لیست فیلم‌ها و سریال‌های مورد علاقه شما در فیاتر';
+const keywords = 'علاقه‌مندی‌ها, لیست مورد علاقه, فیلم های مورد علاقه, فیاتر';
+
 useSeoMeta({
-  title: 'علاقه‌مندی‌ها',
-  description: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدیوهای ذخیره شده.',
-  ogTitle: 'علاقه‌مندی‌ها',
-  ogDescription: 'صفحه علاقه‌مندی‌ها در سایت برای مشاهده ویدیوهای ذخیره شده.',
+  title: title.value,
+  description: description,
+  keywords: keywords,
+  // Open Graph
+  ogTitle: title.value,
+  ogDescription: description,
   ogType: 'website',
   ogUrl: 'https://fiatre.ir/bookmarks',
   ogImage: 'https://fiatre.ir/og-image.jpg',
-  robots: 'index, follow',
+  // Twitter Card
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value,
+  twitterDescription: description,
+  twitterImage: 'https://fiatre.ir/og-image.jpg',
+  // Robots - Prevent indexing of personal bookmarks page
+  robots: 'noindex, nofollow',
 });
 
 // Types
@@ -87,7 +91,7 @@ const bookmarkedVideos = computed(() => {
       key: bookmark.id.toString(),
       title: bookmark.episode.title || 'Unknown Title',
       src: `/episodes/${bookmark.episode.slug}/`,
-      poster: bookmark.episode.cover ? `https://fiatre.ir${bookmark.episode.cover}` : bookmark.episode.image ? `https://fiatre.ir${bookmark.episode.image}` : '',
+      poster: bookmark.episode.image ? `https://fiatre.ir${bookmark.episode.image}` : '',
       description: bookmark.episode.slug
     }));
     return videos;
@@ -124,25 +128,31 @@ const emit = defineEmits(['bookmark-removed']);
   }
 
   .my-fav-h2 {
-  font-size: 1.5rem;
-  color: $black;
-  font-weight: bold;
-   margin: 20px 0;
-}
+    font-size: 1.5rem;
+    color: $black;
+    font-weight: bold;
+    margin: 20px 0;
+  }
 
-  .video-list > * {
-    max-width: calc(25% - 20px);
+  .video-list>* {
+    max-width: calc(20% - 20px);
     box-sizing: border-box;
   }
 
   @media (max-width: 991px) {
-    .video-list > * {
-      max-width: calc(50% - 20px);
+    .video-list>* {
+      max-width: calc(25% - 20px);
     }
   }
 
-  @media (max-width: 576px) {
-    .video-list > * {
+  @media (max-width: 550px) {
+    .video-list>* {
+      max-width: calc(33.33% - 20px);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .video-list>* {
       max-width: calc(50% - 20px);
     }
   }

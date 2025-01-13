@@ -7,7 +7,7 @@
         <Swiper class="custom-swiper" :slides-per-view="1" loop :autoplay="{
           disableOnInteraction: true,
           pauseOnMouseEnter: true,
-          delay: 5000000,
+          delay: 5000,
         }" :modules="modules" follow-finger :navigation="true" ref="swiperRef">
           <SwiperSlide v-for="image in imagesHero" :key="image.id">
             <div class="wrapper-image-hero">
@@ -275,31 +275,33 @@ const toggleAutoplay = (value: boolean) => {
   }
 
   .custom-swiper {
-    --swiper-navigation-size: 1rem;
+   
+    --swiper-navigation-size: 10rem;
 
     .swiper-button-next,
     .swiper-button-prev {
-      transform: scaleX(-1) scale(1.1);
-      color: $dark;
-      border-radius: 50%;
-      height: 30px;
-      width: 30px;
-      background: rgba(255, 255, 255, 0.4);
-      transform: rotate(360deg);
+      display: none;
+      // transform: scaleX(-1) scale(1.1);
+      // color: $dark;
+      // border-radius: 50%;
+      // height: 30px;
+      // width: 30px;
+      // background: rgba(255, 255, 255, 0.4);
+      // transform: rotate(360deg);
 
-      &:hover {
-        transform: scale(1.2);
-        background: rgba(255, 255, 255, 0.6);
-      }
+      // &:hover {
+      //   transform: scale(1.2);
+      //   background: rgba(255, 255, 255, 0.6);
+      // }
     }
 
-    .swiper-button-next {
-      left: 95%;
-    }
+    // .swiper-button-next {
+    //   left: 95%;
+    // }
 
-    .swiper-button-prev {
-      right: 95%;
-    }
+    // .swiper-button-prev {
+    //   right: 95%;
+    // }
   }
 }
 

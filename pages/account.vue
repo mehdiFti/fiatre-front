@@ -13,8 +13,7 @@
           <div class="profile-form-control">
             <VeeField name="name" rules="required|alpha_custom" v-slot="{ field, errors }">
               <input id="name" v-bind="field" v-model="form.name" :disabled="!isEditing" type="text"
-                :class="[`dir-${getDirection(form.name)}`]" class="profile-input" :has-value="!!form.name"
-                @input="handleInputChange" />
+                class="profile-input" @input="handleInputChange" />
               <label for="name" class="profile-label">نام:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
@@ -22,8 +21,7 @@
           <div class="profile-form-control">
             <VeeField name="lastname" rules="required|alpha_custom" v-slot="{ field, errors }">
               <input id="lastname" v-bind="field" v-model="form.lastname" :disabled="!isEditing" type="text"
-                class="profile-input" :class="[`dir-${getDirection(form.lastname)}`]" :has-value="!!form.lastname"
-                @input="handleInputChange" />
+                class="profile-input" @input="handleInputChange" />
               <label for="lastname" class="profile-label">نام خانوادگی:</label>
               <span v-if="errors.length" class="error-message">{{ errors[0] }}</span>
             </VeeField>
@@ -87,7 +85,7 @@ definePageMeta({
   middleware: ['redirect-to-login'],
 });
 useSeoMeta({
-  title: 'ویرایش پروفایل',
+  title: 'ویرایش پروفایل | فیاتر ',
   description: 'صفحه ویرایش پروفایل در سایت برای به‌روزرسانی اطلاعات کاربری.',
   keywords: 'ویرایش پروفایل, اطلاعات کاربری, سایت',
   ogTitle: 'ویرایش پروفایل',
@@ -190,7 +188,6 @@ const computedProfileBodyRequest = computed(() => {
     email: form.value.email,
   };
 
-  // Only include password if it has been changed and is not empty
   if (form.value.password && form.value.password !== form.value.originalPassword) {
     body.password = form.value.password;
   }
@@ -291,7 +288,7 @@ const handleAvatarChange = async (file: File) => {
   padding: 0px 20px;
   margin-bottom: 8px;
   margin-top: 8px;
-  
+
   .profile-title {
     color: $white;
     font-size: 1.5rem;
@@ -303,7 +300,7 @@ const handleAvatarChange = async (file: File) => {
     .profile-form-control {
       height: 40px;
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
 
       .profile-input {
         height: 100%;
@@ -314,24 +311,24 @@ const handleAvatarChange = async (file: File) => {
         border-radius: 4px;
         color: $dark;
         font-size: 0.9rem;
-        padding: 0 15px;
+        padding: 0px 15px;
         direction: rtl;
         transition: background-color 0.3s ease;
 
         &:not(:disabled) {
-          background-color: $gray-300;
+          background-color: $light;
           font-style: italic;
-          color: $white;
+          color: $black;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
       }
 
-      .profile-input:focus+.profile-label,
-      .profile-input[has-value]+.profile-label {
-        font-size: 0.8rem;
-        transform: translateY(-90%);
-      }
+      // .profile-input:focus+.profile-label,
+      // .profile-input[has-value]+.profile-label {
+      //   font-size: 0.8rem;
+      //   transform: translateY(-90%);
+      // }
 
       .profile-label {
         position: absolute;
@@ -383,6 +380,7 @@ const handleAvatarChange = async (file: File) => {
 
     .profile-submit-exit {
       background: $third !important;
+
       &:hover {
         background: darken($third, 10) !important;
       }
@@ -390,9 +388,9 @@ const handleAvatarChange = async (file: File) => {
   }
 
   .error-message {
-    color: $danger;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+    color: $third;
+    font-size: 0.7rem;
+    margin-top: 10px;
   }
 }
 
@@ -405,7 +403,7 @@ const handleAvatarChange = async (file: File) => {
     }
 
     .profile-form-control {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
 
       .profile-input {
         font-size: 0.875rem;
@@ -433,8 +431,7 @@ const handleAvatarChange = async (file: File) => {
 
     .profile-form {
       .profile-form-control {
-        height: 35px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
 
         .profile-input {
           font-size: 0.8rem;
@@ -449,10 +446,10 @@ const handleAvatarChange = async (file: File) => {
           font-size: 0.7rem;
         }
 
-        .profile-input:focus + .profile-label,
-        .profile-input[has-value] + .profile-label {
-          font-size: 0.6rem;
-        }
+        // .profile-input:focus + .profile-label,
+        // .profile-input[has-value] + .profile-label {
+        //   font-size: 0.6rem;
+        // }
       }
 
       .profile-submit {
@@ -500,18 +497,13 @@ const handleAvatarChange = async (file: File) => {
 
     .profile-form {
       .profile-form-control {
-        height: 32px;
-        margin-bottom: 12px;
+        margin-bottom: 25px;
 
         .profile-input,
         .profile-label {
           font-size: 0.75rem;
         }
 
-        .profile-input:focus + .profile-label,
-        .profile-input[has-value] + .profile-label {
-          font-size: 0.5rem;
-        }
       }
 
       .profile-submit {

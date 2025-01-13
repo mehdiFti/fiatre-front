@@ -35,7 +35,7 @@ defineProps({
     border-radius: 5px;
     object-fit: cover;
     width: 100%;
-    height: 600px;
+    height: 540px;
     position: relative;
     left: 0;
     bottom: 0;

@@ -22,8 +22,9 @@ const props = defineProps<{
 .quote-container {
   display: flex;
   justify-content: center;
+  border-radius: 0 0 10px 10px;
   align-items: center;
-  background: darken($light, 10);
+  background: $milky;
   padding: 16px;
 
   .quote-wrapper {

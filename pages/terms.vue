@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'قوانین و مقررات',
+  title: 'قوانین و مقررات | فیاتر',
   description: 'This is the terms and conditions page of FIATRE.',
   keywords: 'terms, conditions, FIATRE, قوانین, مقررات',
   ogTitle: 'قوانین و مقررات',
