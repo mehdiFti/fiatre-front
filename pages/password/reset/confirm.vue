@@ -21,7 +21,7 @@
           <label class="confirm-label">کد تایید</label>
           <ErrorMessage name="code" as="span" class="error-message" />
         </div>
-        <nuxt-link to="/password/reset">شماره همراه / ایمیل را اشتباه وارد کرده ام</nuxt-link>
+        <nuxt-link to="/password/reset">شماره همراه را اشتباه وارد کرده ام</nuxt-link>
         <button type="submit" class="confirm-submit">بازیابی رمز</button>
         <p class="confirm-countdown">{{ countdown }} ثانیه تا دریافت مجدد کد فعال سازی</p>
       </VeeForm>

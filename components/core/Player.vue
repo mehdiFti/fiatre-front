@@ -328,7 +328,7 @@ media-controls[data-visible] {
   transform: translate(-50%, -50%);
 }
 
-[data-media-player][data-layout='video'] {
-  background-color: var(--video-bg, none) !important;
+[data-media-player][data-layout='video']:not([data-fullscreen]) {
+  border-radius: 0 !important;
 }
 </style>

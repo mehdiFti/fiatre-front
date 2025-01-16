@@ -141,9 +141,8 @@ const categories = computed(() => {
 .card-content {
   background: white;
   color: $black;
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
 }
 
@@ -163,5 +162,15 @@ const categories = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.cat-title {
+  font-size: 1.5rem; // Original size
+  @media (max-width: 768px) {
+    font-size: 1.25rem; // Smaller size for medium screens
+  }
+  @media (max-width: 550px) {
+    font-size: 1rem; // Smaller size for small screens
+  }
 }
 </style>

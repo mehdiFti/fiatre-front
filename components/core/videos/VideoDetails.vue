@@ -62,7 +62,9 @@ defineProps({
 <style lang="scss">
 .video-details-wrapper {
   display: flex;
+  border-radius: 5px;
   flex-wrap: wrap;
+  
   justify-content: space-around;
   // align-items: center;
   background-color: $milky;
@@ -116,7 +118,9 @@ defineProps({
 
       .video-detail-desc {
         font-size: 13px;
-
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       @media (max-width: 408px) {
@@ -141,6 +145,9 @@ defineProps({
 
     .video-detail-desc {
       font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -157,6 +164,9 @@ defineProps({
 
     .video-detail-desc {
       font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }
@@ -170,7 +180,8 @@ defineProps({
   direction: ltr !important;
   font-size: 14px;
   color: $dark;
-  white-space: wrap;
+      text-overflow: ellipsis;
+      white-space: nowrap;
   overflow: hidden;
   text-align: left;
 }

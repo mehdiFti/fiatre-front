@@ -132,6 +132,14 @@ const emit = defineEmits(['bookmark-removed']);
     color: $black;
     font-weight: bold;
     margin: 20px 0;
+
+    @media (max-width: 768px) {
+      font-size: 1.25rem;
+    }
+
+    @media (max-width: 550px) {
+      font-size: 1rem;
+    }
   }
 
   .video-list>* {

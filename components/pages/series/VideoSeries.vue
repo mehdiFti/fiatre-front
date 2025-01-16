@@ -135,57 +135,51 @@ const onPause = (currentTime: number) => {
   flex: 0 0 calc(33.33% - 20px);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   background-color: $white;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  height: 440px;
   position: relative;
 }
 
 .episode-info {
-  display: flex;
-  flex-direction: column;
-  padding: 0px 15px;
   text-align: right;
-  flex-grow: 1;
+  padding-right: 5px;
 }
 
 .episode-number {
-  font-weight: bold;
   margin-bottom: 10px;
   font-size: 0.9rem;
 }
 
 .episode-title {
   direction: rtl;
-  display: flex;
+  display: block;
+  text-align: right;
   align-items: center;
-  font-size: 1rem;
-  margin-bottom: 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  max-height: 4rem;
+  width: 100%;
+  padding: 0 10px;
 }
 
 .episode-desc {
+  padding-right: 5px;
+  margin-bottom: 17%;
+  width: 100%;
   direction: rtl;
-  font-size: 0.9rem;
+  font-size: 0.8rem !important;
   color: $gray;
   line-height: 1.5;
-  max-height: 4.5em;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-clamp: 2;
-  max-height: 4rem;
 }
 
 hr {
@@ -225,18 +219,16 @@ hr {
 }
 
 // Desktop and large tablets (3 videos per row)
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1000px) {
   .video-episode-card {
     flex: 0 0 calc(33.33% - 20px);
-    height: 440px;
   }
 }
 
 // Tablets and large phones (2 videos per row)
-@media screen and (max-width: 991px) and (min-width: 360px) {
+@media screen and (max-width: 991px) and (min-width: 400px) {
   .video-episode-card {
     flex: 0 0 calc(50% - 20px);
-    height: 400px;
   }
 
   .episode-desc {
@@ -261,10 +253,9 @@ hr {
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 400px) {
   .video-episode-card {
     flex: 0 0 calc(100% - 20px);
-    height: 360px;
   }
 
   .episode-desc {
@@ -302,6 +293,17 @@ hr {
   .show-more-btn,
   .show-less-btn {
     width: 40%;
+  }
+}
+
+@media (max-width: 769px) and (min-width: 580px) {
+  .episode-desc {
+    margin-bottom: 20%;
+  }
+}
+@media (max-width: 580px) and (min-width: 400px) {
+  .episode-desc {
+    margin-bottom: 28%;
   }
 }
 

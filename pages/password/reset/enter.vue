@@ -267,7 +267,7 @@ useSeoMeta({
         transform: translateY(-50%);
         font-size: 1rem;
         pointer-events: none;
-        color: $milky;
+        color: #8c8c8c;
         transition: all 0.1s ease;
       }
     }

@@ -78,5 +78,12 @@ useSeoMeta({
   font-weight: bold;
   margin: 20px 0px;
 
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 1rem;
+  }
 }
 </style>

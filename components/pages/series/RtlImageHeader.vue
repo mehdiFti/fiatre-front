@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <div class="rtl-image-header-wrapper">
+  <div class="container" dir="rtl">
+    <div class="rtl-image-header-wrapper" dir="rtl">
       <img class="rtl-image-header" :src="imageHeader.src" />
 
-      <h1 class="rtl-image-title">
+      <h1 class="rtl-image-title" dir="rtl">
         {{ imageHeader.title }}
       </h1>
     </div>
@@ -24,9 +24,7 @@ const props = defineProps<{
   .rtl-image-title {
     font-size: 20px !important;
     padding: 0 5px;
-    direction: rtl;
     text-align: right;
-    unicode-bidi: bidi-override;
   }
 }
 
@@ -34,9 +32,7 @@ const props = defineProps<{
   .rtl-image-title {
     font-size: 16px !important;
     padding: 0 5px;
-    direction: rtl;
     text-align: right;
-    unicode-bidi: bidi-override;
   }
 }
 
@@ -62,14 +58,14 @@ const props = defineProps<{
     width: auto;
     position: absolute;
     padding: 0 5px;
+    margin-right: 10px;
     color: $white;
     bottom: 10px;
-    right: 10px;
-    left: auto;
     font-size: 24px;
-
   }
 
 
 }
+
+
 </style>

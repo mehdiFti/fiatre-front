@@ -1,16 +1,16 @@
 <template>
-    <main class="container mb-5">
-  <article class="terms-wrapper">
-    <h2 class="terms-heading">قوانین و مقررات</h2>
-    <div v-if="isLoading" class="debug-info">
-      Loading terms...
-    </div>
-    <div v-else-if="!terms" class="debug-info">
-      No terms found
-    </div>
-    <p v-else class="terms" v-html="terms"></p>
-  </article>
- </main>
+  <main class="container mb-5">
+    <article class="terms-wrapper">
+      <h2 class="terms-heading">قوانین و مقررات</h2>
+      <div v-if="isLoading" class="debug-info">
+        Loading terms...
+      </div>
+      <div v-else-if="!terms" class="debug-info">
+        No terms found
+      </div>
+      <p v-else class="terms" v-html="terms"></p>
+    </article>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -55,6 +55,14 @@ const isLoading = computed(() => pending.value);
     text-align: left;
     color: $third;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 550px) {
+      font-size: 18px;
+    }
   }
 
   .terms {

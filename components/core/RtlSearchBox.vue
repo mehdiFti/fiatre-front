@@ -11,22 +11,14 @@
             </div>
             <form @submit.prevent="handleSubmit" class="search-form">
               <div class="input-wrapper">
-                <input
-                  v-model.trim="searchQuery"
-                  type="text"
-                  placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
-                  class="modal-search-input"
-                  spellcheck="false"
-                />
-                <button 
-                  type="submit" 
-                  class="search-button"
-                  :disabled="!searchQuery"
-                >
+                <input v-model.trim="searchQuery" type="text" placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
+                  class="modal-search-input" spellcheck="false" />
+                <button type="submit" class="search-button" :disabled="!searchQuery">
                   <NuxtIcon name="search" />
                 </button>
               </div>
             </form>
+
           </div>
         </div>
       </transition>
@@ -36,18 +28,9 @@
     <div class="search-container" v-if="!isMobile">
       <form @submit.prevent="handleSubmit" class="search-form">
         <div class="input-wrapper">
-          <input
-            v-model.trim="searchQuery"
-            type="text"
-            placeholder="جستجو..."
-            class="search-input"
-            spellcheck="false"
-          />
-          <button 
-            type="submit" 
-            class="search-button"
-            :disabled="!searchQuery"
-          >
+          <input v-model.trim="searchQuery" type="text" placeholder="جستجو..." class="search-input"
+            spellcheck="false" />
+          <button type="submit" class="search-button" :disabled="!searchQuery">
             <NuxtIcon name="search" />
           </button>
         </div>
@@ -56,7 +39,7 @@
 
     <!-- Search Trigger Button (for mobile) -->
     <button v-else class="search-trigger" @click="openModal">
-      <NuxtIcon name="search" />
+      <NuxtIcon class="big-bin" name="search" />
     </button>
   </div>
 </template>
@@ -134,12 +117,12 @@ watch(width, (newWidth) => {
   @media screen and (min-width: 1600px) {
     max-width: 600px; // Slightly wider for larger screens
   }
-  
+
   @media screen and (max-width: 768px) {
     width: 95%;
     padding: 15px;
   }
-  
+
   @media screen and (max-width: 390px) {
     width: 98%;
     padding: 12px;
@@ -210,32 +193,32 @@ watch(width, (newWidth) => {
 }
 
 .modal-search-input {
-    width: 100%;
-    padding: 12px 45px 12px -1px;
-    border: 2px solid $gray-300;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-    
-    &:focus {
-      outline: none;
-      border-color: $gray-400;
-    }
+  width: 100%;
+  padding: 12px 45px 12px -1px;
+  border: 2px solid $gray-300;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
 
-    @media screen and (min-width: 1600px) {
-      padding: 14px 45px 14px -1px;
-      font-size: 1.1rem;
-    }
-    
-    @media screen and (max-width: 768px) {
-      padding: 10px 40px 10px 15px;
-      font-size: 0.95rem;
-    }
-    
-    @media screen and (max-width: 390px) {
-      padding: 8px 35px 8px 12px;
-      font-size: 0.9rem;
-    }
+  &:focus {
+    outline: none;
+    border-color: $gray-400;
+  }
+
+  @media screen and (min-width: 1600px) {
+    padding: 14px 45px 14px -1px;
+    font-size: 1.1rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 10px 40px 10px 15px;
+    font-size: 0.95rem;
+  }
+
+  @media screen and (max-width: 390px) {
+    padding: 8px 35px 8px 12px;
+    font-size: 0.9rem;
+  }
 }
 
 .search-button {
@@ -274,6 +257,12 @@ watch(width, (newWidth) => {
   }
 }
 
+.big-bin {
+  color: $third;
+  background-color: third;
+  font-weight: 500;
+}
+
 // Animation
 .fade-enter-active,
 .fade-leave-active {
@@ -289,7 +278,7 @@ watch(width, (newWidth) => {
 @media screen and (max-width: 768px) {
   .modal-content {
     .input-wrapper {
-      
+
       position: relative;
 
 
@@ -306,7 +295,7 @@ watch(width, (newWidth) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      
+
       &:hover {
         color: $gray-500;
       }
@@ -340,18 +329,19 @@ watch(width, (newWidth) => {
 
 .input-wrapper input::placeholder {
   font-size: 0.75rem;
-  
+
   @media screen and (min-width: 1600px) {
     font-size: 0.85rem;
   }
-  
+
   @media screen and (max-width: 390px) {
     font-size: 0.7rem;
   }
 }
+
 // .modal-search-button {
 //   color: red !important;
-  
+
 //   &:hover {
 //     color: darkred !important;
 //   }
@@ -359,6 +349,4 @@ watch(width, (newWidth) => {
 //   &:disabled {
 //     color: rgba(255, 0, 0, 0.5) !important;
 //   }
-// }
-</style>
-  
+// }</style>

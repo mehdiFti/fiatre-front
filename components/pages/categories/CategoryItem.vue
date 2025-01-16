@@ -43,7 +43,7 @@ const props = defineProps({
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  border-radius: 15px;
+  border-radius: 0 0 15px 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
   cursor: pointer;
