@@ -18,11 +18,11 @@
             <ErrorMessage name="phone" as="span" class="error-message" />
           </div>
 
-          <div class="reset-form-control">
+          <!-- <div class="reset-form-control">
             <VeeField name="email" class="reset-input" type="email" rules="email" />
             <label class="reset-label">ایمیل</label>
             <ErrorMessage name="email" as="span" class="error-message" />
-          </div>
+          </div> -->
 
           <button type="submit" class="reset-submit">ارسال کد فعال سازی</button>
         </VeeForm>

@@ -1,7 +1,5 @@
 <template>
-  <div class="md-1">
-
-
+  <div>
     <ClientOnly>
       <div class="container movie-hero-container">
         <Swiper class="custom-swiper" :slides-per-view="1" loop :autoplay="{
@@ -82,13 +80,49 @@ const toggleAutoplay = (value: boolean) => {
 /*rtl:end:ignore*/
 
 .movie-hero-container {
+  border-radius: 5px;
+
+  .custom-swiper {
+    .swiper {
+      overflow: visible !important;
+    }
+
+    --swiper-navigation-size: 10rem;
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      display: none;
+      // transform: scaleX(-1) scale(1.1);
+      // color: $dark;
+      // border-radius: 50%;
+      // height: 30px;
+      // width: 30px;
+      // background: rgba(255, 255, 255, 0.4);
+      // transform: rotate(360deg);
+
+      // &:hover {
+      //   transform: scale(1.2);
+      //   background: rgba(255, 255, 255, 0.6);
+      // }
+    }
+
+    // .swiper-button-next {
+    //   left: 95%;
+    // }
+
+    // .swiper-button-prev {
+    //   right: 95%;
+    // }
+  }
+
   .wrapper-image-hero {
     position: relative;
-    border-radius: 1vw;
+    border-radius: 5px;
 
     .hero-background-img {
       width: 100%;
       height: auto;
+      border-radius: 0 0 5px 5px;
       aspect-ratio: 18/9;
       // object-fit: cover;
 
@@ -101,6 +135,8 @@ const toggleAutoplay = (value: boolean) => {
     .internal-hero {
       display: flex;
       align-items: center;
+      border-radius: 5px;
+
       gap: 3%;
       position: absolute;
       bottom: 0%;
@@ -142,11 +178,12 @@ const toggleAutoplay = (value: boolean) => {
             font-size: 0.8rem;
           }
         }
+
         @media (max-width: 460px) {
-     .hero-background-img {
-      height: 565px;
-    }
-}
+          .hero-background-img {
+            height: 565px;
+          }
+        }
 
         .hero-description {
           display: flex;
@@ -273,36 +310,6 @@ const toggleAutoplay = (value: boolean) => {
       position: relative; // Make the image relative
     }
   }
-
-  .custom-swiper {
-   
-    --swiper-navigation-size: 10rem;
-
-    .swiper-button-next,
-    .swiper-button-prev {
-      display: none;
-      // transform: scaleX(-1) scale(1.1);
-      // color: $dark;
-      // border-radius: 50%;
-      // height: 30px;
-      // width: 30px;
-      // background: rgba(255, 255, 255, 0.4);
-      // transform: rotate(360deg);
-
-      // &:hover {
-      //   transform: scale(1.2);
-      //   background: rgba(255, 255, 255, 0.6);
-      // }
-    }
-
-    // .swiper-button-next {
-    //   left: 95%;
-    // }
-
-    // .swiper-button-prev {
-    //   right: 95%;
-    // }
-  }
 }
 
 @media (max-width: 1024px) {
@@ -324,75 +331,80 @@ const toggleAutoplay = (value: boolean) => {
 }
 
 
-@media (max-width: 769px) and ( max-width: 700px) {
+@media (max-width: 769px) and (max-width: 700px) {
   .hero-poster-img {
-    width: 20% ;
-    
+    width: 20%;
+
   }
 
   .hero-background-img {
-    aspect-ratio: 10/10 ;
+    aspect-ratio: 10/10;
   }
 
 
 
-  .movie-hero-container, .wrapper-image-hero, .internal-hero {
-         padding: 0;
-         gap: 1%; 
-  
-    }
+  .movie-hero-container,
+  .wrapper-image-hero,
+  .internal-hero {
+    padding: 0;
+    gap: 1%;
 
-    .hero-tite {
-      font-size: 0.9rem !important;
-    }
+  }
+
+  .hero-tite {
+    font-size: 0.9rem !important;
+  }
 }
 
 
 
-@media (max-width: 1199px) and ( min-width: 768px) {
+@media (max-width: 1199px) and (min-width: 768px) {
   .hero-poster-img {
     width: 120px !important;
-    
+
   }
 }
 
 
-@media (max-width: 992px) and ( min-width: 768px) {
+@media (max-width: 992px) and (min-width: 768px) {
   .hero-background-img {
-   aspect-ratio: 12/9 !important;
-    
+    aspect-ratio: 12/9 !important;
+
   }
 }
 
-@media (max-width: 768px) and ( min-width: 600px) {
+@media (max-width: 768px) and (min-width: 600px) {
   .hero-background-img {
-   aspect-ratio: 2/2 !important;
-    
+    aspect-ratio: 2/2 !important;
+
   }
 }
-@media (max-width: 600px) and ( min-width: 500px) {
+
+@media (max-width: 600px) and (min-width: 500px) {
   .hero-background-img {
-   aspect-ratio: 2/2 !important;
-    
+    aspect-ratio: 2/2 !important;
+
     .hero-poster-img {
       width: 25%;
     }
   }
 }
-@media (max-width: 500px) and ( min-width: 400px) {
+
+@media (max-width: 500px) and (min-width: 400px) {
   .hero-background-img {
-   aspect-ratio: 2/2 !important;
-   height: 526px !important;
+    aspect-ratio: 2/2 !important;
+    height: 526px !important;
   }
-}
-@media (max-width: 400px) and ( min-width: 300px) {
-  .hero-background-img {
-   aspect-ratio: 2/2 !important;
-   height: 526px !important;
-  }
-  .hero-poster-img {
-      width: 28% !important;
-    }
 }
 
+@media (max-width: 400px) and (min-width: 300px) {
+  .hero-background-img {
+    aspect-ratio: 2/2 !important;
+    height: 526px !important;
+  }
+
+  .hero-poster-img {
+    width: 28% !important;
+  }
+}
 </style>

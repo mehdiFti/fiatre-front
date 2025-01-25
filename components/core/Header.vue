@@ -44,12 +44,12 @@
                       <NuxtIcon name="game" /> بازی و سرگرمی
                     </NuxtLink>
                   </li>
-                  <li>
+                  <!-- <li>
                     <div class="link-black" @click.stop="toggleMailBox">
                       <NuxtIcon name="mail" /> صندوق پیام
                     </div>
-                    <MailBox :showMailBox="showMailBox" @close="showMailBox = false" />
-                  </li>
+                     <MailBox :showMailBox="showMailBox" @close="showMailBox = false" /> -->
+                  <!-- </li>  -->
                   <li v-if="userStore.isAuthenticated && userStore.user?.is_subscription_active">
                     <div class="timer-subs" @click="toggleMenu">
                       <NuxtIcon name="timer" />زمان باقی مانده از اشتراک:
@@ -90,7 +90,7 @@
 import { ref, nextTick, watch, onMounted, onUnmounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
-import MailBox from '~/components/core/MailBox.vue';
+// import MailBox from '~/components/core/MailBox.vue';
 import SearchBox from '~/components/core/SearchBox.vue';
 import { useRouter } from 'vue-router';
 
@@ -267,7 +267,7 @@ function toggleMailBox() {
 .burger-icon {
   width: 30px;
   height: 4px;
-  background: #333;
+  background: $third;
   border-radius: 2px;
   position: relative;
   transition: transform 0.3s ease, background-color 0.3s ease;
@@ -279,7 +279,7 @@ function toggleMailBox() {
   content: '';
   width: 30px;
   height: 4px;
-  background: #333;
+  background: $third;
   position: absolute;
   border-radius: 2px;
   transition: transform 0.3s ease;

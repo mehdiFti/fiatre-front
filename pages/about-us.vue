@@ -54,11 +54,19 @@ const isLoading = computed(() => pending.value);
 
   .about-us-heading {
     font-size: 24px;
-    text-align: left;           
+    text-align: left;
     color: $third;
     font-weight: bold;
-    margin-bottom: 20px;        
-    padding-left: 0px !important;  
+    margin-bottom: 20px;
+    padding-left: 0px !important;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 550px) {
+      font-size: 18px;
+    }
   }
 
   .about-us {

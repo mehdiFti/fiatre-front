@@ -41,10 +41,10 @@ const props = defineProps({
     flex-grow: 1;
     margin-left: 8px;
     border: none;
-    height: 0.05rem;
+    height: 0.01rem;
     // background: linear-gradient(to right, $black, $third);
-    background-color: #fff;
-    opacity: 1 !important;
+    background-color: $dark;
+    opacity: 0.3 !important;
   }
 
   .gradient-button {

@@ -46,12 +46,12 @@
                       <NuxtIcon name="game" /> بازی و سرگرمی
                     </NuxtLink>
                   </li>
-                  <li>
+                  <!-- <li>
                     <div class="link-black" @click.stop="toggleMailBox">
                       <NuxtIcon name="mail" /> صندوق پیام
                     </div>
                     <MailBox :showMailBox="showMailBox" @close="showMailBox = false" />
-                  </li>
+                  </li> -->
                   <li v-if="userStore.isAuthenticated && !userStore.user?.is_subscription_active">
                     <NuxtLink to="/categories" class="link-black" @click="toggleMenu">
                       <NuxtIcon name="category" /> دسته‌بندی‌ها
@@ -90,7 +90,7 @@
 import { ref, nextTick, watch, onMounted, onUnmounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 import SubscriptionDuration from '~/components/core/SubscriptionDuration.vue';
-import MailBox from '~/components/core/MailBox.vue';
+// import MailBox from '~/components/core/MailBox.vue';
 import RtlSearchBox from '~/components/core/RtlSearchBox.vue';
 import { useRouter } from 'vue-router';
 
@@ -184,7 +184,7 @@ function toggleMailBox() {
   justify-content: space-between;
   align-items: center;
   background-color: $milky;
-  border-bottom: 1px solid #ddd;
+  // border-bottom: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -231,8 +231,8 @@ function toggleMailBox() {
   color: $white !important;
   white-space: nowrap;
   font-weight: bold;
-  padding: 8px 15px;
-  font-size: 0.8rem;
+  padding: 8px 12px;
+  font-size: 0.875rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -278,7 +278,7 @@ function toggleMailBox() {
   direction: rtl;
   width: 30px;
   height: 4px;
-  background: #333;
+  background: $third;
   border-radius: 2px;
   position: relative;
   transition: transform 0.3s ease, background-color 0.3s ease;
@@ -290,7 +290,7 @@ function toggleMailBox() {
   content: '';
   width: 30px;
   height: 4px;
-  background: #333;
+  background: $third;
   position: absolute;
   border-radius: 2px;
   transition: transform 0.3s ease;
@@ -356,7 +356,7 @@ function toggleMailBox() {
 .modal-burger {
   position: absolute;
   // top: 100%;
-  top: 60px;
+  top: 59px;
   transform: translateX(-25px) !important;
   background: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -649,7 +649,7 @@ function toggleMailBox() {
 @media (max-width: 391px) and (min-width: 370px) {
   .modal-burger {
     transform: translateX(-26px) !important;
-    top: 68px !important;
+    top: 67px !important;
   }
 }
 

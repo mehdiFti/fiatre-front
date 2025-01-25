@@ -1,24 +1,24 @@
 <template>
-  <main class="container" > 
+  <main class="container">
     <article class="faq-wrapper ">
-    <h2 class="faq-heading">
-      سوالات متداول
-    </h2>
-    <section v-for="(item, index) in faqs" :key="index" class="faq-item">
-      <header class="faq-question" @click="toggleAnswer(index)" :aria-expanded="activeIndex === index"
-        :aria-controls="'faq-collapse-' + index" role="button">
-        <p>{{ item.question }}</p>
-        <i :class="{ 'icon-chevron-up': activeIndex === index, 'icon-chevron-down': activeIndex !== index }"></i>
-      </header>
-      <div :id="'faq-collapse-' + index" class="collapse" :class="{ 'show': activeIndex === index }">
-        <article class="faq-answer">
-          <p>{{ item.answer }}</p>
-        </article>
-      </div>
-    </section>
-  </article>
+      <h2 class="faq-heading">
+        سوالات متداول
+      </h2>
+      <section v-for="(item, index) in faqs" :key="index" class="faq-item">
+        <header class="faq-question" @click="toggleAnswer(index)" :aria-expanded="activeIndex === index"
+          :aria-controls="'faq-collapse-' + index" role="button">
+          <p>{{ item.question }}</p>
+          <i :class="{ 'icon-chevron-up': activeIndex === index, 'icon-chevron-down': activeIndex !== index }"></i>
+        </header>
+        <div :id="'faq-collapse-' + index" class="collapse" :class="{ 'show': activeIndex === index }">
+          <article class="faq-answer">
+            <p>{{ item.answer }}</p>
+          </article>
+        </div>
+      </section>
+    </article>
   </main>
-  
+
 </template>
 
 <script setup lang="ts">
@@ -100,21 +100,27 @@ const toggleAnswer = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
-
 .faq-wrapper {
-    z-index: 1000;
-    margin: 0 auto;
-    padding: 20px 30px;
-    background-color: $milky;
-  }
+  z-index: 1000;
+  margin: 0 auto;
+  padding: 20px 30px;
+  background-color: $milky;
+}
 
 
 .faq-heading {
   font-size: 24px;
-    color: $third;
-    padding: 20px 10px;
-    font-weight: bold;
+  color: $third;
+  padding: 20px 10px;
+  font-weight: bold;
 
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 18px;
+  }
 }
 
 .faq-item {

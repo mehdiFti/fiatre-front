@@ -2,7 +2,9 @@
   <div class="movie-card">
     <NuxtLink :to="link">
       <div class="movie-card-image-container">
-        <img :src="img" class="movie-card-image" alt="movie poster" />
+        <div class="aspect-ratio-box">
+          <img :src="img" class="movie-card-image" alt="movie poster" />
+        </div>
         <h3 class="movie-card-title">{{ title }}</h3>
       </div>
     </NuxtLink>
@@ -34,6 +36,7 @@ defineProps({
   border-radius: 8px;
   overflow: hidden;
 
+
   &:hover {
     transform: scale(1.05);
   }
@@ -43,17 +46,26 @@ defineProps({
     overflow: hidden;
   }
 
-  .movie-card-image {
+  .aspect-ratio-box {
+    position: relative;
+    padding-top: 150%;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px 8px 0  0 ;
+
+    .movie-card-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
   }
 
   .movie-card-title {
     padding: 2px 2px;
     margin: 0;
-    background:$milky ;
+    background: $milky ;
     color: $black;
     font-size: 0.8rem;
     white-space: nowrap;
@@ -82,5 +94,4 @@ defineProps({
     }
   }
 }
-
 </style>

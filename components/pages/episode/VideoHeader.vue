@@ -29,6 +29,8 @@ const props = defineProps<{
 }>();
 </script>
 
-<style lang='scsss' scoped>
-
+<style lang='scss' scoped>
+.video-header {
+  border-radius: 5px;
+}
 </style>

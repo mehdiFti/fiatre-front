@@ -9,42 +9,21 @@
             <button class="close-button" @click="toggleSearchModal">×</button>
           </div>
           <div class="input-wrapper">
-            <input
-              v-model.trim="searchInput"
-              type="text"
-              placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
-              class="search-modal-input"
-              spellcheck="false"
-                @keyup.enter="searchSubmit"
-            />
-            <button 
-              class="modal-search-button" 
-              @click="searchSubmit"
-              :disabled="!searchInput"
-            >
+            <input v-model.trim="searchInput" type="text" placeholder="عنوان ویدیو، بازیگر و... را جستجو کنید."
+              class="search-modal-input" spellcheck="false" @keyup.enter="searchSubmit" />
+            <button class="modal-search-button" @click="searchSubmit" :disabled="!searchInput">
               <NuxtIcon name="search" />
             </button>
           </div>
         </div>
       </div>
     </transition>
-
     <!-- Regular Search -->
     <div class="search-container" v-if="!isSearchInModal">
       <div class="input-wrapper">
-        <input
-          v-model.trim="searchInput"
-          type="text"
-          placeholder="جستجو..."
-          class="search-input"
-          spellcheck="false"
-            @keyup.enter="searchSubmit"
-        />
-        <button 
-          class="search-button" 
-          @click="searchSubmit"
-          :disabled="!searchInput"
-        >
+        <input v-model.trim="searchInput" type="text" placeholder="جستجو..." class="search-input" spellcheck="false"
+          @keyup.enter="searchSubmit" />
+        <button class="search-button" @click="searchSubmit" :disabled="!searchInput">
           <NuxtIcon name="search" />
         </button>
       </div>
@@ -65,7 +44,7 @@ const route = useRoute();
 const router = useRouter();
 const isSearchModalOpen = ref(false);
 const isSearchInModal = ref(false);
-const searchInput = ref(route.query.q || '');
+const searchInput = ref('');
 
 const { width } = useWindowSize();
 
@@ -160,7 +139,7 @@ const toggleSearchModalOpen = () => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    
+
     h3 {
       margin: 0;
       color: #333;
@@ -177,7 +156,7 @@ const toggleSearchModalOpen = () => {
     padding: 5px 10px;
     border-radius: 50%;
     transition: all 0.2s ease;
-    
+
     &:hover {
       background: #f5f5f5;
       color: gray-200;
@@ -191,7 +170,7 @@ const toggleSearchModalOpen = () => {
     border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.2s ease;
-    
+
     &:focus {
       outline: none;
       border-color: $gray-400;
@@ -207,7 +186,7 @@ const toggleSearchModalOpen = () => {
     border: none;
     cursor: pointer;
     padding: 8px;
-    color: gray-500;
+    color: $third;
     font-size: 1.2rem;
     display: flex;
     align-items: center;
@@ -228,6 +207,7 @@ const toggleSearchModalOpen = () => {
       opacity: 0;
       transform: translateY(-20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -294,13 +274,14 @@ const toggleSearchModalOpen = () => {
   border: none;
   cursor: pointer;
   padding: 5px;
-  color: $gray-800;
+  // color: $third;
   display: flex;
   align-items: center;
   transition: color 0.2s ease;
 
   &:hover {
-    color: $gray-500;;
+    color: $gray-500;
+    ;
   }
 
   &:disabled {
@@ -308,7 +289,8 @@ const toggleSearchModalOpen = () => {
   }
 }
 
-.search-input, .search-modal-input {
+.search-input,
+.search-modal-input {
   padding-right: 35px; // Make room for the button
 }
 
@@ -318,10 +300,10 @@ const toggleSearchModalOpen = () => {
   border: none;
   cursor: pointer;
   padding: 8px;
-  color: $gray-600;
+  color: $third;
   transition: color 0.2s;
   font-size: 1.5rem;
-  
+
   &:hover {
     color: $gray-500;
   }
@@ -341,8 +323,12 @@ const toggleSearchModalOpen = () => {
     display: block;
   }
 }
+
 .input-wrapper input::placeholder {
-        font-size: 0.75rem; 
-      
+  font-size: 0.75rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
 }
 </style>
