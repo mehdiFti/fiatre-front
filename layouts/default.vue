@@ -27,7 +27,15 @@ const head = computed<MetaObject>(() => {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'description', content: 'فیاتر مرجع تیاتر، آموزش بازیگری و هنر برای علاقه مندان به نمایش نامه، فیلم کوتاه، اخبار و فیلم تیاتر' }
+      { name: 'description', content: 'فیاتر مرجع تیاتر، آموزش بازیگری و هنر برای علاقه مندان به نمایش نامه، فیلم کوتاه، اخبار و فیلم تیاتر' },
+      { name: 'theme-color', content: '#FE0000' },
+      { name: 'msapplication-TileColor', content: '#FE0000' },
+      { name: 'msapplication-TileImage', content: '/favicon.ico' },
+      { name: 'msapplication-config', content: '/browserconfig.xml' },
+      { name: 'theme-color', content: '#FE0000' },
+      { name: 'msapplication-TileColor', content: '#FE0000' },
+      { name: 'msapplication-TileImage', content: '/favicon.ico' },
+      { name: 'msapplication-config', content: '/browserconfig.xml' },
     ]
   }
 });
@@ -41,5 +49,4 @@ useHead(head);
 
 // .main-layout {
 //   min-height: 100dvh;
-// }
-</style>
+// }</style>

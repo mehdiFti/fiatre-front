@@ -1,16 +1,16 @@
 <template>
   <div class="color">
-     <RtlHeader/>
-  <div class="color">
-    <main class="main-layout">
-      <slot />
-    </main>
+    <RtlHeader />
+    <div class="color">
+      <main class="main-layout">
+        <slot />
+      </main>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {MetaObject} from '@nuxt/schema';
+import type { MetaObject } from '@nuxt/schema';
 import RtlHeader from '~/components/core/RtlHeader.vue';
 
 const head = computed<MetaObject>(() => {
@@ -21,7 +21,20 @@ const head = computed<MetaObject>(() => {
       dir: 'ltr',
       lang: 'fa',
     },
-    bodyAttrs: {class: bodyClass},
+    bodyAttrs: { class: bodyClass },
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'description', content: 'فیاتر مرجع تیاتر، آموزش بازیگری و هنر برای علاقه مندان به نمایش نامه، فیلم کوتاه، اخبار و فیلم تیاتر' },
+      { name: 'theme-color', content: '#FE0000' },
+      { name: 'msapplication-TileColor', content: '#FE0000' },
+      { name: 'msapplication-TileImage', content: '/favicon.ico' },
+      { name: 'msapplication-config', content: '/browserconfig.xml' },
+      { name: 'theme-color', content: '#FE0000' },
+      { name: 'msapplication-TileColor', content: '#FE0000' },
+      { name: 'msapplication-TileImage', content: '/favicon.ico' },
+      { name: 'msapplication-config', content: '/browserconfig.xml' },
+    ]
   };
 });
 
@@ -34,5 +47,4 @@ useHead(head);
 
 // .main-layout {
 //   min-height: 100dvh;
-// }
-</style>
+// }</style>
