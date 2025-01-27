@@ -2,11 +2,11 @@
   <div>
     <ClientOnly>
       <div class="container movie-hero-container">
-        <Swiper class="custom-swiper" :slides-per-view="1" loop :autoplay="{
+        <Swiper class="custom-swiper" :slides-per-view="1" :dir="$doc?.dir || 'rtl'" loop :autoplay="{
           disableOnInteraction: true,
           pauseOnMouseEnter: true,
           delay: 5000,
-        }" :modules="modules" follow-finger :navigation="true" ref="swiperRef">
+        }" :modules="modules" follow-finger ref="swiperRef">
           <SwiperSlide v-for="image in imagesHero" :key="image.id">
             <div class="wrapper-image-hero">
               <img class="hero-background-img" :src="`https://www.fiatre.ir${image.background}`" />
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 // import ButtonPreview from '~/components/core/ButtonPreview.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -61,6 +61,35 @@ const props = defineProps<{
 
 const swiperRef = ref(null);
 
+// اضافه کردن متغیر برای نگهداری نمونه swiper
+const swiperInstance = ref(null);
+
+// تابع برای بازنشانی swiper
+const resetSwiper = () => {
+  if (swiperInstance.value) {
+    swiperInstance.value.destroy(true, true);
+    nextTick(() => {
+      swiperInstance.value = swiperRef.value?.swiper;
+    });
+  }
+};
+
+// نظارت بر تغییرات dir در HTML
+watch(
+  () => document.documentElement.dir,
+  (newDir, oldDir) => {
+    if (newDir !== oldDir) {
+      nextTick(() => {
+        resetSwiper();
+      });
+    }
+  }
+);
+
+onMounted(() => {
+  swiperInstance.value = swiperRef.value?.swiper;
+});
+
 const toggleAutoplay = (value: boolean) => {
   console.log(swiperRef.value.autoplay);
 
@@ -74,7 +103,7 @@ const toggleAutoplay = (value: boolean) => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /*rtl:begin:ignore*/
 @import "swiper/css";
 /*rtl:end:ignore*/
@@ -82,37 +111,12 @@ const toggleAutoplay = (value: boolean) => {
 .movie-hero-container {
   border-radius: 5px;
 
+
   .custom-swiper {
     .swiper {
       overflow: visible !important;
     }
 
-    --swiper-navigation-size: 10rem;
-
-    .swiper-button-next,
-    .swiper-button-prev {
-      display: none;
-      // transform: scaleX(-1) scale(1.1);
-      // color: $dark;
-      // border-radius: 50%;
-      // height: 30px;
-      // width: 30px;
-      // background: rgba(255, 255, 255, 0.4);
-      // transform: rotate(360deg);
-
-      // &:hover {
-      //   transform: scale(1.2);
-      //   background: rgba(255, 255, 255, 0.6);
-      // }
-    }
-
-    // .swiper-button-next {
-    //   left: 95%;
-    // }
-
-    // .swiper-button-prev {
-    //   right: 95%;
-    // }
   }
 
   .wrapper-image-hero {

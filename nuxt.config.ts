@@ -3,6 +3,9 @@ import {vite as vidstack} from 'vidstack/plugins';
 import path from 'path';
 
 export default defineNuxtConfig({
+
+  sourcemap: {server: true, client: true},
+  
   devtools: {enabled: true},
   modules: [
     '@pinia/nuxt',
@@ -47,6 +50,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
+
+    esbuild: {
+      drop: ["console"],
+  },
     plugins: [
       vidstack(),
     ],

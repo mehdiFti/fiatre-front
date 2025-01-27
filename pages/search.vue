@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div :class="{ 'container': isLargeScreen, 'mobile-container': !isLargeScreen }">
         <ClientOnly>
-            <div v-if="getSearchedEpisodes.status.value === 'success'" class="container search-results">
-                <div v-if="getSearchedEpisodes.data.value?.results?.length" class="container cards-grid">
+            <div v-if="getSearchedEpisodes.status.value === 'success'" class="search-results">
+                <div v-if="getSearchedEpisodes.data.value?.results?.length" class="cards-grid">
                     <FeatureCard v-for="episode in getSearchedEpisodes.data.value?.results" :key="episode.id"
                         :link="`/episodes/${episode.slug}`" :img="episode.image" :title="episode.title" />
                 </div>
@@ -21,7 +21,15 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core';
 import FeatureCard from '~/components/core/FeatureCard.vue';
+
+const isLargeScreen = ref(true)
+const { width } = useWindowSize()
+
+watch(width, (newWidth) => {
+    isLargeScreen.value = newWidth > 550
+}, { immediate: true })
 
 const route = useRoute();
 
@@ -84,9 +92,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.search-results {
-    padding: 20px;
-}
+
 
 .cards-grid {
     display: grid;
@@ -116,7 +122,6 @@ watch(
     }
 }
 
-
 .loading,
 .error {
     padding: 20px;
@@ -129,4 +134,5 @@ watch(
     text-align: center;
     color: $dark;
 }
+
 </style>

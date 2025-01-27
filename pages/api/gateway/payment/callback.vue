@@ -17,14 +17,16 @@ onMounted(() => {
   // Normalize the status to uppercase for consistent comparison
   const normalizedStatus = status.toUpperCase();
 
-  // Redirect to the result page with normalized parameters
-  navigateTo({
-    path: '/subscription/buys/result',
-    query: { 
-      Authority: authority, 
-      Status: normalizedStatus, 
-      refID: refID 
-    },
-  });
+  // Add a small delay to ensure proper redirection
+  setTimeout(() => {
+    navigateTo({
+      path: '/subscription/buys/result',
+      query: {
+        Authority: authority,
+        Status: normalizedStatus,
+        refID: refID
+      },
+    }, { replace: true }); // Use replace to prevent back navigation
+  }, 100);
 });
 </script>

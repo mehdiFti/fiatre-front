@@ -1,7 +1,12 @@
-html, body {
+html,
+body {
   height: 100%;
   text-align: left;
   scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -13,8 +18,15 @@ ul {
   list-style: none;
 }
 
-h1, h2, h3, h4, h5, h6,
-ul, ol, li {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li {
   margin: 0;
   padding: 0;
 }
@@ -38,4 +50,8 @@ input[type=number] {
 
 :focus-visible {
   outline: none;
+}
+
+* {
+  box-sizing: border-box;
 }

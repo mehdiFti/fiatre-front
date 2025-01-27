@@ -9,7 +9,7 @@
     </div> -->
   <!-- {{ categories }} -->
 
-  <div class="container">
+  <div :class="{ 'container': isLargeScreen, 'mobile-container': !isLargeScreen }">
     <h3 class="cat-title">{{ getCategoryName }}</h3>
     <hr>
     <CategoryParent :status="getCategoriesRequest.status.value" :categories="categories" linkType="episodes" />
@@ -17,10 +17,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useWindowSize } from '@vueuse/core';
 import CategoryParent from '~/components/pages/categories/CategoryParent.vue';
 
+const isLargeScreen = ref(true)
+const { width } = useWindowSize()
+
+watch(width, (newWidth) => {
+  isLargeScreen.value = newWidth > 550
+}, { immediate: true })
 
 const route = useRoute();
 const id = route.params.id;
@@ -73,6 +80,7 @@ useSeoMeta({
 
 <style lang="scss" scoped>
 .cat-title {
+  padding-left: 10px;
   font-size: 1.5rem;
   color: $black ;
   font-weight: bold;
@@ -86,4 +94,6 @@ useSeoMeta({
     font-size: 1rem;
   }
 }
+
+
 </style>

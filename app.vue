@@ -17,6 +17,8 @@ if (userStore.isAuthenticated) {
 
 nuxtApp.hook('page:finish', () => {
   window.scrollTo({
+    top: 0,
+    left: 0,
     behavior: 'smooth',
   });
 });

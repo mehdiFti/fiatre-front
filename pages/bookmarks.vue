@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main :class="{ 'container': isLargeScreen, 'mobile-container': !isLargeScreen }">
     <section class="bookmark-wrapper mb-5">
       <header>
         <h2 class="my-fav-h2">علاقه‌مندی‌های من</h2>
@@ -11,20 +11,19 @@
           <pre>{{ bookmarkedVideos }}</pre>
         </div>
 
-        <div class="video-list">
-          <BookmarkItem v-for="video in bookmarkedVideos" :key="video.key" :src="video.poster" :name="video.title"
-            :number="video.number" :episode="video" :description="video.description" :isInBookmarksPage="true"
-            @remove-bookmark="removeBookmark" />
+        <div class="cards-grid">
+          <FeatureCard v-for="video in bookmarkedVideos" :key="video.key" :link="video.src" :img="video.poster"
+            :title="video.title" />
         </div>
       </template>
 
       <!-- Loading State -->
-      <main v-else-if="bookmarksRequest.status.value === 'pending'" class="not-text">
+      <main v-else-if="bookmarksRequest.status.value === 'pending'" class="loading">
         در حال بارگذاری...
       </main>
 
       <!-- Error State -->
-      <main v-else-if="bookmarksRequest.status.value === 'error'" class="not-text">
+      <main v-else-if="bookmarksRequest.status.value === 'error'" class="error">
         خطا در بارگذاری علاقه‌مندی‌ها
       </main>
     </section>
@@ -32,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-
-import BookmarkItem from '~/components/pages/bookmark/BookmarkItem.vue';
+import { useWindowSize } from '@vueuse/core';
+import FeatureCard from '~/components/core/FeatureCard.vue';
 // Page Meta
 // definePageMeta({
 //   middleware: ['redirect-to-login']
@@ -117,16 +116,17 @@ const bookmarkedVideos = computed(() => {
 
 // Events
 const emit = defineEmits(['bookmark-removed']);
+
+const isLargeScreen = ref(true)
+const { width } = useWindowSize()
+
+watch(width, (newWidth) => {
+  isLargeScreen.value = newWidth > 550
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>
 .bookmark-wrapper {
-  .video-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-  }
-
   .my-fav-h2 {
     font-size: 1.5rem;
     color: $black;
@@ -141,33 +141,43 @@ const emit = defineEmits(['bookmark-removed']);
       font-size: 1rem;
     }
   }
+}
 
-  .video-list>* {
-    max-width: calc(20% - 20px);
-    box-sizing: border-box;
-  }
+.cards-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
 
-  @media (max-width: 991px) {
-    .video-list>* {
-      max-width: calc(25% - 20px);
-    }
-  }
-
-  @media (max-width: 550px) {
-    .video-list>* {
-      max-width: calc(33.33% - 20px);
-    }
-  }
-
-  @media (max-width: 360px) {
-    .video-list>* {
-      max-width: calc(50% - 20px);
-    }
+@media (max-width: 360px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
   }
 }
 
-.not-text {
-  font-size: 22px;
-  margin: 40px 40px 300px 4px;
+@media (max-width: 991px) {
+  .cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+.loading,
+.error {
+  padding: 20px;
+  text-align: center;
+}
+
+.mobile-container {
+  padding: 0 8px;
 }
 </style>

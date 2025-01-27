@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <HomeSeprator class="mb-3" :slug="section.slug" :title="section.name" />
-    <div class="movie-section-container" :style="{ backgroundImage: `url(https://www.fiatre.ir${section.image})` }">
+    <NuxtLink :to="`/categories/${section.slug}`" class="movie-section-container"
+      :style="{ backgroundImage: `url(https://www.fiatre.ir${section.image})` }">
       <div class="content-section"></div>
       <div class="card-section">
         <div v-for="episode in displayedCards" :key="episode.id" class="card">
@@ -9,7 +10,7 @@
             :title="episode.title" />
         </div>
       </div>
-    </div>
+    </NuxtLink>
   </div>
 </template>
 
@@ -57,6 +58,8 @@ const displayedCards = computed(() => {
 </script>
 <style lang="scss">
 .movie-section-container {
+  display: block;
+  text-decoration: none;
   background-size: cover;
   background-position: center;
   height: 100%;

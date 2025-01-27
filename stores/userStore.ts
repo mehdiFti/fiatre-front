@@ -26,6 +26,10 @@ export const useUserStore = defineStore('user', () => {
   const logout = async (to?: RouteLocationRaw) => {
     refreshToken.value = undefined;
     accessToken.value = undefined;
+    const csrfToken = useCookie('csrftoken');
+    csrfToken.value = undefined;
+    const sessionId = useCookie('sessionid');
+    sessionId.value = undefined;
     user.value = null;
     isProfileFetched.value = false;
 

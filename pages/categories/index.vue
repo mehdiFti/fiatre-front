@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div :class="{ 'container': isLargeScreen, 'mobile-container': !isLargeScreen }">
     <h3 class="cat-title"> دسته‌بندی‌ها </h3>
     <hr>
     <div v-if="getCategoriesRequest.status.value === 'error'">{{ getCategoriesRequest.error.value }}</div>
     <div class="categories-container" v-else>
       <LoadingScreen v-if="getCategoriesRequest.status.value === 'loading'" />
-      <div v-else class="categories-grid">
+      <div v-else class="categories-grid" dir="rtl">
         <NuxtLink v-for="category in categories" :key="category.id" :to="`/categories/${category.slug}`"
           class="category-card">
           <div class="card-content">
@@ -19,6 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+
 useSeoMeta({
   title: 'دسته بندی فیلم‌ها | فیاتر',
   description: 'مروری بر دسته بندی فیلم ها و اطلاعات مربوط به هر دسته.',
@@ -31,10 +34,6 @@ useSeoMeta({
   robots: 'index, follow',
 });
 
-
-
-
-
 const getCategoriesRequest = await useApiFetch(`/api/categories/with-episodes/`, {
 });
 
@@ -45,6 +44,13 @@ const categories = computed(() => {
 
   return []
 })
+
+const isLargeScreen = ref(true)
+const { width } = useWindowSize()
+
+watch(width, (newWidth) => {
+  isLargeScreen.value = newWidth > 577
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>
@@ -64,16 +70,14 @@ const categories = computed(() => {
 .categories-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  /* Ensures spacing between cards */
+  // padding-left: 25px !important;
   gap: 20px;
-  /* Adds spacing between rows */
 }
 
 .category-card {
   flex: 1 1 calc(25% - 20px);
   /* Default: 3 cards per row */
-  max-width: calc(25% - 20px);
+  max-width: calc(25% - 15px);
   /* Prevents cards from exceeding row width */
   box-sizing: border-box;
   /* Ensures padding doesn't break the layout */
@@ -83,7 +87,7 @@ const categories = computed(() => {
   .category-card {
     flex: 1 1 calc(33.33% - 20px);
     /* 2 cards per row */
-    max-width: calc(33.33% - 20px);
+    max-width: calc(33.33% - 14px);
     /* Prevents cards from exceeding row width */
   }
 
@@ -96,12 +100,12 @@ const categories = computed(() => {
     .category-card {
       flex: 1 1 calc(50% - 20px);
       /* 2 cards per row */
-      max-width: calc(50% - 20px);
+      max-width: calc(50% - 10px);
       /* Prevents cards from exceeding row width */
     }
 
     .category-image {
-      height: 110px !important;
+      height: 120px !important;
 
     }
   }
@@ -111,32 +115,22 @@ const categories = computed(() => {
   .category-card {
     flex: 1 1 calc(50% - 20px);
     /* 2 cards per row */
-    max-width: calc(50% - 20px);
+    max-width: calc(50% - 10px);
     /* Prevents cards from exceeding row width */
   }
 
-  @media (max-width: 577px) {
-    .category-card {
-      flex: 1 1 calc(50% - 20px);
-      /* 2 cards per row */
-      max-width: calc(50% - 20px);
-      /* Prevents cards from exceeding row width */
-    }
+  .category-name {
 
-    .category-name {
+    font-size: 0.8rem !important;
+  }
 
-      font-size: 0.8rem !important;
-    }
-
-    .category-image {
-      height: 100px !important;
-
-    }
+  .category-image {
+    height: 145px !important;
 
   }
 
-
 }
+
 
 .card-content {
   background: white;
@@ -166,11 +160,17 @@ const categories = computed(() => {
 
 .cat-title {
   font-size: 1.5rem; // Original size
+
   @media (max-width: 768px) {
     font-size: 1.25rem; // Smaller size for medium screens
   }
+
   @media (max-width: 550px) {
     font-size: 1rem; // Smaller size for small screens
   }
+}
+
+.mobile-container {
+  padding: 0 8px;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <div class="container" dir="rtl">
+  <div class="container">
     <div class="rtl-image-header-wrapper" dir="rtl">
       <img class="rtl-image-header" :src="imageHeader.src" />
 
-      <h1 class="rtl-image-title" dir="rtl">
+      <h1 class="rtl-image-title">
         {{ imageHeader.title }}
       </h1>
     </div>
@@ -32,7 +32,7 @@ const props = defineProps<{
   .rtl-image-title {
     font-size: 16px !important;
     padding: 0 5px;
-    text-align: right;
+
   }
 }
 
@@ -40,6 +40,7 @@ const props = defineProps<{
 .rtl-image-header-wrapper {
   border-radius: 5px;
   position: relative;
+  text-align: right;
   margin-right: auto;
 
   >.rtl-image-header {
@@ -66,6 +67,4 @@ const props = defineProps<{
 
 
 }
-
-
 </style>

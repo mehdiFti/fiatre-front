@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4">
+  <div class=" mt-4">
     <div class="category-wrapper">
       <FeatureCard v-for="item in categories" :key="item.id" :link="linkPath + item.slug" :img="getImageUrl(item.image)"
         :title="item.name" />
@@ -52,7 +52,7 @@ const getImageUrl = (imagePath: string) => {
 @media (max-width: 550px) {
   .category-wrapper {
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px 10px;
   }
 }
 
@@ -60,7 +60,7 @@ const getImageUrl = (imagePath: string) => {
 @media (max-width: 360px) {
   .category-wrapper {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 20px 10px;
   }
 
 

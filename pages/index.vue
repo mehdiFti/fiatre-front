@@ -1,6 +1,8 @@
 <template>
   <div class="background-color">
-    <Hero class="margin-home" :images-hero="heroSections" />
+    <div class="hero-wrapper">
+      <Hero class="margin-home" :images-hero="heroSections" />
+    </div>
 
     <div v-for="(section, key, index) in homeSections" :key="section.sectionTitle">
       <HomeSection v-if="index % 2 === 1" :section="section" />
@@ -10,10 +12,7 @@
         <TheSlider :cardsSlider="section.episodes" class="semi-button" />
       </template>
 
-      <ExclusiveCard
-        :class="{'mt-5': hasPosters(index)}"
-        :posters="posters[index]"
-      />
+      <ExclusiveCard :class="{ 'mt-5': hasPosters(index) }" :posters="posters[index]" />
     </div>
 
     <TheBlog />
@@ -97,12 +96,46 @@ const heroSections = computed(() => {
 
 // Helper function to check if posters exist for the given index
 const hasPosters = (index) => posters.value[index] && posters.value[index].length > 0;
+
+import { useRoute, navigateTo } from '#app';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  const route = useRoute();
+
+  // Check if there are payment-related query parameters
+  if (route.query.status || route.query.Status) {
+    const status = (route.query.status || route.query.Status || '').toUpperCase();
+    const authority = route.query.Authority || '';
+    const refID = route.query.refID || '';
+
+    // Redirect to the proper result page
+    navigateTo({
+      path: '/subscription/buys/result',
+      query: {
+        Authority: authority,
+        Status: status,
+        refID: refID
+      },
+    });
+  }
+});
 </script>
 
 <style lang="scss">
+.hero-wrapper {
+  min-height: 400px; // Adjust based on your smallest possible hero height
+  width: 100%;
+  position: relative;
+}
+
 .margin-home {
   margin-bottom: 40px;
 }
 
+// Add aspect ratio container for images
+.background-color {
+  width: 100%;
+  overflow: hidden;
+}
 </style>
-

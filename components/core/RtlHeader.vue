@@ -404,16 +404,13 @@ function toggleMailBox() {
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  background: $third;
   border: none;
   border-radius: 0 0 10px 10px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
-.logout-button:hover {
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
-}
 
 .fade-enter-active,
 .fade-leave-active {

@@ -172,7 +172,7 @@ const formattedTime = computed(() => {
       text-align: left;
       font-size: 0.7rem;
       padding-left: 5px;
-      margin-bottom: 10px;
+
     }
 
     .blog-description {

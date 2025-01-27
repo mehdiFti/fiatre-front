@@ -50,7 +50,6 @@ onMounted(() => {
   height: 150px;
   padding: 20px;
   background-color: #222;
-  border: 1px solid $border-color;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
