@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="container">
         <div class="video-container">
             <video ref="videoPlayer"
@@ -181,4 +181,4 @@ onUnmounted(() => {
     }
 
 }
-</style>
+</style> -->

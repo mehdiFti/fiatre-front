@@ -1,12 +1,12 @@
 import postcssRTLCSS from 'postcss-rtlcss';
-import {vite as vidstack} from 'vidstack/plugins';
+import { vite as vidstack } from 'vidstack/plugins';
 import path from 'path';
 
 export default defineNuxtConfig({
 
-  sourcemap: {server: true, client: true},
-  
-  devtools: {enabled: true},
+  sourcemap: { server: true, client: true },
+
+  devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
     '@nuxt/image',
@@ -35,15 +35,15 @@ export default defineNuxtConfig({
     iframes: false,
     native: false,
     directiveOnly: false,
-    
+
     // Default image must be in the public folder
     // defaultImage: '/images/default-image.jpg',
-  
+
     // To remove class set value to false
     loadingClass: 'isLoading',
     loadedClass: 'isLoaded',
     appendClass: 'lazyLoad',
-    
+
     observerConfig: {
       // See IntersectionObserver documentation
     }
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
 
     esbuild: {
       drop: ["console"],
-  },
+    },
     plugins: [
       vidstack(),
     ],

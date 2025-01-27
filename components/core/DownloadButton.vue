@@ -36,7 +36,7 @@ const downloadVideo = () => {
   transition: background 0.2s, transform 0.3s;
 
   &:active {
-    background: darken($red, 10%);
+    background: darken($third, 10%);
   }
 }
 </style>

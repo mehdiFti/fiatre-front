@@ -1,9 +1,10 @@
 <template>
-  <ClientOnly>
+
     <div class='Container'>
       <media-player ref="addPlayerRef" :title="movie.title" :src="videoUrl" :current-time="startTime" keep-alive
         load="play" preload="none" playsInline viewType="video" class="video-player" @play="handlePlay($event.target)"
         @pause="handlePause($event)">
+        <ClientOnly>
         <media-provider />
         <media-poster class="vds-poster" :src="movie.cover" posterLoad="visible" :alt="`Poster for ${movie.title}`" />
         <media-video-layout class="video-layout">
@@ -36,6 +37,7 @@
             <media-controls-group class="vds-controls-group"></media-controls-group>
           </media-controls>
         </media-video-layout>
+      </ClientOnly>
       </media-player>
       <div class="other-buttons-sm" v-if="!isPlaying && !isInsideVideoSeries">
         <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
@@ -49,7 +51,7 @@
         }" @bookmark-toggled="handleBookmarkToggled" />
       </div>
     </div>
-  </ClientOnly>
+
 </template>
 <script setup lang="ts">
 import 'vidstack/bundle';
@@ -186,6 +188,11 @@ const posterFit = computed(() => {
 });
 </script>
 <style lang="scss" scoped>
+:deep([data-media-player][data-layout='video']:not([data-fullscreen])) {
+  border: none !important;
+  // border-radius: 0 !important;
+}
+
 .player {
   --brand-color: #f5f5f5;
   --focus-color: #4e9cf6;
@@ -326,9 +333,5 @@ media-controls[data-visible] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-[data-media-player][data-layout='video']:not([data-fullscreen]) {
-  border-radius: 0 !important;
 }
 </style>
