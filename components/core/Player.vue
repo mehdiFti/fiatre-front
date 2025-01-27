@@ -1,14 +1,14 @@
 <template>
 
-    <div class='Container'>
-      <media-player ref="addPlayerRef" :title="movie.title" :src="videoUrl" :current-time="startTime" keep-alive
-        load="play" preload="none" playsInline viewType="video" class="video-player" @play="handlePlay($event.target)"
-        @pause="handlePause($event)">
-        <ClientOnly>
+  <div class='Container'>
+    <media-player ref="addPlayerRef" :title="movie.title" :src="videoUrl" :current-time="startTime" keep-alive
+      load="play" preload="none" playsInline viewType="video" class="video-player" @play="handlePlay($event.target)"
+      @pause="handlePause($event)">
+      <ClientOnly>
         <media-provider />
         <media-poster class="vds-poster" :src="movie.cover" posterLoad="visible" :alt="`Poster for ${movie.title}`" />
         <media-video-layout class="video-layout">
-          <div class="other-buttons-lg" v-if="!isPlaying && !isInsideVideoSeries">
+          <div class="other-buttons-lg" :class="{ 'hidden': isPlaying || isInsideVideoSeries }">
             <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
             <DownloadButton :videoUrl="movie.video_mp4" />
             <BookmarkButton :videoId="movie.key" :videoDetails="{
@@ -38,19 +38,19 @@
           </media-controls>
         </media-video-layout>
       </ClientOnly>
-      </media-player>
-      <div class="other-buttons-sm" v-if="!isPlaying && !isInsideVideoSeries">
-        <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
-        <DownloadButton :videoUrl="movie.video_mp4" />
-        <BookmarkButton :videoId="movie.key" :videoDetails="{
-          key: movie.key,
-          title: movie.title,
-          video: movie.video,
-          cover: movie.cover,
-          description: movie.description
-        }" @bookmark-toggled="handleBookmarkToggled" />
-      </div>
+    </media-player>
+    <div class="other-buttons-sm" :class="{ 'hidden': isPlaying || isInsideVideoSeries }">
+      <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
+      <DownloadButton :videoUrl="movie.video_mp4" />
+      <BookmarkButton :videoId="movie.key" :videoDetails="{
+        key: movie.key,
+        title: movie.title,
+        video: movie.video,
+        cover: movie.cover,
+        description: movie.description
+      }" @bookmark-toggled="handleBookmarkToggled" />
     </div>
+  </div>
 
 </template>
 <script setup lang="ts">
@@ -245,13 +245,13 @@ const posterFit = computed(() => {
 }
 
 @media (max-width: 480px) {
-  .other-buttons-sm {
+  .other-buttons-sm:not(.hidden) {
     display: flex;
   }
 }
 
 @media (min-width: 481px) {
-  .other-buttons-lg {
+  .other-buttons-lg:not(.hidden) {
     display: flex;
   }
 }
@@ -268,7 +268,7 @@ const posterFit = computed(() => {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .bookmark-button {

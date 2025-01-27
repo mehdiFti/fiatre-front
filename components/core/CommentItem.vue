@@ -160,6 +160,7 @@ const checkMobileView = () => {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    background-color: $milky;
   }
 
   .comment-content {
@@ -174,20 +175,31 @@ const checkMobileView = () => {
     overflow-wrap: break-word;
 
     .comment-header {
-      display: flex;
-      justify-content: space-between;
+      .comment-author-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-      .comment-author {
-        font-weight: bold;
-      }
+        .author-info {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
 
-      .comment-metadata {
-        font-size: 0.8em;
-        color: $gray;
+        .comment-metadata {
+          font-size: 0.7em;
+          color: $gray;
+        }
+
+        .comment-author {
+          font-weight: bold;
+          font-size: 14px;
+        }
       }
     }
 
     .comment-text {
+      font-size: 12px;
       margin: 5px 0;
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -208,6 +220,11 @@ const checkMobileView = () => {
       display: flex;
       flex-direction: column;
       margin-top: 10px;
+
+
+      button {
+        align-self: flex-end;
+      }
 
       textarea {
         resize: none;

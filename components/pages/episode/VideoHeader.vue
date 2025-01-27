@@ -1,8 +1,10 @@
 <template>
   <ClientOnly>
-    <div class=" container video-header">
-      <Player :movie="movie" :video-url="videoUrl" :start-time="startTime" :no-container="noContainer"
-        :is-inside-video-series="isInsideVideoSeries" :on-pause="onPause" />
+    <div class="container video-header">
+      <div class="video-container">
+        <Player :movie="movie" :video-url="videoUrl" :start-time="startTime" :no-container="noContainer"
+          :is-inside-video-series="isInsideVideoSeries" :on-pause="onPause" />
+      </div>
     </div>
   </ClientOnly>
 </template>
@@ -33,4 +35,7 @@ const props = defineProps<{
 .video-header {
   border-radius: 5px;
 }
-</style>
+
+// .video-container {
+//   width: 85%;
+// }</style>

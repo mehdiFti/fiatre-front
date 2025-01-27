@@ -63,7 +63,7 @@ defineProps({
   }
 
   .movie-card-title {
-    padding: 2px 2px;
+    padding: 2px 6px;
     margin: 0;
     background: $milky ;
     color: $black;
@@ -89,7 +89,7 @@ defineProps({
 @media (max-width: 480px) {
   .movie-card {
     .movie-card-title {
-      font-size: 0.685rem;
+      font-size: 0.7rem;
       max-height: 50px;
     }
   }

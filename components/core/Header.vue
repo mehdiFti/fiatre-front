@@ -206,6 +206,7 @@ function toggleMailBox() {
   margin: 0 15px;
   text-decoration: none;
   color: $black;
+  user-select: none;
   transition: color 0.3s;
   white-space: nowrap;
   font-size: 0.8rem;
@@ -387,7 +388,7 @@ function toggleMailBox() {
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
- background-color: $third;
+  background-color: $third;
   border: none;
   border-radius: 0 0 10px 10px;
   cursor: pointer;
@@ -665,5 +666,18 @@ function toggleMailBox() {
     padding: 1px 3px;
   }
 
+}
+
+@media (max-width: 700px) {
+
+  .container,
+  .container-fluid,
+  .container-xxl,
+  .container-xl,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    --bs-gutter-x: 0; // Disable gutter for screens below 700px
+  }
 }
 </style>

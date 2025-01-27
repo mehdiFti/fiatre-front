@@ -77,8 +77,8 @@ const slidesPerView = computed(() => {
   .slider-cards {
     &.alt-hover:hover {
       transform: none;
-      transition: transform 0.3s ease;
-      box-shadow: 0 0 10px rgba($third, 1);
+      // transition: transform 0.3s ease;
+      // box-shadow: 0 0 10px rgba($third, 1);
     }
   }
 }

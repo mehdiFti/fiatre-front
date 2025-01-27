@@ -213,6 +213,7 @@ function toggleMailBox() {
 .link-black {
   margin: 0 15px;
   text-decoration: none;
+  user-select: none;
   color: $black;
   transition: color 0.3s;
   white-space: nowrap;
@@ -730,6 +731,19 @@ function toggleMailBox() {
   * {
     // Force RTL text alignment for all children
     text-align: right !important;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .container,
+  .container-fluid,
+  .container-xxl,
+  .container-xl,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    --bs-gutter-x: 0; // Disable gutter for screens below 700px
   }
 }
 </style>

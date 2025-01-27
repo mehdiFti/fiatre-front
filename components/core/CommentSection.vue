@@ -92,14 +92,20 @@ const handleSubmit = () => {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .comment-wrapper {
 
   >.comment-form {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     text-align: right;
+
+    button {
+      align-self: flex-end;
+    }
   }
+
 
   .comment-textarea {
     resize: none;
@@ -107,8 +113,8 @@ const handleSubmit = () => {
     border: none;
     border-radius: 10px;
     background-color: $gray-100;
-    border: 1px solid $gray-200;
     margin-bottom: 10px;
+    margin-top: 20px;
     font-size: 14px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: left;
