@@ -105,7 +105,7 @@ const onSubmit = handleSubmit(async () => {
     isLoading.value = true;
 
     // First register the user
-    const { data: registerData, error: registerError } = await useAuthFetch('/api/auth/register/', {
+    const { data: registerData, error: registerError } = await useApiFetch('/api/auth/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
