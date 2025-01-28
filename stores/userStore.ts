@@ -23,6 +23,14 @@ export const useUserStore = defineStore('user', () => {
     };
   });
 
+
+  const cleanCSRFToken = () => {
+    const csrfToken = useCookie('csrftoken');
+    const sessionId = useCookie('sessionid');
+    csrfToken.value = undefined;
+    sessionId.value = undefined;
+  }
+
   const logout = async (to?: RouteLocationRaw) => {
     refreshToken.value = undefined;
     accessToken.value = undefined;
@@ -142,5 +150,6 @@ export const useUserStore = defineStore('user', () => {
     setLoginData,
     setUser,
     getMe,
+    cleanCSRFToken
   };
 });

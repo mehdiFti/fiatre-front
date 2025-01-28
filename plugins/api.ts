@@ -1,5 +1,5 @@
-import {jwtDecode} from 'jwt-decode';
-import type {Pinia} from 'pinia';
+import { jwtDecode } from 'jwt-decode';
+import type { Pinia } from 'pinia';
 
 interface IApiOptions {
   onUnauthorized?: boolean;
@@ -19,7 +19,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     return $fetch.create({
       headers,
 
-      async onRequest({options: _options}) {
+      async onRequest({ options: _options }) {
         if (options.onUnauthorized && accessToken.value) {
           await nuxtApp.runWithContext(async () => {
             const decodedAccessToken = jwtDecode(accessToken.value as string);
@@ -38,12 +38,18 @@ export default defineNuxtPlugin((nuxtApp) => {
           });
         }
       },
-      async onResponse({request, response, options: _options}) {
+      async onResponse({ request, response, options: _options }) {
         if (response.status === 401) {
           await nuxtApp.runWithContext(async () => {
             const userStore = useUserStore(nuxtApp.$pinia as Pinia);
 
             await userStore.logout();
+          });
+        } else if (response.status === 403) {
+          await nuxtApp.runWithContext(async () => {
+            const userStore = useUserStore(nuxtApp.$pinia as Pinia);
+
+            userStore.cleanCSRFToken();
           });
         }
       },
