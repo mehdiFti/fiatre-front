@@ -8,7 +8,7 @@
         <media-provider />
         <media-poster class="vds-poster" :src="movie.cover" posterLoad="visible" :alt="`Poster for ${movie.title}`" />
         <media-video-layout class="video-layout">
-          <div class="other-buttons-lg" :class="{ 'hidden': isPlaying || isInsideVideoSeries }">
+          <div class="other-buttons-lg" v-if="!isPlaying && !isInsideVideoSeries">
             <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
             <DownloadButton :videoUrl="movie.video_mp4" />
             <BookmarkButton :videoId="movie.key" :videoDetails="{
@@ -39,7 +39,7 @@
         </media-video-layout>
       </ClientOnly>
     </media-player>
-    <div class="other-buttons-sm" :class="{ 'hidden': isPlaying || isInsideVideoSeries }">
+    <div class="other-buttons-sm" v-if="!isPlaying && !isInsideVideoSeries">
       <ButtonPreview :episodeId="movie.key" :slug="movie.title" @showModal="handlePreviewModal" />
       <DownloadButton :videoUrl="movie.video_mp4" />
       <BookmarkButton :videoId="movie.key" :videoDetails="{
@@ -245,13 +245,13 @@ const posterFit = computed(() => {
 }
 
 @media (max-width: 480px) {
-  .other-buttons-sm:not(.hidden) {
+  .other-buttons-sm {
     display: flex;
   }
 }
 
 @media (min-width: 481px) {
-  .other-buttons-lg:not(.hidden) {
+  .other-buttons-lg {
     display: flex;
   }
 }
@@ -268,7 +268,7 @@ const posterFit = computed(() => {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 .bookmark-button {
