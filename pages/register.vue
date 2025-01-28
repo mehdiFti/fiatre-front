@@ -7,39 +7,39 @@
         <VeeForm class="register-form" :validate-on-blur="true" :validate-on-change="true" :validate-on-input="false"
           :validate-on-model-update="true" @submit="onSubmit">
           <div class="register-form-control">
-            <VeeField v-model="values.lastname" name="lastname" class="register-input" rules="required|alpha_custom" />
+            <VeeField v-model="form.lastname" name="lastname" class="register-input" rules="required|alpha_custom" />
             <label class="register-label">نام</label>
             <ErrorMessage name="lastname" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField v-model="values.familyname" name="familyname" class="register-input"
+            <VeeField v-model="form.familyname" name="familyname" class="register-input"
               rules="required|alpha_custom" />
             <label class="register-label">نام خانوادگی</label>
             <ErrorMessage name="familyname" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField v-model="values.phone" name="phone" class="register-input" type="tel" rules="required|phone" />
+            <VeeField v-model="form.phone" name="phone" class="register-input" type="tel" rules="required|phone" />
             <label class="register-label">شماره همراه</label>
             <ErrorMessage name="phone" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField v-model="values.email" name="email" class="register-input" type="email" rules="required|email" />
+            <VeeField v-model="form.email" name="email" class="register-input" type="email" rules="required|email" />
             <label class="register-label">ایمیل</label>
             <ErrorMessage name="email" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField v-model="values.password" name="password" class="register-input" type="password"
+            <VeeField v-model="form.password" name="password" class="register-input" type="password"
               rules="required|min:8|password_custom" />
             <label for="password" class="register-label">رمز</label>
             <ErrorMessage name="password" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField v-model="values.repeat_password" name="repeat_password" class="register-input" type="password"
+            <VeeField v-model="form.repeat_password" name="repeat_password" class="register-input" type="password"
               rules="required|confirmed:password" />
             <label for="password" class="register-label">تکرار رمز</label>
             <ErrorMessage name="repeat_password" as="span" class="error-message" />
@@ -87,21 +87,20 @@ useValidationRules();
 const router = useRouter();
 const isLoading = ref(false);
 
-const initialValues = {
+const form = ref({
   lastname: '',
   familyname: '',
   phone: '',
   email: '',
   password: '',
   repeat_password: '',
-};
-
-const { handleSubmit, values } = useForm({
-  initialValues,
-  validateOnMount: false
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const { handleSubmit } = useForm({
+  initialValues: form.value,
+});
+
+const onSubmit = handleSubmit(async () => {
   try {
     isLoading.value = true;
 
@@ -112,12 +111,12 @@ const onSubmit = handleSubmit(async (values) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        first_name: values.lastname,
-        last_name: values.familyname,
-        email: values.email,
-        phone: values.phone,
-        password: values.password,
-        password2: values.repeat_password,
+        first_name: form.value.lastname,
+        last_name: form.value.familyname,
+        email: form.value.email,
+        phone: form.value.phone,
+        password: form.value.password,
+        password2: form.value.repeat_password,
         remember_me: true
       }),
       credentials: 'include'
@@ -145,8 +144,8 @@ const onSubmit = handleSubmit(async (values) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phone: values.phone,
-          password: values.password,
+          phone: form.value.phone,
+          password: form.value.password,
           remember_me: true
         }),
         credentials: 'include'
