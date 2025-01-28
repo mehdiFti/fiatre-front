@@ -1,97 +1,55 @@
 <template>
   <main class="container">
     <section class="register-container" dir="rtl">
-      <img class="register-image" src="/image/background.jpg" alt=""/>
+      <img class="register-image" src="/image/background.jpg" alt="" />
       <div class="register-form-wrapper">
         <h1 class="register-title">ثبت نام</h1>
-        <VeeForm
-          class="register-form"
-          :validate-on-blur="true"
-          :validate-on-change="true"
-          :validate-on-input="false"
-          :validate-on-model-update="true"
-          @submit="onSubmit"
-        >
+        <VeeForm class="register-form" :validate-on-blur="true" :validate-on-change="true" :validate-on-input="false"
+          :validate-on-model-update="true" @submit="onSubmit">
           <div class="register-form-control">
-            <VeeField
-              v-model="values.lastname"
-              name="lastname"
-              class="register-input"
-              rules="required|alpha_custom"
-            />
+            <VeeField v-model="values.lastname" name="lastname" class="register-input" rules="required|alpha_custom" />
             <label class="register-label">نام</label>
             <ErrorMessage name="lastname" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              v-model="values.familyname"
-              name="familyname"
-              class="register-input"
-              rules="required|alpha_custom"
-            />
+            <VeeField v-model="values.familyname" name="familyname" class="register-input"
+              rules="required|alpha_custom" />
             <label class="register-label">نام خانوادگی</label>
             <ErrorMessage name="familyname" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              v-model="values.phone"
-              name="phone"
-              class="register-input"
-              type="tel"
-              rules="required|phone"
-            />
+            <VeeField v-model="values.phone" name="phone" class="register-input" type="tel" rules="required|phone" />
             <label class="register-label">شماره همراه</label>
             <ErrorMessage name="phone" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              v-model="values.email"
-              name="email"
-              class="register-input"
-              type="email"
-              rules="required|email"
-            />
+            <VeeField v-model="values.email" name="email" class="register-input" type="email" rules="required|email" />
             <label class="register-label">ایمیل</label>
             <ErrorMessage name="email" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              v-model="values.password"
-              name="password"
-              class="register-input"
-              type="password"
-              rules="required|min:8|password_custom"
-            />
+            <VeeField v-model="values.password" name="password" class="register-input" type="password"
+              rules="required|min:8|password_custom" />
             <label for="password" class="register-label">رمز</label>
             <ErrorMessage name="password" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              v-model="values.repeat_password"
-              name="repeat_password"
-              class="register-input"
-              type="password"
-              rules="required|confirmed:password"
-            />
+            <VeeField v-model="values.repeat_password" name="repeat_password" class="register-input" type="password"
+              rules="required|confirmed:password" />
             <label for="password" class="register-label">تکرار رمز</label>
             <ErrorMessage name="repeat_password" as="span" class="error-message" />
           </div>
 
           <div class="register-form-control">
-            <VeeField
-              name="terms"
-              type="checkbox"
-              :value="true"
-              :unchecked-value="false"
-              v-slot="{ field }"
-            >
+            <VeeField name="terms" type="checkbox" :value="true" :unchecked-value="false" v-slot="{ field }">
               <span class="terms-text">
-                <NuxtLink to="/terms" target="_blank" style="color: #fe0100;">شرایط و قوانین فیاتر</NuxtLink> را می‌پذیرم و بیشتر از 15 سال سن دارم.
+                <NuxtLink to="/terms" target="_blank" style="color: #fe0100;">شرایط و قوانین فیاتر</NuxtLink> را
+                می‌پذیرم و بیشتر از 15 سال سن دارم.
               </span>
               <label for="terms" class="register-label"></label>
             </VeeField>
@@ -226,14 +184,14 @@ const onSubmit = handleSubmit(async (values) => {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 620px;
     object-fit: cover;
     z-index: -1;
     filter: brightness(45%);
   }
 
   .register-form-wrapper {
-    margin-bottom: 10px ;
+    margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
     max-width: 450px;
@@ -244,7 +202,7 @@ const onSubmit = handleSubmit(async (values) => {
     position: relative;
 
     .register-title {
-      display:flex;
+      display: flex;
       justify-content: center;
       align-items: center;
       color: $white;
@@ -269,8 +227,8 @@ const onSubmit = handleSubmit(async (values) => {
           padding: 0 20px;
           direction: rtl;
 
-          &:focus + .register-label,
-          &[has-value] + .register-label {
+          &:focus+.register-label,
+          &[has-value]+.register-label {
             font-size: 0.7rem;
             transform: translateY(-100%);
           }
@@ -327,8 +285,8 @@ const onSubmit = handleSubmit(async (values) => {
 @media (max-width: 500px) {
 
   .register-form-wrapper {
-    max-width: 80% !important;  // Reduce the max-width for better fit
- // Reduce padding inside the form
+    max-width: 80% !important; // Reduce the max-width for better fit
+    // Reduce padding inside the form
 
     .register-title {
       font-size: 1.1rem !important; // Slightly smaller title
@@ -340,13 +298,13 @@ const onSubmit = handleSubmit(async (values) => {
       .register-form-control {
         height: 35px !important; // Reduce input height
         margin-bottom: 25px !important; // Reduce margin between inputs
-        
+
         .register-input {
           font-size: 0.8rem !important; // Smaller font size for input text
           padding: 0 15px !important; // Reduce padding inside inputs
 
-          &:focus + .register-label,
-          &[has-value] + .register-label {
+          &:focus+.register-label,
+          &[has-value]+.register-label {
             font-size: 0.6rem !important; // Smaller font for focused/filled labels
             transform: translateY(-100%);
           }
@@ -375,6 +333,7 @@ const onSubmit = handleSubmit(async (values) => {
     }
   }
 }
+
 @media (max-width: 360px) {
   .register-form-wrapper {
     .register-title {

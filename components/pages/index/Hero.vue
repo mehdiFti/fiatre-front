@@ -128,7 +128,7 @@ const toggleAutoplay = (value: boolean) => {
       height: auto;
       border-radius: 0 0 5px 5px;
       aspect-ratio: 18/9;
-      // object-fit: cover;
+      object-fit: cover;
 
 
       @media (max-width: 760px) {

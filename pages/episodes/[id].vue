@@ -1,67 +1,47 @@
 <template>
-    <div>
-      <ModalWarn dir="rtl"/>
-      <!-- For series -->
-      <div v-if="series.length > 0">
-        <RtlImageHeader :imageHeader="imageHeader" />
-        <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
-      <VideoSeries v-if="userStore.user?.is_subscription_active"  :episodes="series"
-        :onPause="handleVideoPause" />
-        </div>
-      <!-- For single episode -->
-      <div v-else>
-        <VideoHeader 
-          v-if="userStore.user?.is_subscription_active && movie.title" 
-          :movie="movie" 
-          :videoUrl="movie.video_mp4"
-          :onPause="handleVideoPause"
-          :startTime="movie.lastWatchedSecond"
-        /> 
-        <RtlImageHeader 
-          v-else
-          :imageHeader="imageHeader" 
-        />
-      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0"  />
-      </div>
-      
-    <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl"  class='mt-4'/>
-  
-    <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" /> 
+  <div>
+    <ModalWarn dir="rtl" />
+    <!-- For series -->
+    <div v-if="series.length > 0">
+      <RtlImageHeader :imageHeader="imageHeader" />
+      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" mb-5 />
+      <VideoSeries v-if="userStore.user?.is_subscription_active" :episodes="series" :onPause="handleVideoPause" />
+    </div>
+    <!-- For single episode -->
+    <div v-else>
+      <VideoHeader v-if="userStore.user?.is_subscription_active && movie.title" :movie="movie"
+        :videoUrl="movie.video_mp4" :onPause="handleVideoPause" :startTime="movie.lastWatchedSecond" />
+      <RtlImageHeader v-else :imageHeader="imageHeader" />
+      <VideoDetails dir="rtl" :details="details" :isSeries="series.length > 0" />
+    </div>
 
-    <TheSeparator title="توضیحات" dir="rtl" class="mt-5" />
-    
+    <TheSeparator v-if="galleries.length > 0" title="گالری تصاویر" dir="rtl" class='mt-4' />
+
+    <Gallery v-if="galleries.length > 0" :images="galleries" dir="rtl" />
+
+    <TheSeparator :title="movie.title" dir="rtl" class="mt-5" tag="h2" />
+
     <VideoDescription :vDescription="vDescription" dir="ltr" class='mb-3' />
 
-    <TheSeparator v-if="artists.length > 0"  title="عوامل و بازیگران" dir="rtl" />  
+    <TheSeparator v-if="artists.length > 0" title="عوامل و بازیگران" dir="rtl" />
 
-    <CastCrew v-if="artists.length > 0"  :crews="artists" class="mb-3"/>
-    
+    <CastCrew v-if="artists.length > 0" :crews="artists" class="mb-3" />
+
     <TheSeparator v-if="cardSlider.length > 0" title="عناوین مشابه" dir="rtl" />
-    
+
     <TheSlider class="mb-3" :cardsSlider="cardSlider" />
 
-    
-    <CommentSection 
-      :comments="comments" 
-      v-model="commentText"
-      :isSubmitting="isSubmitting"
-      @submit="submitComment"
-      dir="rtl" 
-      class="mb-5"
-    >
-      <CommentItem 
-        v-for="comment in comments" 
-        :key="comment.id" 
-        :comment="comment"
-        @reply-added="handleReplyAdded"
-      />
+
+    <CommentSection :comments="comments" v-model="commentText" :isSubmitting="isSubmitting" @submit="submitComment"
+      dir="rtl" class="mb-5">
+      <CommentItem v-for="comment in comments" :key="comment.id" :comment="comment" @reply-added="handleReplyAdded" />
     </CommentSection>
-    
+
     <Footer dir="rtl" />
 
   </div>
 </template>
-           
+
 <script setup lang="ts">
 
 definePageMeta({
@@ -102,15 +82,15 @@ const episode = computed(() => {
 const getEpisodeGalleriesRequest = await useApiFetch<any>(`/api/episodes/${episode.value.slug}/images/gallery/`, {
 });
 
-console.log(getEpisodeGalleriesRequest.data.value); 
+console.log(getEpisodeGalleriesRequest.data.value);
 
 const galleries = computed(() => {
   if (getEpisodeGalleriesRequest.status.value === 'success') {
-    const data = getEpisodeGalleriesRequest.data.value.data; 
+    const data = getEpisodeGalleriesRequest.data.value.data;
     if (Array.isArray(data)) {
       return data.map((gallery: any) => ({
         url: gallery.image.startsWith('http') ? gallery.image : `https://www.fiatre.ir${gallery.image}`,
-        alt: `Gallery image ${gallery.id}` 
+        alt: `Gallery image ${gallery.id}`
       }));
     } else {
       return [];
@@ -140,7 +120,7 @@ const movie = computed(() => {
   }
 })
 
-const details = computed(()=>{
+const details = computed(() => {
   return {
     genreValue: episode.value.genre,
     productValue: episode.value.country,
@@ -166,12 +146,12 @@ const artists = computed(() => {
 
 console.log('Artists data:', artists.value);
 
-const vDescription = computed(()=>{
-return {
+const vDescription = computed(() => {
+  return {
 
-  description: episode.value.description
+    description: episode.value.description
 
-}
+  }
 })
 
 // useSeoMeta({
@@ -203,8 +183,8 @@ const comments = computed(() => {
         user: {
           first_name: comment.user.first_name,
           last_name: comment.user.last_name,
-          avatar: comment.user.avatar.startsWith('http') 
-            ? comment.user.avatar 
+          avatar: comment.user.avatar.startsWith('http')
+            ? comment.user.avatar
             : `https://www.fiatre.ir${comment.user.avatar}`
         },
         replies: []
@@ -220,7 +200,7 @@ const comments = computed(() => {
         // This is a top-level comment
         topLevelComments.push(formattedComment);
       }
-      
+
       commentMap.set(comment.id, formattedComment);
     });
 
@@ -234,7 +214,7 @@ const isSubmitting = ref(false);
 
 const submitComment = async () => {
   if (!commentText.value.trim()) return;
-  
+
   isSubmitting.value = true;
   try {
     const response = await useAuthFetch('/api/episodes/comments/', {
@@ -254,7 +234,7 @@ const submitComment = async () => {
       const newCommentsRequest = await useAuthFetch<any>(
         `/api/episodes/${episode.value.slug}/comments/`
       );
-      
+
       if (newCommentsRequest.data.value) {
         comments.value = newCommentsRequest.data.value.data.map((comment: any) => ({
           id: comment.id,
@@ -263,13 +243,13 @@ const submitComment = async () => {
           user: {
             first_name: comment.user.first_name,
             last_name: comment.user.last_name,
-            avatar: comment.user.avatar.startsWith('http') 
-              ? comment.user.avatar 
+            avatar: comment.user.avatar.startsWith('http')
+              ? comment.user.avatar
               : `https://www.fiatre.ir${comment.user.avatar}`
           }
         }));
       }
-      
+
       commentText.value = '';
     }
   } catch (error) {
@@ -284,7 +264,7 @@ const handleReplyAdded = async () => {
   const newCommentsRequest = await useAuthFetch<any>(
     `/api/episodes/${episode.value.slug}/comments/`
   );
-  
+
   if (newCommentsRequest.data.value) {
     comments.value = newCommentsRequest.data.value.data.map((comment: any) => ({
       id: comment.id,
@@ -293,8 +273,8 @@ const handleReplyAdded = async () => {
       user: {
         first_name: comment.user.first_name,
         last_name: comment.user.last_name,
-        avatar: comment.user.avatar.startsWith('http') 
-          ? comment.user.avatar 
+        avatar: comment.user.avatar.startsWith('http')
+          ? comment.user.avatar
           : `https://www.fiatre.ir${comment.user.avatar}`
       }
     }));
@@ -345,26 +325,24 @@ const keywords = computed(() => {
 
 // Add SEO meta tags
 useSeoMeta({
-    title: title.value,
-    description: description.value,
-    keywords: keywords.value,
-    // Open Graph
-    ogTitle: title.value,
-    ogDescription: description.value,
-    ogType: 'video.movie',
-    ogUrl: `https://fiatre.ir/episodes/${route.params.id}`,
-    ogImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
-    // Twitter Card
-    twitterCard: 'summary_large_image',
-    twitterTitle: title.value,
-    twitterDescription: description.value,
-    twitterImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
-    // Robots
-    robots: 'index, follow',
+  title: title.value,
+  description: description.value,
+  keywords: keywords.value,
+  // Open Graph
+  ogTitle: title.value,
+  ogDescription: description.value,
+  ogType: 'video.movie',
+  ogUrl: `https://fiatre.ir/episodes/${route.params.id}`,
+  ogImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
+  // Twitter Card
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value,
+  twitterDescription: description.value,
+  twitterImage: episode.value?.cover || 'https://fiatre.ir/og-image-episode.jpg',
+  // Robots
+  robots: 'index, follow',
 });
 </script>
 
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -138,6 +138,15 @@ const toggleAnswer = (index: number) => {
   color: $black;
   transition: color 0.1s ease;
 
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 12px;
+    
+  }
+
   &:hover {
     background: $primary;
     background-clip: text;
@@ -148,8 +157,17 @@ const toggleAnswer = (index: number) => {
 
 .faq-answer {
   padding-top: 10px;
-  color: $gray-500;
+  color: $gray-600;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 12px;
+    
+  }
 }
 
 .icon-chevron-up,
