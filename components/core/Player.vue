@@ -3,7 +3,7 @@
   <div class='Container'>
     <media-player ref="addPlayerRef" :title="movie.title" :src="videoUrl" :current-time="startTime" keep-alive
       load="play" preload="none" playsInline viewType="video" class="video-player" @play="handlePlay($event.target)"
-      @pause="handlePause($event)" @fullscreenchange="handleFullscreenChange($event)">
+      @pause="handlePause($event)">
       <ClientOnly>
         <media-provider />
         <media-poster class="vds-poster" :src="movie.cover" posterLoad="visible" :alt="`Poster for ${movie.title}`" />
@@ -88,7 +88,6 @@ const props = defineProps<{
 const playerRefs = ref<MediaPlayerElement[]>([]);
 const currentPlaying = ref<MediaPlayerElement | null>(null);
 const isPlaying = ref(false);
-const isFullscreen = ref(false);
 
 const { pauseAllOtherPlayers } = useVideoPlayer()
 
@@ -113,15 +112,6 @@ const handlePause = (event: Event) => {
 const handleVolumeChange = (newVolume: number) => {
   if (currentPlaying.value) {
     currentPlaying.value.volume = newVolume;
-  }
-};
-
-const handleFullscreenChange = (event: Event) => {
-  const mediaPlayer = event.target as MediaPlayerElement;
-  isFullscreen.value = mediaPlayer.fullscreen;
-
-  if (!isFullscreen.value) {
-    isPlaying.value = !mediaPlayer.paused;
   }
 };
 
@@ -156,15 +146,10 @@ onMounted(() => {
   onBeforeUnmount(() => {
     observer.disconnect();
   });
-
-  playerRefs.value.forEach((player) => {
-    player.addEventListener('fullscreenchange', handleFullscreenChange);
-  });
 });
 
 onBeforeUnmount(() => {
   playerRefs.value.forEach((player) => {
-    player.removeEventListener('fullscreenchange', handleFullscreenChange);
     if (player) {
       player.destroy();
     }
