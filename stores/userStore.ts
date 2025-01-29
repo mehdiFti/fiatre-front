@@ -32,11 +32,18 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = async (to?: RouteLocationRaw) => {
-    // Get cookie references using useCookie composable
-    const csrfToken = useCookie('csrftoken', { maxAge: 0, path: '/' });
-    const sessionId = useCookie('sessionid', { maxAge: 0, path: '/' });
-    const refreshTokenCookie = useCookie('refresh-token', { maxAge: 0, path: '/' });
-    const accessTokenCookie = useCookie('access-token', { maxAge: 0, path: '/' });
+    // Define common cookie options
+    const mainDomainOpts = {
+      maxAge: 0,
+      path: '/',
+      domain: '.fiatre.ir'
+    };
+
+    // Get cookie references using useCookie composable with domain options
+    const csrfToken = useCookie('csrftoken', mainDomainOpts);
+    const sessionId = useCookie('sessionid', mainDomainOpts);
+    const refreshTokenCookie = useCookie('refresh-token', mainDomainOpts);
+    const accessTokenCookie = useCookie('access-token', mainDomainOpts);
 
     // Set all cookies to null to remove them
     csrfToken.value = null;
