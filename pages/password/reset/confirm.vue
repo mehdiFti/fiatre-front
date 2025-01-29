@@ -2,96 +2,93 @@
   <div class="container mb-5">
 
 
-  <div class="confirm-container">
-    <img class="confirm-image" src="/image/background.jpg" alt="">
+    <div class="confirm-container">
+      <img class="confirm-image" src="/image/background.jpg" alt="">
 
-    <div class="confirm-form-wrapper">
-      <h2 class="confirm-title">کد فعال سازی را وارد کنید</h2>
+      <div class="confirm-form-wrapper">
+        <h2 class="confirm-title">کد فعال سازی را وارد کنید</h2>
 
-      <VeeForm class="confirm-form" @submit="onSubmit">
-        <div class="confirm-form-control">
-          <VeeField
-            v-model="values.code"
-            name="code"
-            class="confirm-input"
-            type="text"
-            rules="required|digits:5"
-            placeholder="کد تایید را وارد کنید"
-          />
-          <label class="confirm-label">کد تایید</label>
-          <ErrorMessage name="code" as="span" class="error-message" />
-        </div>
-        <nuxt-link to="/password/reset">شماره همراه را اشتباه وارد کرده ام</nuxt-link>
-        <button type="submit" class="confirm-submit">بازیابی رمز</button>
-        <p class="confirm-countdown">{{ countdown }} ثانیه تا دریافت مجدد کد فعال سازی</p>
-      </VeeForm>
+        <VeeForm class="confirm-form" @submit="onSubmit">
+          <div class="confirm-form-control">
+            <VeeField v-model="form.code" name="code" class="confirm-input" type="text" rules="required|digits:5"
+              placeholder="کد تایید را وارد کنید" />
+            <label class="confirm-label">کد تایید</label>
+            <ErrorMessage name="code" as="span" class="error-message" />
+          </div>
+          <nuxt-link to="/password/reset">شماره همراه را اشتباه وارد کرده ام</nuxt-link>
+          <button type="submit" class="confirm-submit">بازیابی رمز</button>
+          <p class="confirm-countdown">{{ countdown }} ثانیه تا دریافت مجدد کد فعال سازی</p>
+        </VeeForm>
 
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
 useSeoMeta({
-title: 'تأیید کد فعال سازی',
-description: 'صفحه تأیید کد فعال سازی برای کاربران.',
-keywords: 'تأیید, کد فعال سازی, امنیت',
-ogTitle: 'تأیید کد فعال سازی',
-ogDescription: 'صفحه تأیید کد فعال سازی برای کاربران.',
-ogType: 'website',
-ogUrl: 'https://fiatre.ir/password/reset/confirm',
-ogImage: 'https://fiatre.ir/og-image-confirm.jpg',
-robots: 'index, follow',
-});       
+  title: 'تأیید کد فعال سازی',
+  description: 'صفحه تأیید کد فعال سازی برای کاربران.',
+  keywords: 'تأیید, کد فعال سازی, امنیت',
+  ogTitle: 'تأیید کد فعال سازی',
+  ogDescription: 'صفحه تأیید کد فعال سازی برای کاربران.',
+  ogType: 'website',
+  ogUrl: 'https://fiatre.ir/password/reset/confirm',
+  ogImage: 'https://fiatre.ir/og-image-confirm.jpg',
+  robots: 'index, follow',
+});
 
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useValidationRules } from '@/utils/validationRules'; 
+import { useValidationRules } from '@/utils/validationRules';
 import { ErrorMessage, useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 definePageMeta({
-middleware: ['redirect-if-authenticated'],
+  middleware: ['redirect-if-authenticated'],
 });
-useValidationRules(); 
+useValidationRules();
 
-const { handleSubmit, values } = useForm({
-initialValues: {
+const form = ref({
   code: ''
-}
 });
-const router = useRouter(); 
+
+const { handleSubmit } = useForm({
+  initialValues: form.value,
+});
+
+const router = useRouter();
 const userStore = useUserStore();
 
 const countdown = ref(180);
 let countdownInterval: NodeJS.Timeout;
 
 const startCountdown = () => {
-countdownInterval = setInterval(() => {
-  if (countdown.value > 0) {
-    countdown.value--;
-  } else {
-    clearInterval(countdownInterval);
-  }
-}, 1000);
+  countdownInterval = setInterval(() => {
+    if (countdown.value > 0) {
+      countdown.value--;
+    } else {
+      clearInterval(countdownInterval);
+    }
+  }, 1000);
 };
 
 onMounted(() => {
-startCountdown();
+  startCountdown();
 });
 
 onUnmounted(() => {
-clearInterval(countdownInterval);
+  clearInterval(countdownInterval);
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async () => {
   try {
     const phone = localStorage.getItem('resetPhone');
-    
+
     const { data, error } = await useApiFetch('/api/auth/login/code/confirm/', {
       method: 'POST',
       body: {
-        code: values.code,
+        code: form.value.code,
         phone: phone
       },
       headers: {
@@ -108,7 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     if (data.value) {
       // Store the verification code for password reset
-      localStorage.setItem('verificationCode', values.code);
+      localStorage.setItem('verificationCode', form.value.code);
       userStore.setLoginData(data.value.refresh, data.value.access, data.value.user);
       toast.success('کد با موفقیت تایید شد');
       await navigateTo('/password/reset/enter');
@@ -184,8 +181,8 @@ const onSubmit = handleSubmit(async (values) => {
         direction: rtl;
       }
 
-      .confirm-input:focus + .confirm-label,
-      .confirm-input[has-value] + .confirm-label {
+      .confirm-input:focus+.confirm-label,
+      .confirm-input[has-value]+.confirm-label {
         font-size: 0.75rem;
         transform: translateY(-130%);
       }

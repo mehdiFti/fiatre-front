@@ -32,12 +32,19 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = async (to?: RouteLocationRaw) => {
-    refreshToken.value = undefined;
-    accessToken.value = undefined;
-    const csrfToken = useCookie('csrftoken');
-    csrfToken.value = undefined;
-    const sessionId = useCookie('sessionid');
-    sessionId.value = undefined;
+    // Get cookie references using useCookie composable
+    const csrfToken = useCookie('csrftoken', { maxAge: 0, path: '/' });
+    const sessionId = useCookie('sessionid', { maxAge: 0, path: '/' });
+    const refreshTokenCookie = useCookie('refresh-token', { maxAge: 0, path: '/' });
+    const accessTokenCookie = useCookie('access-token', { maxAge: 0, path: '/' });
+
+    // Set all cookies to null to remove them
+    csrfToken.value = null;
+    sessionId.value = null;
+    refreshTokenCookie.value = null;
+    accessTokenCookie.value = null;
+
+    // Clear store state
     user.value = null;
     isProfileFetched.value = false;
 
