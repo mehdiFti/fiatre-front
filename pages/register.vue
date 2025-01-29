@@ -104,7 +104,8 @@ const onSubmit = handleSubmit(async () => {
   try {
     isLoading.value = true;
 
-    const { data, error } = await useApiFetch('/api/auth/register/', {
+    // First register the user
+    const { data: registerData, error: registerError } = await useAuthFetch('/api/auth/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,11 +122,11 @@ const onSubmit = handleSubmit(async () => {
       credentials: 'include'
     });
 
-    if (error.value) {
-      if (error.value.data?.non_field_errors) {
-        toast.error(error.value.data.non_field_errors[0]);
-      } else if (error.value.data) {
-        const messages = Object.values(error.value.data)
+    if (registerError.value) {
+      if (registerError.value.data?.non_field_errors) {
+        toast.error(registerError.value.data.non_field_errors[0]);
+      } else if (registerError.value.data) {
+        const messages = Object.values(registerError.value.data)
           .flat()
           .join('\n');
         toast.error(messages);
@@ -135,9 +136,30 @@ const onSubmit = handleSubmit(async () => {
       return;
     }
 
-    if (data.value) {
-      toast.success('ثبت نام با موفقیت انجام شد');
-      await navigateTo('/');
+    // If registration is successful, automatically log in
+    if (registerData.value) {
+      const { data: loginData, error: loginError } = await useAuthFetch('/api/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phone: form.value.phone,
+          password: form.value.password,
+          remember_me: true
+        }),
+        credentials: 'include'
+      });
+
+      if (loginError.value) {
+        toast.error('خطا در ورود به سیستم. لطفا مجددا تلاش کنید.');
+        return;
+      }
+
+      if (loginData.value) {
+        toast.success('ثبت نام و ورود با موفقیت انجام شد');
+        await navigateTo('/');
+      }
     }
   } catch (err) {
     toast.error('خطا در ارتباط با سرور');
