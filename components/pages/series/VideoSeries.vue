@@ -3,7 +3,13 @@
     <div class="container">
       <div class="video-episode-wrapper">
         <div v-for="episode in displayedEpisodes" :key="episode.key" class="video-episode-card">
-          <Player :movie="playerProps" :videoUrl="episode.src" :isInsideVideoSeries="true" :onPause="onPause"
+          <Player :movie="{
+            key: episode.key,
+            title: episode.title,
+            video: episode.src,
+            cover: episode.poster,
+            description: episode.description
+          }" :videoUrl="episode.src" :isInsideVideoSeries="true" :onPause="onPause"
             :startTime="getStartTime(episode.key)" />
           <div class="episode-info">
             <h4 class="episode-title">
@@ -32,7 +38,6 @@ import { ref, computed } from 'vue';
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import Player from '~/components/core/Player.vue';
-import { useVideoPlayer } from '~/composables/useVideoPlayer'
 
 const props = defineProps<{
   episodes: Episode[];
@@ -100,18 +105,6 @@ const onPause = (currentTime: number) => {
     props.onPause(currentTime);
   }
 };
-
-const { pauseAllOtherPlayers } = useVideoPlayer()
-
-const handlePlay = (event: Event) => {
-  const player = event.target as MediaPlayerElement
-  pauseAllOtherPlayers(player)
-}
-
-const playerProps = {
-  ...props,
-  onPlay: handlePlay
-}
 </script>
 
 <style scoped lang="scss">
@@ -308,7 +301,6 @@ hr {
     margin-bottom: 20%;
   }
 }
-
 @media (max-width: 580px) and (min-width: 400px) {
   .episode-desc {
     margin-bottom: 28%;
