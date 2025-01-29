@@ -63,7 +63,7 @@ import { defineCustomElement, MediaTitleElement, MediaControlsElement } from "vi
 import BookmarkButton from '~/components/pages/bookmark/BookmarkButton.vue';
 import DownloadButton from '~/components/core/DownloadButton.vue';
 import ButtonPreview from '~/components/core/ButtonPreview.vue';
-import { useVideoPlayer } from '~/composables/useVideoPlayer' // for palying only one video at a time
+
 
 defineCustomElement(MediaTitleElement);
 defineCustomElement(MediaControlsElement);

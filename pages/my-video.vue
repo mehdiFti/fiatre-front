@@ -23,7 +23,7 @@
               description: video.description,
               slug: video.slug
             }" no-container :videoUrl="video.src" :startTime="video.second" :isInsideVideoSeries="true"
-              :onPause="(currentTime) => handlePause(video, { target: { currentTime } })" />
+              :onPause="(currentTime) => handlePause(video, { target: { currentTime } })" :onPlay="handlePlay" />
 
             <div class="episode-info">
               <div class="episode-title">
@@ -62,6 +62,7 @@ import 'vidstack/bundle';
 import 'vidstack/icons';
 import { MediaPlayerElement } from 'vidstack/elements';
 import { onBeforeUnmount, ref, computed } from 'vue';
+import { useVideoPlayer } from '~/composables/useVideoPlayer'
 
 // SEO Meta
 useSeoMeta({
@@ -122,9 +123,12 @@ const incompleteVideos = computed(() => {
   return [];
 });
 
-const handlePlay = () => {
+const { pauseAllOtherPlayers } = useVideoPlayer()
 
-};
+const handlePlay = (event: Event) => {
+  const player = event.target as MediaPlayerElement
+  pauseAllOtherPlayers(player)
+}
 
 const handlePause = async (video: any, event: { target: { currentTime: number } }) => {
   const currentTime = event.target.currentTime;
