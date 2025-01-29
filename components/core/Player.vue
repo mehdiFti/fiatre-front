@@ -2,8 +2,8 @@
 
   <div class='Container'>
     <media-player ref="addPlayerRef" :title="movie.title" :src="videoUrl" :current-time="startTime" keep-alive
-      load="play" preload="none" playsInline viewType="video" class="video-player" @play="handlePlay($event.target)"
-      @pause="handlePause($event)">
+      load="play" preload="none" viewType="video" class="video-player" @play="handlePlay($event.target)"
+      @pause="handlePause($event)" @fullscreen-change="handleFullscreenChange">
       <ClientOnly>
         <media-provider />
         <media-poster class="vds-poster" :src="movie.cover" posterLoad="visible" :alt="`Poster for ${movie.title}`" />
@@ -88,6 +88,7 @@ const props = defineProps<{
 const playerRefs = ref<MediaPlayerElement[]>([]);
 const currentPlaying = ref<MediaPlayerElement | null>(null);
 const isPlaying = ref(false);
+const isFullscreen = ref(false);
 
 const { pauseAllOtherPlayers } = useVideoPlayer()
 
@@ -107,11 +108,34 @@ const handlePause = (event: Event) => {
   const mediaPlayer = event.target as MediaPlayerElement;
   isPlaying.value = false;
   props.onPause?.(mediaPlayer.currentTime);
+
+  // Reset controls visibility when paused
+  const controls = mediaPlayer.querySelector('media-controls');
+  if (controls) {
+    controls.setAttribute('data-visible', '');
+  }
 };
 
 const handleVolumeChange = (newVolume: number) => {
   if (currentPlaying.value) {
     currentPlaying.value.volume = newVolume;
+  }
+};
+
+const handleFullscreenChange = (event: Event) => {
+  const mediaPlayer = event.target as MediaPlayerElement;
+  isFullscreen.value = mediaPlayer.fullscreen;
+  
+  // Reset controls visibility when exiting fullscreen
+  if (!isFullscreen.value) {
+    setTimeout(() => {
+      const controls = mediaPlayer.querySelector('media-controls');
+      if (controls) {
+        controls.setAttribute('data-visible', '');
+        // Force controls to update their visibility state
+        controls.dispatchEvent(new Event('mousemove'));
+      }
+    }, 100);
   }
 };
 
@@ -309,6 +333,11 @@ media-mute-button {
 media-controls[data-visible] {
   opacity: 0.6;
   z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+:deep([data-paused]) media-controls[data-visible] {
+  opacity: 0.6 !important;
 }
 
 .volume-settings {

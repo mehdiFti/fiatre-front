@@ -1,17 +1,14 @@
 <template>
   <ClientOnly>
-    <div class="container video-header">
-      <Player ref="playerRef" :movie="movie" :video-url="videoUrl" :start-time="startTime" :no-container="noContainer"
+    <div class=" container video-header">
+      <Player :movie="movie" :video-url="videoUrl" :start-time="startTime" :no-container="noContainer"
         :is-inside-video-series="isInsideVideoSeries" :on-pause="onPause" />
     </div>
   </ClientOnly>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue';
 import Player from '~/components/core/Player.vue';
-
-const playerRef = ref(null);
 
 const props = defineProps<{
   movie: {
@@ -30,12 +27,6 @@ const props = defineProps<{
   onPause?: (currentTime: number) => void;
   startTime?: number;
 }>();
-
-onBeforeUnmount(() => {
-  if (playerRef.value) {
-    playerRef.value.$destroy?.();
-  }
-});
 </script>
 
 <style lang='scss' scoped>
