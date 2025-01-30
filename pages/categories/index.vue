@@ -9,7 +9,7 @@
         <NuxtLink v-for="category in categories" :key="category.id" :to="`/categories/${category.slug}`"
           class="category-card">
           <div class="card-content">
-            <img :src="`https://fiatre.ir/${category.image}`" :alt="category.name" class="category-image" />
+            <NuxtImg :src="`https://fiatre.ir/${category.image}`" :alt="category.name" class="category-image" />
             <p class="category-name">{{ category.name }}</p>
           </div>
         </NuxtLink>
@@ -144,6 +144,7 @@ watch(width, (newWidth) => {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  aspect-ratio: 264/ 200;
 }
 
 .category-name {

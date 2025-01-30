@@ -48,7 +48,7 @@ const isLoading = computed(() => pending.value);
 <style scoped lang="scss">
 .about-container {
   margin: 0 auto;
-  padding: 20px 60px;
+  padding: 20px 40px;
   background-color: $milky;
   border-radius: 5px;
 

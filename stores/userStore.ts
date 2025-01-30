@@ -32,80 +32,38 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = async (to?: RouteLocationRaw) => {
-    try {
-      console.log('Starting logout process...');
-      
-      // Get cookie references using useCookie composable
-      const csrfToken = useCookie('csrftoken', {
-        maxAge: 0,
-        path: '/',
-        domain: 'www.fiatre.ir',  // Explicitly target www subdomain
-        httpOnly: true            // Important for session cookies
-      });
-      
-      const sessionId = useCookie('sessionid', {
-        maxAge: 0,
-        path: '/',
-        domain: 'www.fiatre.ir',  // Explicitly target www subdomain
-        httpOnly: true            // Important for session cookies
-      });
-      
-      const refreshTokenCookie = useCookie('refresh-token', {
-        maxAge: 0,
-        path: '/'
-      });
-      
-      const accessTokenCookie = useCookie('access-token', {
-        maxAge: 0,
-        path: '/'
-      });
+    // Get cookie references using useCookie composable
+    const csrfToken = useCookie('csrftoken', { maxAge: 0, path: '/' });
+    const sessionId = useCookie('sessionid', { maxAge: 0, path: '/' });
+    const refreshTokenCookie = useCookie('refresh-token', { maxAge: 0, path: '/' });
+    const accessTokenCookie = useCookie('access-token', { maxAge: 0, path: '/' });
 
-      // Log current cookie values
-      console.log('Before clearing - Cookie values:', {
-        csrf: csrfToken.value,
-        session: sessionId.value,
-        refresh: refreshTokenCookie.value,
-        access: accessTokenCookie.value
-      });
+    // Set all cookies to null to remove them
+    csrfToken.value = null;
+    sessionId.value = null;
+    refreshTokenCookie.value = null;
+    accessTokenCookie.value = null;
 
-      // Set all cookies to null to remove them
-      csrfToken.value = null;
-      sessionId.value = null;
-      refreshTokenCookie.value = null;
-      accessTokenCookie.value = null;
+    // Clear store state
+    user.value = null;
+    isProfileFetched.value = false;
 
-      // Log after clearing
-      console.log('After clearing - Cookie values:', {
-        csrf: csrfToken.value,
-        session: sessionId.value,
-        refresh: refreshTokenCookie.value,
-        access: accessTokenCookie.value
-      });
-
-      // Clear store state
-      user.value = null;
-      isProfileFetched.value = false;
-
-      let fullpath = '';
-      if (to) {
-        if (typeof to === 'string') {
-          fullpath = to;
-        } else {
-          fullpath = to.fullPath;
-        }
+    let fullpath = '';
+    if (to) {
+      if (typeof to === 'string') {
+        fullpath = to;
       } else {
-        fullpath = useRoute().fullPath;
+        fullpath = to.fullPath;
       }
-
-      await navigateTo({
-        name: 'login',
-        query: {}
-      });
-      
-      console.log('Logout completed');
-    } catch (error) {
-      console.error('Logout error:', error);
+    } else {
+      fullpath = useRoute().fullPath;
     }
+
+    await navigateTo({
+      name: 'login', query: {
+        // redirect: encodeURIComponent(fullpath)
+      }
+    });
   };
 
 
