@@ -197,6 +197,7 @@ const toggleAutoplay = (value: boolean) => {
           padding-top: 1%;
           overflow: hidden;
           display: -webkit-box;
+          min-width: 220px;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 4;
           line-clamp: 4;
@@ -286,6 +287,7 @@ const toggleAutoplay = (value: boolean) => {
       .hero-btn-paly {
         @extend .hero-btn;
         background-color: $third;
+        white-space: nowrap;
 
         &:hover {
           background-color: darken($third, 5%);

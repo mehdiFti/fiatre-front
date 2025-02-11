@@ -4,8 +4,8 @@
     <hr>
     <div v-if="getCategoriesRequest.status.value === 'error'">{{ getCategoriesRequest.error.value }}</div>
     <div class="categories-container" v-else>
-      <LoadingScreen v-if="getCategoriesRequest.status.value === 'loading'" />
-      <div v-else class="categories-grid" dir="rtl">
+      <!-- <LoadingScreen v-if="getCategoriesRequest.status.value === 'loading'" /> -->
+      <div  v-if="getCategoriesRequest.status.value === 'success'" class="categories-grid" dir="rtl">
         <NuxtLink v-for="category in categories" :key="category.id" :to="`/categories/${category.slug}`"
           class="category-card">
           <div class="card-content">

@@ -6005,13 +6005,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"howler@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "howler@npm:2.2.4"
-  checksum: 10c0/74a295f56fd9b2abce122b27ed12c33fa195fb8a76832803e92d8e462a1eca803b55f44c14db052211d0cfab85c7c5249664c68d95bbbc16c775fac73866c6ef
-  languageName: node
-  linkType: hard
-
 "html-tags@npm:^2.0.0":
   version: 2.0.0
   resolution: "html-tags@npm:2.0.0"
@@ -7971,7 +7964,6 @@ __metadata:
     eslint: "npm:8.56.0"
     eslint-plugin-nuxt: "npm:4.0.0"
     eslint-plugin-vue: "npm:9.19.2"
-    howler: "npm:^2.2.4"
     jwt-decode: "npm:^4.0.0"
     lint: "npm:^0.8.19"
     lodash: "npm:^4.17.21"
